@@ -12,7 +12,6 @@ import org.apache.ibatis.annotations.SelectKey;
 @Mapper
 public interface PersonalMapper {
 
-    //插入一条数据
     @Insert("insert into tp_personal(real_Name, user_Name, password, tel, email) " +
             "values(#{realName}, #{userName}, #{password}, #{tel}, #{email})")
     @SelectKey(statement="SELECT LAST_INSERT_ID()",keyProperty="id",before=false,resultType=Integer.class)

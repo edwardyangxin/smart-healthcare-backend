@@ -35,4 +35,20 @@ public class PersonalServiceImpl implements PersonalService {
     public TpPersonal selectByName(String name) {
         return personalMapper.selectByName(name);
     }
+
+
+    @Override
+    public String insertPerson(TpPersonal person) {
+        TpPersonal person1 = personalMapper.selectByName(person.getName());
+        if(person1==null){
+            personalMapper.insertPerson(person);
+            return "注册成功！";
+        }else{
+            return "用户"+person1.getName()+"已存在！";
+        }
+    }
+
+
 }
+
+

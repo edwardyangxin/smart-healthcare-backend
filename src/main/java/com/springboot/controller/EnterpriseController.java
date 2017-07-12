@@ -5,6 +5,8 @@ import com.springboot.service.EnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class EnterpriseController {
+
     @Autowired
     private EnterpriseService enterpriseService;
 
@@ -28,5 +31,11 @@ public class EnterpriseController {
             session.setAttribute("name", name);
         }
         return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/registeEnterprise", method = RequestMethod.POST)
+    public String insertEnterprise(TpEnterprise enterprise) {
+        return  enterpriseService.insertEnterprise(enterprise);
     }
 }

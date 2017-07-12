@@ -8,4 +8,8 @@ import com.springboot.domain.TpPersonal;
 public interface PersonalService {
     String login(String name, String password);
     TpPersonal selectByName(String name);
+
+    String insertPerson(TpPersonal person);
 }
+
+

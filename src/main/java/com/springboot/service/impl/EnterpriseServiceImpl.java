@@ -36,4 +36,16 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         return enterpriseMapper.selectByName(name);
     }
 
+    @Override
+    public String insertEnterprise(TpEnterprise enterprise){
+        TpEnterprise enterprise1 = enterpriseMapper.selectByName(enterprise.getName());
+        if(enterprise1==null){
+            enterpriseMapper.insertEnterprise(enterprise);
+            return "注册成功！";
+        }else{
+            return "用户"+enterprise1.getName()+"已存在！";
+        }
+
+    }
+
 }

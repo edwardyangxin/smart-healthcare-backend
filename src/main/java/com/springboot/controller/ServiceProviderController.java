@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by Administrator on 2017/7/11.
@@ -28,5 +31,11 @@ public class ServiceProviderController {
             session.setAttribute("name", name);
         }
         return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/registeServiceProvider", method = RequestMethod.POST)
+    public String insertServiceProvider(TpServiceProvider serviceProvider) {
+        return serviceProviderService.insertServiceProvider(serviceProvider);
     }
 }

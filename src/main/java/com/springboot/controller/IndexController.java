@@ -1,8 +1,5 @@
 package com.springboot.controller;
 
-import com.springboot.domain.TpEnterprise;
-import com.springboot.domain.TpPersonal;
-import com.springboot.domain.TpServiceProvider;
 import com.springboot.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

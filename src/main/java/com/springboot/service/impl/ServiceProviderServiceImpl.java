@@ -35,4 +35,15 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     public TpServiceProvider selectByName(String name) {
         return serviceProviderMapper.selectByName(name);
     }
+
+    @Override
+    public String insertServiceProvider(TpServiceProvider serviceProvider){
+        TpServiceProvider serviceProvider1 = serviceProviderMapper.selectByName(serviceProvider.getName());
+        if(serviceProvider1==null){
+            serviceProviderMapper.insertServiceProvider(serviceProvider);
+            return "注册成功！";
+        }else{
+            return "用户"+serviceProvider1.getName()+"已存在！";
+        }
+    }
 }

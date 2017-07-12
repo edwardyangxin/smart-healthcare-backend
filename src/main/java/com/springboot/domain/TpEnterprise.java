@@ -17,7 +17,7 @@ public class TpEnterprise {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
-    private Integer tel;
+    private String tel;
     private String industry;
     private String city;
 }

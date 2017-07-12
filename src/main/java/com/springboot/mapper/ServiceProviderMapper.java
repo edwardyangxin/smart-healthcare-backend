@@ -1,9 +1,8 @@
 package com.springboot.mapper;
 
+import com.springboot.domain.TpPersonal;
 import com.springboot.domain.TpServiceProvider;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.*;
 
 /**
  * Created by Administrator on 2017/7/12.
@@ -16,4 +15,7 @@ public interface ServiceProviderMapper {
             " values(#{city}, #{enterpriseId}, #{userId}, #{name}, #{password})")
     @SelectKey(statement="SELECT LAST_INSERT_ID()",keyProperty="id",before=false,resultType=Integer.class)
     void insertServiceProvider(TpServiceProvider serviceProvider);
+
+    @Select("select * from tp_service_provider where name=#{name}")
+    TpServiceProvider selectByName(@Param("name") String name);
 }

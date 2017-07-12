@@ -9,7 +9,4 @@ import com.springboot.domain.TpServiceProvider;
  */
 public interface IndexService {
 
-    void insertPerson(TpPersonal person);
-    void insertEnterprise(TpEnterprise enterprise);
-    void insertServiceProvider(TpServiceProvider serviceProvider);
 }

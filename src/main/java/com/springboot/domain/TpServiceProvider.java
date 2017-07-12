@@ -17,8 +17,6 @@ public class TpServiceProvider {
     @GeneratedValue
     private Integer id;
     private String city;
-    private String name;
-    private String password;
     private Integer userId;
     private Integer enterpriseId;
     private String name;

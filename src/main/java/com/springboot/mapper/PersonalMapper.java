@@ -1,9 +1,8 @@
 package com.springboot.mapper;
 
+
 import com.springboot.domain.TpPersonal;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.*;
 
 /**
  * Created by Administrator on 2017/7/12.
@@ -17,4 +16,6 @@ public interface PersonalMapper {
     @SelectKey(statement="SELECT LAST_INSERT_ID()",keyProperty="id",before=false,resultType=Integer.class)
     void insertPerson(TpPersonal person);
 
+    @Select("select * from tp_personal where name=#{name}")
+    TpPersonal selectByName(@Param("name") String name);
 }

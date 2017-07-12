@@ -19,5 +19,7 @@ public class TpServiceProvider {
     private String city;
     private Integer userId;
     private Integer enterpriseId;
+    private String name;
+    private String password;
 
 }

@@ -20,4 +20,5 @@ public class TpEnterprise {
     private String tel;
     private String industry;
     private String city;
+    private String password;
 }

@@ -1,7 +1,8 @@
 package com.springboot.controller;
 
+import com.springboot.domain.TpEnterprise;
 import com.springboot.domain.TpPersonal;
-import com.springboot.mapper.EnterpriseMapper;
+import com.springboot.domain.TpServiceProvider;
 import com.springboot.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,18 +26,23 @@ public class IndexController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/insertPerson", method = RequestMethod.POST)
+    @RequestMapping(value = "/registePerson", method = RequestMethod.POST)
     public String insertPerson(TpPersonal person) {
-
-        TpPersonal person1 = new TpPersonal();
-        person1.setUserName("张三");
-        person1.setEmail("1234566@qq.com");
-        person1.setPassword("123123");
-        person1.setRealName("李四");
-        person1.setTel("15866591655");
-        indexService.insertPerson(person1);
-
+        indexService.insertPerson(person);
         return "执行完毕！";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/registeEnterprise", method = RequestMethod.POST)
+    public String insertEnterprise(TpEnterprise enterprise) {
+        indexService.insertEnterprise(enterprise);
+        return "执行完毕！";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/registeServiceProvider", method = RequestMethod.POST)
+    public String insertServiceProvider(TpServiceProvider serviceProvider) {
+        indexService.insertServiceProvider(serviceProvider);
+        return "执行完毕！";
+    }
 }

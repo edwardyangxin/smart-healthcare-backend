@@ -19,6 +19,6 @@ public class TpPersonal {
     private String realName;
     private String userName;
     private String password;
-    private Integer phoneNumber;
+    private String tel;
     private String email;
 }

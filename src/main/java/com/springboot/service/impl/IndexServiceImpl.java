@@ -40,7 +40,6 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public void insertPerson(TpPersonal person) {
         personalMapper.insertPerson(person);
-
     }
 
     @Override

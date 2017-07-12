@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class EnterpriseServiceImpl implements EnterpriseService {
 
     @Autowired
-    EnterpriseMapper enterpriseMapper;
+    private EnterpriseMapper enterpriseMapper;
 
     @Override
     public String login(String name, String password) {
@@ -21,13 +21,13 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         TpEnterprise tpEnterprise = enterpriseMapper.selectByName(name);
         //若获取失败
         if (tpEnterprise == null) {
-            return "该用户不存在";
+            return "该企业用户不存在";
         }
         //获取成功后，将获取用户的密码和传入密码对比
         else if (!tpEnterprise.getPassword().equals(password)) {
             return "密码错误";
         } else {
-            return "登陆成功";
+            return "登录成功";
         }
     }
 

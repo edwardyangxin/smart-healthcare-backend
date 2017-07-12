@@ -16,33 +16,4 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class IndexController {
 
-
-    @Autowired
-    public IndexService indexService;
-
-    @Autowired
-    public void setIndexService(IndexService indexService) {
-        this.indexService = indexService;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/registePerson", method = RequestMethod.POST)
-    public String insertPerson(TpPersonal person) {
-        indexService.insertPerson(person);
-        return "执行完毕！";
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/registeEnterprise", method = RequestMethod.POST)
-    public String insertEnterprise(TpEnterprise enterprise) {
-        indexService.insertEnterprise(enterprise);
-        return "执行完毕！";
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/registeServiceProvider", method = RequestMethod.POST)
-    public String insertServiceProvider(TpServiceProvider serviceProvider) {
-        indexService.insertServiceProvider(serviceProvider);
-        return "执行完毕！";
-    }
 }

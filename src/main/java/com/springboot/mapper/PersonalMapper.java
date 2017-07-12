@@ -2,6 +2,12 @@ package com.springboot.mapper;
 
 
 import com.springboot.domain.TpPersonal;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Param;
+
 import org.apache.ibatis.annotations.*;
 
 /**
@@ -11,8 +17,8 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface PersonalMapper {
 
-    @Insert("insert into tp_personal(real_Name, user_Name, password, tel, email) " +
-            "values(#{realName}, #{userName}, #{password}, #{tel}, #{email})")
+    @Insert("insert into tp_personal(real_Name, name, password, tel, email) " +
+            "values(#{realName}, #{name}, #{password}, #{tel}, #{email})")
     @SelectKey(statement="SELECT LAST_INSERT_ID()",keyProperty="id",before=false,resultType=Integer.class)
     void insertPerson(TpPersonal person);
 

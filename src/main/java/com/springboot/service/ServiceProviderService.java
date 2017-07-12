@@ -8,4 +8,5 @@ import com.springboot.domain.TpServiceProvider;
 public interface ServiceProviderService {
     String login(String name, String password);
     TpServiceProvider selectByName(String name);
+    String insertServiceProvider(TpServiceProvider serviceProvider);
 }

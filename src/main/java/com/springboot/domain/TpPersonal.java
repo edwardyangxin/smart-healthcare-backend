@@ -17,7 +17,7 @@ public class TpPersonal {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String realName;
-    private String Name;
+    private String name;
     private String password;
     private String tel;
     private String email;

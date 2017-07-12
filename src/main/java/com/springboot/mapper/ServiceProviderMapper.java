@@ -1,6 +1,5 @@
 package com.springboot.mapper;
 
-import com.springboot.domain.TpEnterprise;
 import com.springboot.domain.TpServiceProvider;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

@@ -22,7 +22,6 @@ public class EnterpriseController {
     @ResponseBody
     @PostMapping(value = "/login")
     public String enterpriseLogin(String name, String password, HttpSession session) {
-
         String result = enterpriseService.login(name, password);
         if (result.equals("登陆成功")) {
             //添加用户信息到session中

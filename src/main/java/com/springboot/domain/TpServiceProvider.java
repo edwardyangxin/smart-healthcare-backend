@@ -21,5 +21,7 @@ public class TpServiceProvider {
     private String password;
     private Integer userId;
     private Integer enterpriseId;
+    private String name;
+    private String password;
 
 }

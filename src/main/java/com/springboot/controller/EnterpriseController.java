@@ -18,7 +18,6 @@ public class EnterpriseController {
     @Autowired
     private EnterpriseService enterpriseService;
 
-
     @ResponseBody
     @PostMapping(value = "/login")
     public String enterpriseLogin(String name, String password, HttpSession session) {

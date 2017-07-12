@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
  * Created by Administrator on 2017/7/12.
  */
 @Mapper
-public class PersonalMapper {
+public interface PersonalMapper {
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by Administrator on 2017/7/11.
@@ -22,7 +21,7 @@ public class ServiceProviderController {
     private ServiceProviderService serviceProviderService;
 
     @ResponseBody
-    @PostMapping(value = "/serviceprovider/login")
+    @PostMapping(value = "/serviceProvider/login")
     public String enterpriseLogin(String name, String password, HttpSession session) {
         String result = serviceProviderService.login(name, password);
         if (result.equals("登录成功")) {
@@ -34,7 +33,7 @@ public class ServiceProviderController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/registeServiceProvider", method = RequestMethod.POST)
+    @RequestMapping(value = "/serviceProvider/register", method = RequestMethod.POST)
     public String insertServiceProvider(TpServiceProvider serviceProvider) {
         return serviceProviderService.insertServiceProvider(serviceProvider);
     }

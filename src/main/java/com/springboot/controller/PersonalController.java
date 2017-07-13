@@ -1,9 +1,7 @@
 package com.springboot.controller;
 
 import com.springboot.domain.TpPersonal;
-import com.springboot.domain.TpServiceProvider;
 import com.springboot.service.PersonalService;
-import com.springboot.service.ServiceProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,7 +14,6 @@ import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -42,7 +39,7 @@ public class PersonalController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/registePerson", method = RequestMethod.POST)
+    @RequestMapping(value = "/personal/register", method = RequestMethod.POST)
     public String insertPerson(@Valid TpPersonal person, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();

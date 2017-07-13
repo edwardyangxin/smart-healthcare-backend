@@ -34,7 +34,7 @@ public class EnterpriseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/registeEnterprise", method = RequestMethod.POST)
+    @RequestMapping(value = "/enterprise/register", method = RequestMethod.POST)
     public String insertEnterprise(TpEnterprise enterprise) {
         return  enterpriseService.insertEnterprise(enterprise);
     }

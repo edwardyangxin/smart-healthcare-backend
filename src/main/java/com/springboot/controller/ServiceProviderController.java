@@ -4,12 +4,18 @@ import com.springboot.domain.TpServiceProvider;
 import com.springboot.service.ServiceProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/11.
@@ -34,7 +40,13 @@ public class ServiceProviderController {
 
     @ResponseBody
     @RequestMapping(value = "/serviceProvider/register", method = RequestMethod.POST)
-    public String insertServiceProvider(TpServiceProvider serviceProvider) {
-        return serviceProviderService.insertServiceProvider(serviceProvider);
+    public String insertServiceProvider(@Valid TpServiceProvider serviceProvider, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return error.getDefaultMessage();
+            }
+        }
+       return serviceProviderService.insertServiceProvider(serviceProvider);
     }
 }

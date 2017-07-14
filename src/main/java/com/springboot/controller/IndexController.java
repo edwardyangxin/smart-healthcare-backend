@@ -77,12 +77,12 @@ public class IndexController {
         String serverCode = (String) session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=UTF-8");
-//        if(clientCode != null && clientCode.equalsIgnoreCase(serverCode)){
-//            mapper.writeValue(response.getOutputStream(), new ReturnData(0));
-//        }else{
-//            mapper.writeValue(response.getOutputStream(), new ReturnData(2004));
-//        }
-
+       /* if(clientCode != null && clientCode.equalsIgnoreCase(serverCode)){
+            mapper.writeValue(response.getOutputStream(), new ReturnData(0));
+       }else{
+            mapper.writeValue(response.getOutputStream(), new ReturnData(2004));
+       }
+*/
     }
 }
 

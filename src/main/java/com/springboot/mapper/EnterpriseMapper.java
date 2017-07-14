@@ -1,11 +1,8 @@
 package com.springboot.mapper;
 
 import com.springboot.domain.TpEnterprise;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.*;
+
 
 /**
  * Created by Administrator on 2017/7/12.

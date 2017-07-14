@@ -2,11 +2,7 @@ package com.springboot.mapper;
 
 
 import com.springboot.domain.TpPersonal;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 
 
 /**
@@ -22,5 +18,9 @@ public interface PersonalMapper {
     void insertPerson(TpPersonal person);
 
     @Select("select * from tp_personal where name=#{name}")
+    @Results({
+            @Result(id = true,column = "description", property = "description"),
+            @Result(column = "real_name",property = "realName")
+    })
     TpPersonal selectByName(@Param("name") String name);
 }

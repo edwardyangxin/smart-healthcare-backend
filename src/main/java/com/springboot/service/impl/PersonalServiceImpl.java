@@ -36,7 +36,6 @@ public class PersonalServiceImpl implements PersonalService {
         return personalMapper.selectByName(name);
     }
 
-
     @Override
     public String insertPerson(TpPersonal person) {
         TpPersonal person1 = personalMapper.selectByName(person.getName());

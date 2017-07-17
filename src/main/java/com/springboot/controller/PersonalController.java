@@ -1,6 +1,7 @@
 package com.springboot.controller;
 
 import com.springboot.domain.TpPersonal;
+import com.springboot.dto.Personal;
 import com.springboot.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

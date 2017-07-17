@@ -2,6 +2,7 @@ package com.springboot.mapper;
 
 
 import com.springboot.domain.TpPersonal;
+import com.springboot.dto.Personal;
 import org.apache.ibatis.annotations.*;
 
 
@@ -19,8 +20,10 @@ public interface PersonalMapper {
 
     @Select("select * from tp_personal where name=#{name}")
     @Results({
-            @Result(id = true,column = "description", property = "description"),
             @Result(column = "real_name",property = "realName")
     })
     TpPersonal selectByName(@Param("name") String name);
+
+    @Update("update tp_personal set real_Name = #{realName},tel= #{tel},email = #{email} where name =#{name}")
+    void updatePersonByName(Personal person);
 }

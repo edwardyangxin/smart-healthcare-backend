@@ -48,6 +48,23 @@ public class PersonalServiceImpl implements PersonalService {
         }
     }
 
+    @Override
+    public String updatePersonalPass(String name, String password, String newPassword, String retypePassword, TpPersonal tpPersonal){
+        tpPersonal= personalMapper.selectByName(name);
+        String TPPassword= tpPersonal.getPassword();
+        if (password.equals(TPPassword)){
+            if (newPassword.equals(retypePassword)){
+                tpPersonal.setPassword(newPassword);
+                personalMapper.updatePassword(tpPersonal);
+                return "密码修改成功！";
+            }else {
+                return "两次输入的新密码不同，请重试！";
+            }
+        }else {
+            return "密码输入错误，请重试！";
+        }
+    }
+
 
 }
 

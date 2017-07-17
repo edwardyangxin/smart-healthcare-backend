@@ -49,4 +49,12 @@ public class PersonalController {
         }
         return personalService.insertPerson(person);
     }
+
+    @ResponseBody
+    @PostMapping(value = "/personal/modifyPass")
+    public String modifyPass(HttpSession session, String password, String newPassword, String retypePassword, TpPersonal tpPersonal) {
+        String name=session.getAttribute("name").toString();
+        String result = personalService.updatePersonalPass(name, password, newPassword, retypePassword, tpPersonal);
+        return result;
+    }
 }

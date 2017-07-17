@@ -52,12 +52,16 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public String updatePersonalPass(Password password) {
-        String TPPassword =  personalMapper.selectByName(password.getName()).getPassword();
+        String TPPassword = personalMapper.selectByName(password.getName()).getPassword();
         if (password.getPassword().equals(TPPassword)) {
             if (password.getNewPassword().equals(password.getRetypePassword())) {
-                password.setPassword(password.getNewPassword());
-                personalMapper.updatePassword(password);
-                return "密码修改成功！";
+                if (TPPassword.equals(password.getNewPassword())) {
+                    return "新密码与旧密码相同，请重新输入！";
+                } else {
+                    password.setPassword(password.getNewPassword());
+                    personalMapper.updatePassword(password);
+                    return "密码修改成功！";
+                }
             } else {
                 return "两次输入的新密码不同，请重试！";
             }

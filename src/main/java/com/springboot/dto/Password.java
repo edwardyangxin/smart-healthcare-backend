@@ -12,6 +12,8 @@ import javax.validation.constraints.Size;
 @Data
 public class Password {
 
+    private String name;
+
     @NotEmpty(message = "旧密码不能为空！")
     @NotNull(message = "旧密码不能为空！")
     @Size(min = 6, max = 16, message="旧密码长度必须在6到16之间！")

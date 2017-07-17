@@ -1,6 +1,7 @@
 package com.springboot.service;
 
 import com.springboot.domain.TpPersonal;
+import com.springboot.dto.Password;
 import com.springboot.dto.Personal;
 
 /**
@@ -12,7 +13,7 @@ public interface PersonalService {
     TpPersonal selectByName(String name);
     String insertPerson(TpPersonal person);
 
-    String updatePersonalPass(String name, String password, String newPassword, String retypePassword, TpPersonal tpPersonal);
+    String updatePersonalPass(Password password);
     String updatePersonByName(Personal person);
 }
 

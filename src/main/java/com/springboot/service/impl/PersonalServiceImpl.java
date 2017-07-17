@@ -2,6 +2,7 @@ package com.springboot.service.impl;
 
 
 import com.springboot.domain.TpPersonal;
+import com.springboot.dto.Password;
 import com.springboot.dto.Personal;
 import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.PersonalService;
@@ -50,19 +51,18 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public String updatePersonalPass(String name, String password, String newPassword, String retypePassword, TpPersonal tpPersonal) {
-        tpPersonal = personalMapper.selectByName(name);
-        String TPPassword = tpPersonal.getPassword();
-        if (password.equals(TPPassword)) {
-            if (newPassword.equals(retypePassword)) {
-                tpPersonal.setPassword(newPassword);
-                personalMapper.updatePassword(tpPersonal);
+    public String updatePersonalPass(Password password) {
+        String TPPassword =  personalMapper.selectByName(password.getName()).getPassword();
+        if (password.getPassword().equals(TPPassword)) {
+            if (password.getNewPassword().equals(password.getRetypePassword())) {
+                password.setPassword(password.getNewPassword());
+                personalMapper.updatePassword(password);
                 return "密码修改成功！";
             } else {
                 return "两次输入的新密码不同，请重试！";
             }
         } else {
-            return "密码输入错误，请重试！";
+            return "旧密码输入错误，请重试！";
         }
     }
 

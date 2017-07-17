@@ -2,6 +2,7 @@ package com.springboot.service.impl;
 
 
 import com.springboot.domain.TpPersonal;
+import com.springboot.dto.Personal;
 import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,11 @@ public class PersonalServiceImpl implements PersonalService {
         }
     }
 
+    @Override
+    public String updatePersonByName(Personal person) {
+        personalMapper.updatePersonByName(person);
+        return "个人信息更改成功！";
+    }
 
 }
 

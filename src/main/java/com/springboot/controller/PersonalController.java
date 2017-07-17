@@ -57,4 +57,17 @@ public class PersonalController {
         String result = personalService.updatePersonalPass(name, password, newPassword, retypePassword, tpPersonal);
         return result;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/personal/modifyPerson",method = RequestMethod.POST)
+    public  String modifyPerson(@Valid Personal person, BindingResult bindingResult, HttpSession session){
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList){
+                return error.getDefaultMessage();
+            }
+        }
+        person.setName(session.getAttribute("name").toString());
+        return  personalService.updatePersonByName(person);
+    }
 }

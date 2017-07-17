@@ -8,8 +8,11 @@ import com.springboot.dto.Personal;
  */
 public interface PersonalService {
     String login(String name, String password);
+
     TpPersonal selectByName(String name);
     String insertPerson(TpPersonal person);
+
+    String updatePersonalPass(String name, String password, String newPassword, String retypePassword, TpPersonal tpPersonal);
     String updatePersonByName(Personal person);
 }
 

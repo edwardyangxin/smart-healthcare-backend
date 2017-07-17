@@ -1,7 +1,6 @@
 package com.springboot.controller;
 
 import com.springboot.domain.TpPersonal;
-import com.springboot.dto.Personal;
 import com.springboot.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,6 +48,14 @@ public class PersonalController {
             }
         }
         return personalService.insertPerson(person);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/personal/modifyPass")
+    public String modifyPass(HttpSession session, String password, String newPassword, String retypePassword, TpPersonal tpPersonal) {
+        String name=session.getAttribute("name").toString();
+        String result = personalService.updatePersonalPass(name, password, newPassword, retypePassword, tpPersonal);
+        return result;
     }
 
     @ResponseBody

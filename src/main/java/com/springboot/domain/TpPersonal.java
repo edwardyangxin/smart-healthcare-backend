@@ -33,10 +33,10 @@ public class TpPersonal {
 
     @NotEmpty(message = "密码不能为空！")
     @NotNull(message = "密码不能为空！")
-    @Size(min = 6, max = 16, message="密码长度必须在6到16之间！")
+    @Size(min = 6, max = 16, message = "密码长度必须在6到16之间！")
     private String password;
 
-    @Pattern(regexp="^1[34578]\\d{9}$",message="手机号码格式不正确！")
+    @Pattern(regexp = "^1[34578]\\d{9}$", message = "手机号格式不正确！")
     @NotEmpty(message = "手机号码不能为空！")
     @NotNull(message = "手机号码不能为空！")
     private String tel;

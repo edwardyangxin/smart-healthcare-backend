@@ -1,6 +1,7 @@
 package com.springboot.controller;
 
 import com.springboot.domain.TpPersonal;
+import com.springboot.dto.Personal;
 import com.springboot.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,5 +49,18 @@ public class PersonalController {
             }
         }
         return personalService.insertPerson(person);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/personal/modifyPerson",method = RequestMethod.POST)
+    public  String modifyPerson(@Valid Personal person, BindingResult bindingResult, HttpSession session){
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList){
+                return error.getDefaultMessage();
+            }
+        }
+        person.setName(session.getAttribute("name").toString());
+        return  personalService.updatePersonByName(person);
     }
 }

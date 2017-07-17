@@ -1,6 +1,7 @@
 package com.springboot.controller;
 
 import com.springboot.domain.TpPersonal;
+import com.springboot.dto.Password;
 import com.springboot.dto.Personal;
 import com.springboot.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,22 +54,28 @@ public class PersonalController {
 
     @ResponseBody
     @PostMapping(value = "/personal/modifyPass")
-    public String modifyPass(HttpSession session, String password, String newPassword, String retypePassword, TpPersonal tpPersonal) {
-        String name=session.getAttribute("name").toString();
-        String result = personalService.updatePersonalPass(name, password, newPassword, retypePassword, tpPersonal);
+    public String modifyPass(@Valid Password password, BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return error.getDefaultMessage();
+            }
+        }
+        password.setName(session.getAttribute("name").toString());
+        String result = personalService.updatePersonalPass(password);
         return result;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/personal/modifyPerson",method = RequestMethod.POST)
-    public  String modifyPerson(@Valid Personal person, BindingResult bindingResult, HttpSession session){
-        if(bindingResult.hasErrors()){
+    @RequestMapping(value = "/personal/modifyPerson", method = RequestMethod.POST)
+    public String modifyPerson(@Valid Personal person, BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList){
+            for (ObjectError error : errorList) {
                 return error.getDefaultMessage();
             }
         }
         person.setName(session.getAttribute("name").toString());
-        return  personalService.updatePersonByName(person);
+        return personalService.updatePersonByName(person);
     }
 }

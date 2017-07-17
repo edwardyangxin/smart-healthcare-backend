@@ -2,6 +2,8 @@ package com.springboot.mapper;
 
 
 import com.springboot.domain.TpPersonal;
+import com.springboot.dto.Password;
+import com.springboot.dto.Personal;
 import org.apache.ibatis.annotations.*;
 
 
@@ -24,7 +26,7 @@ public interface PersonalMapper {
     TpPersonal selectByName(@Param("name") String name);
 
     @Update("update tp_personal set password = #{password} where name = #{name}")
-    void updatePassword(TpPersonal tpPersonal);
+    void updatePassword(Password password);
 
 
     @Update("update tp_personal set real_Name = #{realName},tel= #{tel},email = #{email} where name =#{name}")

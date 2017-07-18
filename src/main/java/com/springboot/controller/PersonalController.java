@@ -29,6 +29,7 @@ public class PersonalController {
         this.personalService = personalService;
     }
 
+    //个人登陆
     @ResponseBody
     @PostMapping(value = "/personal/login")
     public String personalLogin(String name, String password, HttpSession session) {
@@ -40,7 +41,7 @@ public class PersonalController {
         }
         return result;
     }
-
+    //个人注册
     @ResponseBody
     @RequestMapping(value = "/personal/register", method = RequestMethod.POST)
     public String insertPerson(@Valid TpPersonal person, BindingResult bindingResult) {
@@ -52,7 +53,7 @@ public class PersonalController {
         }
         return personalService.insertPerson(person);
     }
-
+    //个人密码修改
     @ResponseBody
     @PostMapping(value = "/personal/modifyPass")
     public String modifyPass(@Valid Password password, BindingResult bindingResult, HttpSession session) {
@@ -66,7 +67,7 @@ public class PersonalController {
         String result = personalService.updatePersonalPass(password);
         return result;
     }
-
+    //个人信息修改
     @ResponseBody
     @RequestMapping(value = "/personal/modifyPerson", method = RequestMethod.POST)
     public String modifyPerson(@Valid Personal person, BindingResult bindingResult, HttpSession session) {

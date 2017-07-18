@@ -1,6 +1,8 @@
 package com.springboot.mapper;
 
 import com.springboot.domain.TpServiceProvider;
+import com.springboot.dto.Password;
+import com.springboot.dto.ServiceProvider;
 import org.apache.ibatis.annotations.*;
 
 /**
@@ -22,4 +24,12 @@ public interface ServiceProviderMapper {
             @Result(column = "enterprise_id", property = "enterpriseId")
     })
     TpServiceProvider selectByName(@Param("name") String name);
+
+    @Update("update tp_service_provider set city = #{city}  where name =#{name}")
+    void updateServiceProviderByName(ServiceProvider serviceProvider);
+
+    @Update("update tp_service_provider set password = #{password} where name = #{name}")
+    void updateServiceProviderPassByName(Password password);
+
+
 }

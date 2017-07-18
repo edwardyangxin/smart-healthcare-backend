@@ -1,7 +1,6 @@
 package com.springboot.controller;
 
 import com.springboot.domain.TpEnterprise;
-import com.springboot.domain.TpPersonal;
 import com.springboot.service.EnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,8 +21,12 @@ import java.util.List;
 @Controller
 public class EnterpriseController {
 
-    @Autowired
     private EnterpriseService enterpriseService;
+
+    @Autowired
+    public EnterpriseController(EnterpriseService enterpriseService) {
+        this.enterpriseService = enterpriseService;
+    }
 
     @ResponseBody
     @PostMapping(value = "/enterprise/login")
@@ -37,6 +40,7 @@ public class EnterpriseController {
         }
         return result;
     }
+
 
     @ResponseBody
     @RequestMapping(value = "/enterprise/register", method = RequestMethod.POST)

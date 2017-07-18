@@ -3,6 +3,7 @@ package com.springboot.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
+import com.springboot.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +25,26 @@ import java.awt.image.BufferedImage;
 @Controller
 public class IndexController {
 
-    @Autowired
     private Producer kaptchaProducer;
+    private IndexService indexService;
+
+    @Autowired
+    public IndexController(Producer kaptchaProducer, IndexService indexService) {
+        this.kaptchaProducer = kaptchaProducer;
+        this.indexService = indexService;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/index")
+    public String index() {
+        return "主页";
+    }
+
+
+    @RequestMapping(value = "/logout")
+    public String serviceProviderLogout(HttpSession session) {
+        return indexService.logout(session);
+    }
 
     /**
      * 获取验证码图片
@@ -81,10 +100,8 @@ public class IndexController {
         response.setContentType("text/html;charset=UTF-8");
         if (clientCode != null && clientCode.equalsIgnoreCase(serverCode)) {
             return "success";
-//            mapper.writeValue(response.getOutputStream(), new ReturnData(0));
         } else {
             return "Kaptcha_error";
-//            mapper.writeValue(response.getOutputStream(), new ReturnData(2004));
         }
 
     }

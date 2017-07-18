@@ -23,12 +23,16 @@ import java.util.List;
 @Controller
 public class ServiceProviderController {
 
-    @Autowired
     private ServiceProviderService serviceProviderService;
+
+    @Autowired
+    public ServiceProviderController(ServiceProviderService serviceProviderService) {
+        this.serviceProviderService = serviceProviderService;
+    }
 
     @ResponseBody
     @PostMapping(value = "/serviceProvider/login")
-    public String enterpriseLogin(String name, String password, HttpSession session) {
+    public String serviceProviderLogin(String name, String password, HttpSession session) {
         String result = serviceProviderService.login(name, password);
         if (result.equals("登录成功")) {
             //添加用户信息到session中

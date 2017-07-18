@@ -1,6 +1,8 @@
 package com.springboot.service.impl;
 
 import com.springboot.domain.TpEnterprise;
+import com.springboot.dto.Enterprise;
+import com.springboot.dto.Password;
 import com.springboot.mapper.EnterpriseMapper;
 import com.springboot.service.EnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,33 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         }else{
             return "用户"+enterprise1.getName()+"已存在！";
         }
+    }
 
+    @Override
+    public String updateEnterpriseByName(Enterprise enterprise) {
+        enterpriseMapper.updateEnterpriseByName(enterprise);
+        return "企业信息更改成功！";
+    }
+
+
+    @Override
+    public String updateEnterprisePassByName(Password password) {
+        String TPPassword = enterpriseMapper.selectByName(password.getName()).getPassword();
+        if (password.getPassword().equals(TPPassword)) {
+            if (password.getNewPassword().equals(password.getRetypePassword())) {
+                if (TPPassword.equals(password.getNewPassword())) {
+                    return "新密码与旧密码相同，请重新输入！";
+                } else {
+                    password.setPassword(password.getNewPassword());
+                    enterpriseMapper.updateEnterprisePassByName(password);
+                    return "密码修改成功！";
+                }
+            } else {
+                return "两次输入的新密码不同，请重试！";
+            }
+        } else {
+            return "旧密码输入错误，请重试！";
+        }
     }
 
 }

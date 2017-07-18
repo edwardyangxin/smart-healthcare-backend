@@ -1,6 +1,8 @@
 package com.springboot.mapper;
 
 import com.springboot.domain.TpEnterprise;
+import com.springboot.dto.Enterprise;
+import com.springboot.dto.Password;
 import org.apache.ibatis.annotations.*;
 
 
@@ -17,4 +19,11 @@ public interface EnterpriseMapper {
             "values(#{city}, #{industry}, #{name}, #{tel}, #{password})")
     @SelectKey(statement="SELECT LAST_INSERT_ID()",keyProperty="id",before=false,resultType=Integer.class)
     void insertEnterprise(TpEnterprise enterprise);
+
+    @Update("update tp_enterprise set city = #{city},tel= #{tel},industry = #{industry} where name =#{name}")
+    void updateEnterpriseByName(Enterprise enterprise);
+
+    @Update("update tp_enterprise set password = #{password} where name = #{name}")
+    void updateEnterprisePassByName(Password password);
+
 }

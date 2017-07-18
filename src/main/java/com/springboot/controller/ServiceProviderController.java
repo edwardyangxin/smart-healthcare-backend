@@ -1,9 +1,12 @@
 package com.springboot.controller;
 
 import com.springboot.domain.TpServiceProvider;
+import com.springboot.dto.Password;
+import com.springboot.dto.ServiceProvider;
 import com.springboot.service.ServiceProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +33,7 @@ public class ServiceProviderController {
         this.serviceProviderService = serviceProviderService;
     }
 
+    //供应商登录
     @ResponseBody
     @PostMapping(value = "/serviceProvider/login")
     public String serviceProviderLogin(String name, String password, HttpSession session) {
@@ -41,7 +45,7 @@ public class ServiceProviderController {
         }
         return result;
     }
-
+    //供应商注册
     @ResponseBody
     @RequestMapping(value = "/serviceProvider/register", method = RequestMethod.POST)
     public String insertServiceProvider(@Valid TpServiceProvider serviceProvider, BindingResult bindingResult) {

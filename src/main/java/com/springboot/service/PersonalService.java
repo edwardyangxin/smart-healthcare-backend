@@ -15,7 +15,6 @@ public interface PersonalService {
     TpPersonal selectByName(String name);
 
     String insertPerson(TpPersonal person);
-
     String updatePersonalPass(Password password);
 
     String updatePersonByName(Personal person);

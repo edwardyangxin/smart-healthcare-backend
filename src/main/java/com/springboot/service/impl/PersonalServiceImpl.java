@@ -4,6 +4,7 @@ package com.springboot.service.impl;
 import com.springboot.domain.TpPersonal;
 import com.springboot.dto.Password;
 import com.springboot.dto.Personal;
+import com.springboot.dto.PersonalResetPass;
 import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,25 @@ public class PersonalServiceImpl implements PersonalService {
             }
         } else {
             return "旧密码输入错误，请重试！";
+        }
+    }
+
+    @Override
+    public String resetPersonalPass(PersonalResetPass personalResetPass) {
+        TpPersonal tpPersonal = personalMapper.selectByRealName(personalResetPass.getRealName());
+        if (tpPersonal != null) {
+            if (personalResetPass.getEmail().equals(tpPersonal.getEmail())) {
+                if (personalResetPass.getTel().equals(tpPersonal.getTel())) {
+                    personalMapper.resetPass(personalResetPass);
+                    return "重置密码成功。";
+                } else {
+                    return "电话号码错误，请重试！";
+                }
+            } else {
+                return "Email错误，请重试！";
+            }
+        } else {
+            return "没有此用户！";
         }
     }
 

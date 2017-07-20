@@ -3,6 +3,7 @@ package com.springboot.service;
 import com.springboot.domain.TpPersonal;
 import com.springboot.dto.Password;
 import com.springboot.dto.Personal;
+import com.springboot.dto.PersonalResetPass;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,7 +16,10 @@ public interface PersonalService {
     TpPersonal selectByName(String name);
 
     String insertPerson(TpPersonal person);
+
     String updatePersonalPass(Password password);
+
+    String resetPersonalPass(PersonalResetPass personalResetPass);
 
     String updatePersonByName(Personal person);
 }

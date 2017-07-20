@@ -3,6 +3,7 @@ package com.springboot.controller;
 import com.springboot.domain.TpPersonal;
 import com.springboot.dto.Password;
 import com.springboot.dto.Personal;
+import com.springboot.dto.PersonalResetPass;
 import com.springboot.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,7 @@ public class PersonalController {
         }
         return result;
     }
+
     //个人注册
     @ResponseBody
     @RequestMapping(value = "/personal/register", method = RequestMethod.POST)
@@ -53,6 +55,7 @@ public class PersonalController {
         }
         return personalService.insertPerson(person);
     }
+
     //个人密码修改
     @ResponseBody
     @PostMapping(value = "/personal/modifyPass")
@@ -67,6 +70,21 @@ public class PersonalController {
         String result = personalService.updatePersonalPass(password);
         return result;
     }
+
+    //重置密码（真实姓名、邮箱、电话）
+    @ResponseBody
+    @PostMapping(value = "/personal/resetPass")
+    public String resetPass(@Valid PersonalResetPass personalResetPass, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return error.getDefaultMessage();
+            }
+        }
+        String result = personalService.resetPersonalPass(personalResetPass);
+        return result;
+    }
+
     //个人信息修改
     @ResponseBody
     @RequestMapping(value = "/personal/modifyPerson", method = RequestMethod.POST)

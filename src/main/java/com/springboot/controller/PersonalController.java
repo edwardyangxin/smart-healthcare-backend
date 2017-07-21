@@ -71,7 +71,7 @@ public class PersonalController {
         return result;
     }
 
-    //重置密码（真实姓名、邮箱、电话）
+    //个人重置密码（真实姓名、邮箱、电话）
     @ResponseBody
     @PostMapping(value = "/personal/resetPass")
     public String resetPass(@Valid PersonalResetPass personalResetPass, BindingResult bindingResult) {

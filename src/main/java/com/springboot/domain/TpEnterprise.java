@@ -27,19 +27,23 @@ public class TpEnterprise {
 
     @NotEmpty(message = "密码不能为空！")
     @NotNull(message = "密码不能为空！")
-    @Size(min = 6, max = 16, message="密码长度必须在6到16之间！")
+    @Size(min = 6, max = 16, message = "密码长度必须在6到16之间！")
     private String password;
 
+    private String businessLicense;
+
+    private String legalRepresentative;
+
+    private String contact;
+
     @NumberFormat
-    @NotEmpty(message = "电话号码不能为空！")
-    @NotNull(message = "电话号码不能为空！")
+    @NotEmpty(message = "联系人电话不能为空！")
+    @NotNull(message = "联系人电话不能为空！")
     private String tel;
 
-    @NotEmpty(message = "所在行业不能为空！")
-    @NotNull(message = "所在行业不能为空！")
     private String industry;
 
-    @NotEmpty(message = "所在城市不能为空！")
-    @NotNull(message = "所在城市不能为空！")
     private String city;
+
+    private String iconAddress;
 }

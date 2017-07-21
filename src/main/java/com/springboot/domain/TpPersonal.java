@@ -45,4 +45,11 @@ public class TpPersonal {
     @NotNull(message = "邮箱地址不能为空！")
     @Email(message = "邮箱地址不符合规范！")
     private String email;
+
+    private String idCard;
+
+    private String location;
+
+    private String iconAddress;
+
 }

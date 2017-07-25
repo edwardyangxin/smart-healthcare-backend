@@ -80,6 +80,7 @@ public class ServiceProviderController {
         }
         password.setName(session.getAttribute("name").toString());
         String result = serviceProviderService.updateServiceProviderPassByName(password);
+
         return result;
     }
 }

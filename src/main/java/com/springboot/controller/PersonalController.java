@@ -98,4 +98,5 @@ public class PersonalController {
         person.setName(session.getAttribute("name").toString());
         return personalService.updatePersonByName(person);
     }
+
 }

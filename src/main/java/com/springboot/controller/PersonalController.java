@@ -122,7 +122,7 @@ public class PersonalController {
 
     //查询个人发布的信息,可以单条件查询，也可以多条件组合查询
     @ResponseBody
-    @PostMapping(value = "/personal/selectLanguage")
+    @PostMapping(value = "/personal/selectInfo")
     public List<TpPersonInfo> selectInfos(SelectPersonInfo selectPersonInfo) {
         List<TpPersonInfo> tpPersonInfos = personalService.selectInfos(selectPersonInfo);
         return tpPersonInfos;

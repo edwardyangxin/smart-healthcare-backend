@@ -46,6 +46,4 @@ public class TpServiceProvider {
     private Integer enterpriseId;
 
 
-
-
 }

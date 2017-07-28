@@ -25,7 +25,7 @@ public interface ServiceProviderMapper {
     })
     TpServiceProvider selectByName(@Param("name") String name);
 
-    @Update("update tp_service_provider set city = #{city}  where name =#{name}")
+    @Update("update tp_service_provider set city = #{city},contact=#{contact},tel=#{tel}  where name =#{name}")
     void updateServiceProviderByName(ServiceProvider serviceProvider);
 
     @Update("update tp_service_provider set password = #{password} where name = #{name}")

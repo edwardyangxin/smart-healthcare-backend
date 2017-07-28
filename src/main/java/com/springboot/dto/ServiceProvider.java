@@ -17,6 +17,9 @@ public class ServiceProvider {
     @NotNull(message = "所在城市不能为空！")
     private String city;
 
+    private String contact;
+
+    private String tel;
 
 
 }

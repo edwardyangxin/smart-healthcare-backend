@@ -42,6 +42,7 @@ public class ServiceProviderController {
         }
         return result;
     }
+
     //供应商注册
     @ResponseBody
     @RequestMapping(value = "/serviceProvider/register", method = RequestMethod.POST)
@@ -52,12 +53,13 @@ public class ServiceProviderController {
                 return error.getDefaultMessage();
             }
         }
-       return serviceProviderService.insertServiceProvider(serviceProvider);
+        return serviceProviderService.insertServiceProvider(serviceProvider);
     }
+
     //供应商信息修改
     @ResponseBody
     @RequestMapping(value = "/serviceProvider/modifyerviceProvider", method = RequestMethod.POST)
-    public String   modifyEnterprise(@Valid ServiceProvider serviceProvider, BindingResult bindingResult, HttpSession session){
+    public String modifyEnterprise(@Valid ServiceProvider serviceProvider, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {

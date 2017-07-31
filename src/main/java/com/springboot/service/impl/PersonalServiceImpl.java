@@ -113,8 +113,8 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public List<TpPersonInfo> selectLatest(){
-        List<TpPersonInfo> tpPersonInfos=personalMapper.selectLatest();
+    public List<TpPersonInfo> selectLatest() {
+        List<TpPersonInfo> tpPersonInfos = personalMapper.selectLatest();
         return tpPersonInfos;
     }
 

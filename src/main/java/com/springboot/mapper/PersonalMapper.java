@@ -51,18 +51,18 @@ public interface PersonalMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newInfo(TpPersonInfo tpPersonInfo);
 
-    @Select("select * from tp_person_info where name = #{name}")
-    @Results({
-            @Result(column = "cooperation_type",property = "cooperationType"),
-            @Result(column = "register_time",property = "registerTime")
-    })
-    List<TpPersonInfo> selectInfoByName(String name);
-
     @Select("select * from tp_person_info where ((name=#{name}) or (#{name} is null)) and ((language=#{language}) or (#{language} is null)) and ((specialty=#{specialty}) or (#{specialty} is null)) and ((education=#{education}) or (#{education} is null)) and ((cooperation_type=#{cooperationType}) or (#{cooperationType} is null))")
     @Results({
             @Result(column = "cooperation_type",property = "cooperationType"),
             @Result(column = "register_time",property = "registerTime")
     })
     List<TpPersonInfo> selectInfos(SelectPersonInfo selectPersonInfo);
+
+    @Select("select* from tp_person_info order by register_time desc limit 10")
+    @Results({
+            @Result(column = "cooperation_type",property = "cooperationType"),
+            @Result(column = "register_time",property = "registerTime"),
+    })
+    List<TpPersonInfo> selectLatest();
 
 }

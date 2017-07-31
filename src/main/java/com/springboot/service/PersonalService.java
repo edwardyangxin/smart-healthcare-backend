@@ -28,9 +28,9 @@ public interface PersonalService {
 
     String newInfo(TpPersonInfo tpPersonInfo);
 
-    List<TpPersonInfo> selectInfoByName(String name);
-
     List<TpPersonInfo> selectInfos(SelectPersonInfo selectPersonInfo);
+
+    List<TpPersonInfo> selectLatest();
 }
 
 

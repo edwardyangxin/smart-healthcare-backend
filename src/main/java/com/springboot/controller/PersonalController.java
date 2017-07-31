@@ -112,19 +112,19 @@ public class PersonalController {
         return personalService.newInfo(tpPersonInfo);
     }
 
-    //按姓名查询个人发布的信息
-    @ResponseBody
-    @PostMapping(value = "/personal/selectName")
-    public List<TpPersonInfo> selectByName(String name) {
-        List<TpPersonInfo> tpPersonInfos = personalService.selectInfoByName(name);
-        return tpPersonInfos;
-    }
-
     //查询个人发布的信息,可以单条件查询，也可以多条件组合查询
     @ResponseBody
     @PostMapping(value = "/personal/selectInfo")
     public List<TpPersonInfo> selectInfos(SelectPersonInfo selectPersonInfo) {
         List<TpPersonInfo> tpPersonInfos = personalService.selectInfos(selectPersonInfo);
+        return tpPersonInfos;
+    }
+
+    //查询最新十条信息
+    @ResponseBody
+    @RequestMapping(value = "/personal/latest")
+    public List<TpPersonInfo> selectLatestTen() {
+        List<TpPersonInfo> tpPersonInfos = personalService.selectLatest();
         return tpPersonInfos;
     }
 }

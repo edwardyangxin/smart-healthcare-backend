@@ -1,14 +1,18 @@
 package com.springboot.service.impl;
 
 
+import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
 import com.springboot.dto.Password;
 import com.springboot.dto.Personal;
 import com.springboot.dto.PersonalResetPass;
+import com.springboot.dto.SelectPersonInfo;
 import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/12.
@@ -94,6 +98,24 @@ public class PersonalServiceImpl implements PersonalService {
     public String updatePersonByName(Personal person) {
         personalMapper.updatePersonByName(person);
         return "个人信息更改成功！";
+    }
+
+    @Override
+    public String newInfo(TpPersonInfo tpPersonInfo) {
+        personalMapper.newInfo(tpPersonInfo);
+        return "发布个人信息成功！";
+    }
+
+    @Override
+    public List<TpPersonInfo> selectInfos(SelectPersonInfo selectPersonInfo) {
+        List<TpPersonInfo> tpPersonInfos = personalMapper.selectInfos(selectPersonInfo);
+        return tpPersonInfos;
+    }
+
+    @Override
+    public List<TpPersonInfo> selectLatest() {
+        List<TpPersonInfo> tpPersonInfos = personalMapper.selectLatest();
+        return tpPersonInfos;
     }
 
 }

@@ -1,7 +1,9 @@
 package com.springboot.controller;
 
 import com.springboot.domain.TpServiceProvider;
+import com.springboot.domain.TpServiceProviderInfo;
 import com.springboot.dto.Password;
+import com.springboot.dto.SelectServiceProviderInfo;
 import com.springboot.dto.ServiceProvider;
 import com.springboot.service.ServiceProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,5 +87,28 @@ public class ServiceProviderController {
         String result = serviceProviderService.updateServiceProviderPassByName(password);
 
         return result;
+    }
+
+    //发布供应商信息
+    @ResponseBody
+    @PostMapping(value = "/serviceProvider/newInfo")
+    public String newInfo(TpServiceProviderInfo tpServiceProviderInfo) {
+        tpServiceProviderInfo.setRegisterTime(new Date());
+        return serviceProviderService.newInfo(tpServiceProviderInfo);
+    }
+    //查询供应商发布的信息,可以单条件查询，也可以多条件组合查询
+    @ResponseBody
+    @PostMapping(value = "/serviceProvider/selectInfo")
+    public List<TpServiceProviderInfo> selectInfos(SelectServiceProviderInfo selectServiceProviderInfo) {
+        List<TpServiceProviderInfo> tpServiceProviderInfos = serviceProviderService.selectInfos(selectServiceProviderInfo);
+        return tpServiceProviderInfos;
+    }
+
+    //查询最新十条信息
+    @ResponseBody
+    @RequestMapping(value = "/serviceProvider/latest")
+    public List<TpServiceProviderInfo> selectLatestTen() {
+        List<TpServiceProviderInfo> tpServiceProviderInfos = serviceProviderService.selectLatest();
+        return tpServiceProviderInfos;
     }
 }

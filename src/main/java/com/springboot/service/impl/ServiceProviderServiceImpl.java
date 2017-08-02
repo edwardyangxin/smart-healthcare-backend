@@ -2,12 +2,16 @@ package com.springboot.service.impl;
 
 
 import com.springboot.domain.TpServiceProvider;
+import com.springboot.domain.TpServiceProviderInfo;
 import com.springboot.dto.Password;
+import com.springboot.dto.SelectServiceProviderInfo;
 import com.springboot.dto.ServiceProvider;
 import com.springboot.mapper.ServiceProviderMapper;
 import com.springboot.service.ServiceProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/12.
@@ -73,6 +77,23 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
             return "旧密码输入错误，请重试！";
         }
     }
+    @Override
+    public String newInfo(TpServiceProviderInfo tpServiceProviderInfo) {
+        serviceProviderMapper.newInfo(tpServiceProviderInfo);
+        return "发布信息成功！";
+    }
 
+    @Override
+    public List<TpServiceProviderInfo> selectInfos(SelectServiceProviderInfo selectServiceProviderInfo) {
+        List<TpServiceProviderInfo> tpServiceProviderInfos;
+        tpServiceProviderInfos = serviceProviderMapper.selectInfos(selectServiceProviderInfo);
+        return tpServiceProviderInfos;
+    }
 
+    @Override
+    public List<TpServiceProviderInfo> selectLatest() {
+        List<TpServiceProviderInfo> tpServiceProviderInfos;
+        tpServiceProviderInfos = serviceProviderMapper.selectLatest();
+        return tpServiceProviderInfos;
+    }
 }

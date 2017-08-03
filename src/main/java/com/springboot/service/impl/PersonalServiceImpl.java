@@ -23,7 +23,7 @@ public class PersonalServiceImpl implements PersonalService {
     @Override
     public String login(Login login) {
         //通过用户名获取用户
-            TpPersonal tpPersonal = personalMapper.selectByName(login.getName());
+        TpPersonal tpPersonal = personalMapper.selectByName(login.getName());
         //若获取失败
         if (tpPersonal == null) {
             return "该个人用户不存在";

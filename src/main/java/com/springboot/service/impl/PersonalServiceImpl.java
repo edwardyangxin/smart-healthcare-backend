@@ -104,9 +104,20 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
+    public void delInfo(Integer id) {
+        personalMapper.delInfo(id);
+    }
+
+    @Override
     public List<TpPersonInfo> selectInfos(SelectPersonInfo selectPersonInfo) {
         List<TpPersonInfo> tpPersonInfos = personalMapper.selectInfos(selectPersonInfo);
         return tpPersonInfos;
+    }
+
+    @Override
+    public TpPersonInfo selectInfoById(SelectPersonInfo selectPersonInfo) {
+        TpPersonInfo tpPersonInfo=personalMapper.selectInfoById(selectPersonInfo);
+        return tpPersonInfo;
     }
 
     @Override

@@ -109,13 +109,22 @@ public class PersonalController {
     }
 
     //删除已发布的个人信息
-
+    @RequestMapping(value = "/personal/delete/{id}")
+    public void delInfo(@PathVariable Integer id){
+        personalService.delInfo(id);
+    }
 
     //查询个人发布的信息,可以单条件查询，也可以多条件组合查询
     @PostMapping(value = "/personal/selectInfo")
     public List<TpPersonInfo> selectInfos(@RequestBody SelectPersonInfo selectPersonInfo) {
         List<TpPersonInfo> tpPersonInfos = personalService.selectInfos(selectPersonInfo);
         return tpPersonInfos;
+    }
+
+    //通过ID查询一条信息
+    @PostMapping(value = "/personal/selectInfoById")
+    public TpPersonInfo selectInfoById(@RequestBody SelectPersonInfo selectPersonInfo){
+        return personalService.selectInfoById(selectPersonInfo);
     }
 
     //查询最新十条信息

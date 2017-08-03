@@ -2,19 +2,15 @@ package com.springboot.service;
 
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
-import com.springboot.dto.Password;
-import com.springboot.dto.Personal;
-import com.springboot.dto.PersonalResetPass;
-import com.springboot.dto.SelectPersonInfo;
+import com.springboot.dto.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/12.
  */
 public interface PersonalService {
-    String login(String name, String password);
+    String login(Login login);
 
     TpPersonal selectByName(String name);
 
@@ -28,7 +24,11 @@ public interface PersonalService {
 
     String newInfo(TpPersonInfo tpPersonInfo);
 
+    void delInfo(Integer id);
+
     List<TpPersonInfo> selectInfos(SelectPersonInfo selectPersonInfo);
+
+    TpPersonInfo selectInfoById(SelectPersonInfo selectPersonInfo);
 
     List<TpPersonInfo> selectLatest();
 }

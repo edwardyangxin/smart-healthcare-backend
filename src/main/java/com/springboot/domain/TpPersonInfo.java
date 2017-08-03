@@ -29,9 +29,15 @@ public class TpPersonInfo {
 
     private String tel;
 
+    private String salaryRange;
+
+    private String workingYears;
+
     private String email;
 
     private String introduce;
+
+    private String projectExperience;
 
     private String specialty;
 

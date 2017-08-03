@@ -19,7 +19,8 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/7/11.
  */
-@Controller
+@RequestMapping(value = "/translate")
+@RestController
 public class PersonalController {
 
     private PersonalService personalService;
@@ -31,7 +32,6 @@ public class PersonalController {
     }
 
     //个人登陆
-    @ResponseBody
     @PostMapping(value = "/personal/login")
     public String personalLogin(@Valid @RequestBody Login login, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -50,7 +50,6 @@ public class PersonalController {
     }
 
     //个人注册
-    @ResponseBody
     @RequestMapping(value = "/personal/register", method = RequestMethod.POST)
     public String insertPerson(@Valid @RequestBody TpPersonal person, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -63,7 +62,6 @@ public class PersonalController {
     }
 
     //个人密码修改
-    @ResponseBody
     @PostMapping(value = "/personal/modifyPass")
     public String modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -78,7 +76,6 @@ public class PersonalController {
     }
 
     //个人重置密码（真实姓名、邮箱、电话）
-    @ResponseBody
     @PostMapping(value = "/personal/resetPass")
     public String resetPass(@Valid @RequestBody PersonalResetPass personalResetPass, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -92,7 +89,6 @@ public class PersonalController {
     }
 
     //个人信息修改
-    @ResponseBody
     @RequestMapping(value = "/personal/modifyPerson", method = RequestMethod.POST)
     public String modifyPerson(@Valid @RequestBody Personal person, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -106,15 +102,16 @@ public class PersonalController {
     }
 
     //发布个人信息、、接受Json格式的参数 Content-Type:application/json
-    @ResponseBody
     @PostMapping(value = "/personal/newInfo")
     public String newInfo(@RequestBody TpPersonInfo tpPersonInfo) {
         tpPersonInfo.setRegisterTime(new Date());
         return personalService.newInfo(tpPersonInfo);
     }
 
+    //删除已发布的个人信息
+
+
     //查询个人发布的信息,可以单条件查询，也可以多条件组合查询
-    @ResponseBody
     @PostMapping(value = "/personal/selectInfo")
     public List<TpPersonInfo> selectInfos(@RequestBody SelectPersonInfo selectPersonInfo) {
         List<TpPersonInfo> tpPersonInfos = personalService.selectInfos(selectPersonInfo);
@@ -122,7 +119,6 @@ public class PersonalController {
     }
 
     //查询最新十条信息
-    @ResponseBody
     @RequestMapping(value = "/personal/latest")
     public List<TpPersonInfo> selectLatestTen() {
         List<TpPersonInfo> tpPersonInfos = personalService.selectLatest();

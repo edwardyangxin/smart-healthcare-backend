@@ -1,12 +1,17 @@
 package com.springboot.service.impl;
 
 import com.springboot.domain.TpEnterprise;
+import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.dto.Enterprise;
+import com.springboot.dto.EnterpriseResetPass;
 import com.springboot.dto.Password;
+import com.springboot.dto.SelectEnterpriseProject;
 import com.springboot.mapper.EnterpriseMapper;
 import com.springboot.service.EnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/12.
@@ -74,6 +79,39 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         } else {
             return "旧密码输入错误，请重试！";
         }
+    }
+
+    @Override
+    public String resetEnterprisePass(EnterpriseResetPass enterpriseResetPass){
+        TpEnterprise tpEnterprise = enterpriseMapper.selectByName(enterpriseResetPass.getName());
+        if(tpEnterprise != null){
+            if(enterpriseResetPass.getTel().equals(tpEnterprise.getTel())){
+                enterpriseMapper.resetPass(enterpriseResetPass);
+                return "重置密码成功";
+            }else {
+                return "电话号码错误，请重试！";
+            }
+        }else {
+            return "没有此用户！";
+        }
+    }
+
+    @Override
+    public String newProject(TpEnterpriseProject tpEnterpriseProject){
+        enterpriseMapper.newProject(tpEnterpriseProject);
+        return "发布企业信息成功";
+    }
+
+    @Override
+    public List<TpEnterpriseProject> selectProjects(SelectEnterpriseProject selectEnterpriseProject){
+        List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseMapper.selectProjects(selectEnterpriseProject);
+        return tpEnterpriseProjects;
+    }
+
+    @Override
+    public List<TpEnterpriseProject> selectLatest(){
+        List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseMapper.selectLatest();
+        return tpEnterpriseProjects;
     }
 
 }

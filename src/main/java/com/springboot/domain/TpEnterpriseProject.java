@@ -3,10 +3,11 @@ package com.springboot.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
-public class TpEnterpriseProjects {
+public class TpEnterpriseProject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -18,5 +19,13 @@ public class TpEnterpriseProjects {
     private String address;
     private String introduce;
     private String cooperationType;
+    private String sex;
+    private String workTime;
+    private String industry;
+    private String requirement;
+    private String treatment;
+    private String qq;
+    private Date releaseTime;
+
 
 }

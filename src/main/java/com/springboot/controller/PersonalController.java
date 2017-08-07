@@ -109,7 +109,7 @@ public class PersonalController {
 
     //删除已发布的个人信息
     @RequestMapping(value = "/personal/delInfo")
-    public String delInfo(@RequestBody PersonInfo personInfo){
+    public String delInfo(@RequestBody PersonInfo personInfo) {
         return personalService.delInfo(personInfo);
     }
 
@@ -122,7 +122,7 @@ public class PersonalController {
 
     //通过ID查询一条信息
     @PostMapping(value = "/personal/selectInfoById")
-    public TpPersonInfo selectInfoById(@RequestBody PersonInfo personInfo){
+    public TpPersonInfo selectInfoById(@RequestBody PersonInfo personInfo) {
         return personalService.selectInfoById(personInfo);
     }
 

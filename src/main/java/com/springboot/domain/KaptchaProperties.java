@@ -2,6 +2,8 @@ package com.springboot.domain;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by Administrator on 2017/7/13.
@@ -23,5 +25,6 @@ public class KaptchaProperties {
     private String obscurificatorImpl;
     private String sessionKey;
     private String sessionDate;
+
 
 }

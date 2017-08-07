@@ -11,4 +11,5 @@ public class PersonInfo {
     private String specialty;
     private String education;
     private String cooperationType;
+    private Integer clickAmount;
 }

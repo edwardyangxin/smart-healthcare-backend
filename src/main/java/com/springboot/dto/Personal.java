@@ -22,7 +22,7 @@ public class Personal {
     @NotNull(message = "真实姓名不能为空！")
     private String realName;
 
-    @Pattern(regexp="^1[34578]\\d{9}$",message="手机号码格式不正确！")
+    @Pattern(regexp = "^1[34578]\\d{9}$", message = "手机号码格式不正确！")
     @NotEmpty(message = "手机号码不能为空！")
     @NotNull(message = "手机号码不能为空！")
     private String tel;

@@ -85,6 +85,7 @@ public class IndexController {
         }
         return null;
     }
+
     /**
      * 检验图片验证码
      */

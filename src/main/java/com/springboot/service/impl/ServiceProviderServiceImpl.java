@@ -32,7 +32,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         //获取成功后，将获取用户的密码和传入密码对比
         else if (!tpServiceProvider.getPassword().equals(password)) {
             return "密码错误";
-        }else {
+        } else {
             return "登录成功";
         }
     }
@@ -43,13 +43,13 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     }
 
     @Override
-    public String insertServiceProvider(TpServiceProvider serviceProvider){
+    public String insertServiceProvider(TpServiceProvider serviceProvider) {
         TpServiceProvider serviceProvider1 = serviceProviderMapper.selectByName(serviceProvider.getName());
-        if(serviceProvider1==null){
+        if (serviceProvider1 == null) {
             serviceProviderMapper.insertServiceProvider(serviceProvider);
             return "注册成功！";
-        }else{
-            return "用户"+serviceProvider1.getName()+"已存在！";
+        } else {
+            return "用户" + serviceProvider1.getName() + "已存在！";
         }
     }
 
@@ -58,6 +58,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         serviceProviderMapper.updateServiceProviderByName(serviceProvider);
         return "供应商信息更改成功！";
     }
+
     @Override
     public String updateServiceProviderPassByName(Password password) {
         String TPPassword = serviceProviderMapper.selectByName(password.getName()).getPassword();
@@ -77,6 +78,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
             return "旧密码输入错误，请重试！";
         }
     }
+
     @Override
     public String newInfo(TpServiceProviderInfo tpServiceProviderInfo) {
         serviceProviderMapper.newInfo(tpServiceProviderInfo);

@@ -13,11 +13,18 @@ import java.util.List;
  */
 public interface ServiceProviderService {
     String login(String name, String password);
+
     TpServiceProvider selectByName(String name);
+
     String insertServiceProvider(TpServiceProvider serviceProvider);
+
     String updateServiceProviderByName(ServiceProvider serviceProvider);
+
     String updateServiceProviderPassByName(Password password);
+
     String newInfo(TpServiceProviderInfo tpPersonInfo);
+
     List<TpServiceProviderInfo> selectInfos(SelectServiceProviderInfo selectServiceProviderInfo);
+
     List<TpServiceProviderInfo> selectLatest();
 }

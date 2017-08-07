@@ -22,7 +22,7 @@ public interface EnterpriseMapper {
 
     @Insert("insert into tp_enterprise(city, industry, name, tel, password) " +
             "values(#{city}, #{industry}, #{name}, #{tel}, #{password})")
-    @SelectKey(statement="SELECT LAST_INSERT_ID()",keyProperty="id",before=false,resultType=Integer.class)
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void insertEnterprise(TpEnterprise enterprise);
 
     @Update("update tp_enterprise set city = #{city},tel= #{tel},industry = #{industry} where name =#{name}")
@@ -35,7 +35,7 @@ public interface EnterpriseMapper {
     void resetPass(EnterpriseResetPass enterpriseResetPass);
 
     @Insert("insert into tp_enterprise_project(language, contact, tel, email, city, address, introduce, cooperation_type, sex, industry, requirement, treatment, qq, release_time, work_time)" +
-    "values(#{language}, #{contact}, #{tel}, #{email}, #{city}, #{address},#{introduce}, #{cooperationType}, #{sex}, #{industry}, #{requirement}, #{treatment}, #{qq}, #{releaseTime}, #{workTime})")
+            "values(#{language}, #{contact}, #{tel}, #{email}, #{city}, #{address},#{introduce}, #{cooperationType}, #{sex}, #{industry}, #{requirement}, #{treatment}, #{qq}, #{releaseTime}, #{workTime})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newProject(TpEnterpriseProject tpEnterpriseProject);
 

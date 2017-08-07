@@ -46,21 +46,30 @@ public interface PersonalMapper {
     void updatePersonByName(Personal person);
 
 
-    @Insert("insert into tp_person_info(name, address, age, city, education, email, salary_range, working_years, project_experience, introduce, language, specialty, tel, cooperation_type, register_time) " +
-            "values(#{name}, #{address}, #{age}, #{city}, #{education}, #{email}, #{salaryRange}, #{workingYears}, #{projectExperience}, #{introduce}, #{language}, #{specialty}, #{tel}, #{cooperationType}, #{registerTime})")
+    @Insert("insert into tp_person_info(name, address, age, city, education, email, salary_range, working_years, " +
+            "project_experience, introduce, language, specialty, tel, cooperation_type, register_time) " +
+            "values(#{name}, #{address}, #{age}, #{city}, #{education}, #{email}, #{salaryRange}, #{workingYears}, " +
+            "#{projectExperience}, #{introduce}, #{language}, #{specialty}, #{tel}, #{cooperationType}, #{registerTime})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newInfo(TpPersonInfo tpPersonInfo);
+
+    @Update("update tp_person_info set click_amount = #{clickAmount}, stars = #{stars} where id = #{id}")
+    void addClickAmount(TpPersonInfo tpPersonInfo);
 
     @Delete("delete from tp_person_info where id = #{id}")
     Integer delInfo(Integer id);
 
-    @Select("select * from tp_person_info where ((id=#{id}) or (#{id} is null)) and ((name=#{name}) or (#{name} is null)) and ((city=#{city}) or (#{city} is null)) and ((language=#{language}) or (#{language} is null)) and ((specialty=#{specialty}) or (#{specialty} is null)) and ((education=#{education}) or (#{education} is null)) and ((cooperation_type=#{cooperationType}) or (#{cooperationType} is null))")
+    @Select("select * from tp_person_info where ((id=#{id}) or (#{id} is null)) and ((name=#{name}) or (#{name} is null)) " +
+            "and ((city=#{city}) or (#{city} is null)) and ((language=#{language}) or (#{language} is null))" +
+            " and ((specialty=#{specialty}) or (#{specialty} is null)) and ((education=#{education}) or (#{education} is null)) " +
+            "and ((cooperation_type=#{cooperationType}) or (#{cooperationType} is null))")
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
             @Result(column = "salary_range", property = "salaryRange"),
             @Result(column = "working_years", property = "workingYears"),
             @Result(column = "project_experience", property = "projectExperience"),
-            @Result(column = "register_time", property = "registerTime")
+            @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "click_amount", property = "clickAmount")
     })
     List<TpPersonInfo> selectInfos(PersonInfo personInfo);
 
@@ -70,7 +79,8 @@ public interface PersonalMapper {
             @Result(column = "salary_range", property = "salaryRange"),
             @Result(column = "working_years", property = "workingYears"),
             @Result(column = "project_experience", property = "projectExperience"),
-            @Result(column = "register_time", property = "registerTime")
+            @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "click_amount", property = "clickAmount")
     })
     TpPersonInfo selectInfoById(PersonInfo personInfo);
 
@@ -80,7 +90,8 @@ public interface PersonalMapper {
             @Result(column = "salary_range", property = "salaryRange"),
             @Result(column = "working_years", property = "workingYears"),
             @Result(column = "project_experience", property = "projectExperience"),
-            @Result(column = "register_time", property = "registerTime")
+            @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "click_amount", property = "clickAmount")
     })
     List<TpPersonInfo> selectLatest();
 

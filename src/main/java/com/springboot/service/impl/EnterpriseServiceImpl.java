@@ -44,13 +44,13 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
-    public String insertEnterprise(TpEnterprise enterprise){
+    public String insertEnterprise(TpEnterprise enterprise) {
         TpEnterprise enterprise1 = enterpriseMapper.selectByName(enterprise.getName());
-        if(enterprise1==null){
+        if (enterprise1 == null) {
             enterpriseMapper.insertEnterprise(enterprise);
             return "注册成功！";
-        }else{
-            return "用户"+enterprise1.getName()+"已存在！";
+        } else {
+            return "用户" + enterprise1.getName() + "已存在！";
         }
     }
 
@@ -82,34 +82,34 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
-    public String resetEnterprisePass(EnterpriseResetPass enterpriseResetPass){
+    public String resetEnterprisePass(EnterpriseResetPass enterpriseResetPass) {
         TpEnterprise tpEnterprise = enterpriseMapper.selectByName(enterpriseResetPass.getName());
-        if(tpEnterprise != null){
-            if(enterpriseResetPass.getTel().equals(tpEnterprise.getTel())){
+        if (tpEnterprise != null) {
+            if (enterpriseResetPass.getTel().equals(tpEnterprise.getTel())) {
                 enterpriseMapper.resetPass(enterpriseResetPass);
                 return "重置密码成功";
-            }else {
+            } else {
                 return "电话号码错误，请重试！";
             }
-        }else {
+        } else {
             return "没有此用户！";
         }
     }
 
     @Override
-    public String newProject(TpEnterpriseProject tpEnterpriseProject){
+    public String newProject(TpEnterpriseProject tpEnterpriseProject) {
         enterpriseMapper.newProject(tpEnterpriseProject);
         return "发布企业信息成功";
     }
 
     @Override
-    public List<TpEnterpriseProject> selectProjects(SelectEnterpriseProject selectEnterpriseProject){
+    public List<TpEnterpriseProject> selectProjects(SelectEnterpriseProject selectEnterpriseProject) {
         List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseMapper.selectProjects(selectEnterpriseProject);
         return tpEnterpriseProjects;
     }
 
     @Override
-    public List<TpEnterpriseProject> selectLatest(){
+    public List<TpEnterpriseProject> selectLatest() {
         List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseMapper.selectLatest();
         return tpEnterpriseProjects;
     }

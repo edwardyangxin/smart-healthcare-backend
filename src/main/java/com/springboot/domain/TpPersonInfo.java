@@ -2,10 +2,7 @@ package com.springboot.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -44,5 +41,9 @@ public class TpPersonInfo {
     private String cooperationType;
 
     private Date registerTime;
+
+    private Integer clickAmount;
+
+    private Integer stars;
 
 }

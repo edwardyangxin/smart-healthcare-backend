@@ -18,7 +18,7 @@ public class Login {
 
     @NotEmpty(message = "密码不能为空！")
     @NotNull(message = "密码不能为空！")
-    @Size(min = 6, max = 16, message="密码长度必须在6到16之间！")
+    @Size(min = 6, max = 16, message = "密码长度必须在6到16之间！")
     private String password;
 
 }

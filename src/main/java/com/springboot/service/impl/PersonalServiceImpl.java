@@ -106,10 +106,10 @@ public class PersonalServiceImpl implements PersonalService {
     @Override
     public String delInfo(PersonInfo personInfo) {
         TpPersonInfo tpPersonInfo = personalMapper.selectInfoById(personInfo);
-        if (tpPersonInfo!=null) {
+        if (tpPersonInfo != null) {
             personalMapper.delInfo(personInfo.getId());
             return "删除信息成功！";
-        }else {
+        } else {
             return "这条信息不存在。";
         }
     }
@@ -122,7 +122,23 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public TpPersonInfo selectInfoById(PersonInfo personInfo) {
-        TpPersonInfo tpPersonInfo=personalMapper.selectInfoById(personInfo);
+        TpPersonInfo tpPersonInfo = personalMapper.selectInfoById(personInfo);
+        int clickAmount = tpPersonInfo.getClickAmount() + 1;
+        tpPersonInfo.setClickAmount(clickAmount);
+        if (clickAmount < 50) {
+            tpPersonInfo.setStars(0);
+        } else if (50 <= clickAmount && clickAmount < 100) {
+            tpPersonInfo.setStars(1);
+        } else if (100 <= clickAmount && clickAmount < 200) {
+            tpPersonInfo.setStars(2);
+        } else if (200 <= clickAmount && clickAmount < 400) {
+            tpPersonInfo.setStars(3);
+        } else if (400 <= clickAmount && clickAmount < 700) {
+            tpPersonInfo.setStars(4);
+        } else if (700 <= clickAmount) {
+            tpPersonInfo.setStars(5);
+        }
+        personalMapper.addClickAmount(tpPersonInfo);
         return tpPersonInfo;
     }
 

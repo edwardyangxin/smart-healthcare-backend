@@ -96,6 +96,7 @@ public class ServiceProviderController {
         tpServiceProviderInfo.setRegisterTime(new Date());
         return serviceProviderService.newInfo(tpServiceProviderInfo);
     }
+
     //查询供应商发布的信息,可以单条件查询，也可以多条件组合查询
     @ResponseBody
     @PostMapping(value = "/serviceProvider/selectInfo")

@@ -104,19 +104,25 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public void delInfo(Integer id) {
-        personalMapper.delInfo(id);
+    public String delInfo(PersonInfo personInfo) {
+        TpPersonInfo tpPersonInfo = personalMapper.selectInfoById(personInfo);
+        if (tpPersonInfo!=null) {
+            personalMapper.delInfo(personInfo.getId());
+            return "删除信息成功！";
+        }else {
+            return "这条信息不存在。";
+        }
     }
 
     @Override
-    public List<TpPersonInfo> selectInfos(SelectPersonInfo selectPersonInfo) {
-        List<TpPersonInfo> tpPersonInfos = personalMapper.selectInfos(selectPersonInfo);
+    public List<TpPersonInfo> selectInfos(PersonInfo personInfo) {
+        List<TpPersonInfo> tpPersonInfos = personalMapper.selectInfos(personInfo);
         return tpPersonInfos;
     }
 
     @Override
-    public TpPersonInfo selectInfoById(SelectPersonInfo selectPersonInfo) {
-        TpPersonInfo tpPersonInfo=personalMapper.selectInfoById(selectPersonInfo);
+    public TpPersonInfo selectInfoById(PersonInfo personInfo) {
+        TpPersonInfo tpPersonInfo=personalMapper.selectInfoById(personInfo);
         return tpPersonInfo;
     }
 

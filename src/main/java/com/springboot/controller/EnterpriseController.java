@@ -93,7 +93,7 @@ public class EnterpriseController {
     //企业密码重置
     @ResponseBody
     @PostMapping(value = "/enterprise/resetPass")
-    public String resetPass(@Valid EnterpriseResetPass enterpriseResetPass, BindingResult bindingResult){
+    public String resetPass(@Valid EnterpriseResetPass enterpriseResetPass, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
@@ -107,15 +107,15 @@ public class EnterpriseController {
     //企业发布项目信息
     @ResponseBody
     @PostMapping(value = "/enterprise/newProject")
-    public String newProject(TpEnterpriseProject tpEnterpriseProject){
+    public String newProject(TpEnterpriseProject tpEnterpriseProject) {
         tpEnterpriseProject.setReleaseTime(new Date());
-        return  enterpriseService.newProject(tpEnterpriseProject);
+        return enterpriseService.newProject(tpEnterpriseProject);
     }
 
     //查询企业发布的项目信息,可以单条件查询，也可以多条件组合查询
     @ResponseBody
     @PostMapping(value = "/enterprise/selectProject")
-    public List<TpEnterpriseProject> selectProjects(SelectEnterpriseProject selectEnterpriseProject){
+    public List<TpEnterpriseProject> selectProjects(SelectEnterpriseProject selectEnterpriseProject) {
         List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseService.selectProjects(selectEnterpriseProject);
         return tpEnterpriseProjects;
     }
@@ -123,7 +123,7 @@ public class EnterpriseController {
     //查询企业最新发布的十条信息
     @ResponseBody
     @PostMapping(value = "/enterprise/latest")
-    public List<TpEnterpriseProject> selectLatestTen(){
+    public List<TpEnterpriseProject> selectLatestTen() {
         List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseService.selectLatest();
         return tpEnterpriseProjects;
     }

@@ -3,7 +3,7 @@ package com.springboot.dto;
 import lombok.Data;
 
 @Data
-public class SelectPersonInfo {
+public class PersonInfo {
     private Integer id;
     private String name;
     private String city;

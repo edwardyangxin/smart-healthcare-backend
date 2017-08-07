@@ -6,7 +6,7 @@ import com.springboot.domain.TpPersonal;
 import com.springboot.dto.Password;
 import com.springboot.dto.Personal;
 import com.springboot.dto.PersonalResetPass;
-import com.springboot.dto.SelectPersonInfo;
+import com.springboot.dto.PersonInfo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -52,7 +52,7 @@ public interface PersonalMapper {
     void newInfo(TpPersonInfo tpPersonInfo);
 
     @Delete("delete from tp_person_info where id = #{id}")
-    int delInfo(int id);
+    Integer delInfo(Integer id);
 
     @Select("select * from tp_person_info where ((id=#{id}) or (#{id} is null)) and ((name=#{name}) or (#{name} is null)) and ((city=#{city}) or (#{city} is null)) and ((language=#{language}) or (#{language} is null)) and ((specialty=#{specialty}) or (#{specialty} is null)) and ((education=#{education}) or (#{education} is null)) and ((cooperation_type=#{cooperationType}) or (#{cooperationType} is null))")
     @Results({
@@ -62,7 +62,7 @@ public interface PersonalMapper {
             @Result(column = "project_experience", property = "projectExperience"),
             @Result(column = "register_time", property = "registerTime")
     })
-    List<TpPersonInfo> selectInfos(SelectPersonInfo selectPersonInfo);
+    List<TpPersonInfo> selectInfos(PersonInfo personInfo);
 
     @Select("select * from tp_person_info where id=#{id}")
     @Results({
@@ -72,7 +72,7 @@ public interface PersonalMapper {
             @Result(column = "project_experience", property = "projectExperience"),
             @Result(column = "register_time", property = "registerTime")
     })
-    TpPersonInfo selectInfoById(SelectPersonInfo selectPersonInfo);
+    TpPersonInfo selectInfoById(PersonInfo personInfo);
 
     @Select("select* from tp_person_info order by register_time desc limit 10")
     @Results({

@@ -5,7 +5,6 @@ import com.springboot.domain.TpPersonal;
 import com.springboot.dto.*;
 import com.springboot.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -109,22 +108,22 @@ public class PersonalController {
     }
 
     //删除已发布的个人信息
-    @RequestMapping(value = "/personal/delete/{id}")
-    public void delInfo(@PathVariable Integer id){
-        personalService.delInfo(id);
+    @RequestMapping(value = "/personal/delInfo")
+    public String delInfo(@RequestBody PersonInfo personInfo) {
+        return personalService.delInfo(personInfo);
     }
 
     //查询个人发布的信息,可以单条件查询，也可以多条件组合查询
     @PostMapping(value = "/personal/selectInfo")
-    public List<TpPersonInfo> selectInfos(@RequestBody SelectPersonInfo selectPersonInfo) {
-        List<TpPersonInfo> tpPersonInfos = personalService.selectInfos(selectPersonInfo);
+    public List<TpPersonInfo> selectInfos(@RequestBody PersonInfo personInfo) {
+        List<TpPersonInfo> tpPersonInfos = personalService.selectInfos(personInfo);
         return tpPersonInfos;
     }
 
     //通过ID查询一条信息
     @PostMapping(value = "/personal/selectInfoById")
-    public TpPersonInfo selectInfoById(@RequestBody SelectPersonInfo selectPersonInfo){
-        return personalService.selectInfoById(selectPersonInfo);
+    public TpPersonInfo selectInfoById(@RequestBody PersonInfo personInfo) {
+        return personalService.selectInfoById(personInfo);
     }
 
     //查询最新十条信息

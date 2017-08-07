@@ -24,11 +24,11 @@ public interface PersonalService {
 
     String newInfo(TpPersonInfo tpPersonInfo);
 
-    void delInfo(Integer id);
+    String delInfo(PersonInfo personInfo);
 
-    List<TpPersonInfo> selectInfos(SelectPersonInfo selectPersonInfo);
+    List<TpPersonInfo> selectInfos(PersonInfo personInfo);
 
-    TpPersonInfo selectInfoById(SelectPersonInfo selectPersonInfo);
+    TpPersonInfo selectInfoById(PersonInfo personInfo);
 
     List<TpPersonInfo> selectLatest();
 }

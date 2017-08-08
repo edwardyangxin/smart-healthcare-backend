@@ -26,7 +26,7 @@ public class TranslateProjectApplication {
         return (args) -> {
             storageService.deleteAll();
             storageService.init();
-        };
+       };
     }*/
     @Bean
     public TomcatEmbeddedServletContainerFactory tomcatEmbedded() {

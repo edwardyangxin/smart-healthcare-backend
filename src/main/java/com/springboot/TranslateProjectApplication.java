@@ -21,7 +21,7 @@ public class TranslateProjectApplication {
         SpringApplication.run(TranslateProjectApplication.class, args);
     }
 
-/*    @Bean
+/*   @Bean
     CommandLineRunner init(StorageService storageService) {
         return (args) -> {
             storageService.deleteAll();

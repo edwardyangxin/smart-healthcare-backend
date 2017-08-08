@@ -24,7 +24,6 @@ public class PersonalController {
 
     private PersonalService personalService;
 
-
     @Autowired
     public PersonalController(PersonalService personalService) {
         this.personalService = personalService;

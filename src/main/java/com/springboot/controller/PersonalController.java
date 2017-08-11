@@ -38,25 +38,19 @@ public class PersonalController {
                 return error.getDefaultMessage();
             }
         }
-        String result = personalService.login(login);
-        if (result.equals("登录成功")) {
-            //添加用户信息到session中
-            TpPersonal tpPersonal = personalService.selectByName(login.getName());
-            session.setAttribute("name", login.getName());
-        }
-        return result;
+        return personalService.login(login, session);
     }
 
     //个人注册
     @RequestMapping(value = "/personal/register", method = RequestMethod.POST)
-    public String insertPerson(@Valid @RequestBody TpPersonal person, BindingResult bindingResult) {
+    public String insertPerson(@Valid @RequestBody TpPersonal tpPersonal, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return error.getDefaultMessage();
             }
         }
-        return personalService.insertPerson(person);
+        return personalService.insertPerson(tpPersonal);
     }
 
     //个人密码修改
@@ -130,5 +124,19 @@ public class PersonalController {
     public List<TpPersonInfo> selectLatestTen() {
         List<TpPersonInfo> tpPersonInfos = personalService.selectLatest();
         return tpPersonInfos;
+    }
+
+    //发送激活账户邮件
+    @ResponseBody
+    @RequestMapping(value = "/personal/sendMail")
+    public void sendMail(CheckMail checkMail) throws Exception {
+        personalService.sendMail(checkMail);
+    }
+
+    //点击邮件链接激活账户
+    @ResponseBody
+    @RequestMapping(value = "/personal/emailCheck")
+    public String emailCheck(CheckMail checkMail) {
+        return personalService.emailCheck(checkMail);
     }
 }

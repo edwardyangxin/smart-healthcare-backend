@@ -52,5 +52,9 @@ public class TpPersonal {
 
     private String iconAddress;
 
+    private Boolean status;
+
+    private String activeCode;
+
 
 }

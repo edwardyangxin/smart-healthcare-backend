@@ -3,10 +3,7 @@ package com.springboot.mapper;
 
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
-import com.springboot.dto.Password;
-import com.springboot.dto.Personal;
-import com.springboot.dto.PersonalResetPass;
-import com.springboot.dto.PersonInfo;
+import com.springboot.dto.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -19,20 +16,22 @@ import java.util.List;
 @Mapper
 public interface PersonalMapper {
 
-    @Insert("insert into tp_personal(real_Name, name, password, tel, email) " +
-            "values(#{realName}, #{name}, #{password}, #{tel}, #{email})")
+    @Insert("insert into tp_personal(real_Name, name, password, tel, email, active_code,status) " +
+            "values(#{realName}, #{name}, #{password}, #{tel}, #{email}, #{activeCode}, #{status})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void insertPerson(TpPersonal person);
 
     @Select("select * from tp_personal where name=#{name}")
     @Results({
-            @Result(column = "real_name", property = "realName")
+            @Result(column = "real_name", property = "realName"),
+            @Result(column = "active_code", property = "activeCode")
     })
     TpPersonal selectByName(@Param("name") String name);
 
     @Select("select * from tp_personal where real_name=#{realName}")
     @Results({
-            @Result(column = "real_name", property = "realName")
+            @Result(column = "real_name", property = "realName"),
+            @Result(column = "active_code", property = "activeCode")
     })
     TpPersonal selectByRealName(@Param("realName") String realName);
 
@@ -45,6 +44,8 @@ public interface PersonalMapper {
     @Update("update tp_personal set real_Name = #{realName},tel= #{tel},email = #{email} where name =#{name}")
     void updatePersonByName(Personal person);
 
+    @Update("update tp_personal set status = #{status} where name = #{name}")
+    void updateStatus(TpPersonal tpPersonal);
 
     @Insert("insert into tp_person_info(name, address, age, city, education, email, salary_range, working_years, " +
             "project_experience, introduce, language, specialty, tel, cooperation_type, register_time) " +

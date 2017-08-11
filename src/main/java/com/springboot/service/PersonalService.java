@@ -4,17 +4,18 @@ import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
 import com.springboot.dto.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/12.
  */
 public interface PersonalService {
-    String login(Login login);
+    String login(Login login, HttpSession session);
 
     TpPersonal selectByName(String name);
 
-    String insertPerson(TpPersonal person);
+    String insertPerson(TpPersonal tpPersonal);
 
     String updatePersonalPass(Password password);
 
@@ -31,6 +32,10 @@ public interface PersonalService {
     TpPersonInfo selectInfoById(PersonInfo personInfo);
 
     List<TpPersonInfo> selectLatest();
+
+    void sendMail(CheckMail checkMail) throws Exception;
+
+    String emailCheck(CheckMail checkMail);
 }
 
 

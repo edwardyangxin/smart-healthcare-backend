@@ -126,12 +126,14 @@ public class PersonalController {
         return tpPersonInfos;
     }
 
+    //发送激活账户邮件
     @ResponseBody
     @RequestMapping(value = "/personal/sendMail")
     public void sendMail(CheckMail checkMail) throws Exception {
         personalService.sendMail(checkMail);
     }
 
+    //点击邮件链接激活账户
     @ResponseBody
     @RequestMapping(value = "/personal/emailCheck")
     public String emailCheck(CheckMail checkMail) {

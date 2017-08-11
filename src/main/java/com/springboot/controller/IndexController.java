@@ -5,9 +5,6 @@ import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import com.springboot.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -106,26 +103,6 @@ public class IndexController {
             return "Kaptcha_error";
         }
 
-    }
-
-    @Autowired
-    private JavaMailSender javaMailSender;
-
-    @Value("${spring.mail.username}")
-    private String username;
-
-    @ResponseBody
-    @RequestMapping(value = "sendemail")
-    public void testSendSimple() {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(username);
-//        message.setTo("xinye.zhu@qq.com");
-        message.setTo("{\"xinye.zhu@qq.com\",\"601664875@qq.com\"}");
-//        message.setTo("xinye.zhu@hpe.com");
-//        message.setTo("601664875@qq.com");
-        message.setSubject("标题：测试标题");
-        message.setText("测试一下、、、啦啦啦22");
-        javaMailSender.send(message);
     }
 }
 

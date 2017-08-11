@@ -7,9 +7,15 @@ import com.springboot.dto.*;
 import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2017/7/12.
@@ -17,23 +23,42 @@ import java.util.List;
 
 @Service
 public class PersonalServiceImpl implements PersonalService {
-    @Autowired
+
+    @Value("${spring.mail.username}")
+    private String username;
+    private JavaMailSender javaMailSender;
     private PersonalMapper personalMapper;
 
+    @Autowired
+    public PersonalServiceImpl(PersonalMapper personalMapper, JavaMailSender javaMailSender) {
+        this.personalMapper = personalMapper;
+        this.javaMailSender = javaMailSender;
+    }
+
+
     @Override
-    public String login(Login login) {
-        //通过用户名获取用户
+    public String login(Login login, HttpSession session) {
         TpPersonal tpPersonal = personalMapper.selectByName(login.getName());
-        //若获取失败
-        if (tpPersonal == null) {
-            return "该个人用户不存在";
+        Boolean status = tpPersonal.getStatus();
+        String result;
+        if (status == true) {
+            if (tpPersonal != null) {
+                if (!tpPersonal.getPassword().equals(login.getPassword())) {
+                    result = "密码错误";
+                } else {
+                    result = "登录成功";
+                }
+            } else {
+                result = "该个人用户不存在";
+            }
+            if (result.equals("登录成功")) {
+                //添加用户信息到session中
+                session.setAttribute("name", login.getName());
+            }
+        }else {
+            result="您的账户尚未激活。";
         }
-        //获取成功后，将获取用户的密码和传入密码对比
-        else if (!tpPersonal.getPassword().equals(login.getPassword())) {
-            return "密码错误";
-        } else {
-            return "登录成功";
-        }
+        return result;
     }
 
     @Override
@@ -42,13 +67,15 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public String insertPerson(TpPersonal person) {
-        TpPersonal person1 = personalMapper.selectByName(person.getName());
-        if (person1 == null) {
-            personalMapper.insertPerson(person);
+    public String insertPerson(TpPersonal tpPersonal) {
+        TpPersonal tpPersonal1 = personalMapper.selectByName(tpPersonal.getName());
+        tpPersonal.setActiveCode(UUID.randomUUID().toString());
+        tpPersonal.setStatus(false);
+        if (tpPersonal1 == null) {
+            personalMapper.insertPerson(tpPersonal);
             return "注册成功！";
         } else {
-            return "用户" + person1.getName() + "已存在！";
+            return "用户" + tpPersonal1.getName() + "已存在！";
         }
     }
 
@@ -146,6 +173,59 @@ public class PersonalServiceImpl implements PersonalService {
     public List<TpPersonInfo> selectLatest() {
         List<TpPersonInfo> tpPersonInfos = personalMapper.selectLatest();
         return tpPersonInfos;
+    }
+
+    @Override
+    public void sendMail(CheckMail checkMail) throws Exception {
+        String name = checkMail.getName();
+        TpPersonal tpPersonal = this.selectByName(name);
+        String activeCode = tpPersonal.getActiveCode();
+        String email = tpPersonal.getEmail();
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+        helper.setFrom(username);
+        helper.setTo(email);
+        helper.setSubject("主题：点击链接激活账户");
+        StringBuffer sb = new StringBuffer();
+        sb.append("<h1>请点击以下链接以激活账户：</h1>");
+        sb.append("<a href=\"http://localhost:8080/translate/personal/emailCheck.action?name=");
+        sb.append(name);
+        sb.append("&activeCode=");
+        sb.append(activeCode);
+        sb.append("\">http://localhost:8080/translate/personal/emailCheck.action?name=");
+        sb.append(name);
+        sb.append("&activeCode=");
+        sb.append(activeCode);
+        sb.append("</a>" + "<br/><br/><br/><p style='color:#F00'>如果以上链接无法点击，请把上面网页地址复制到浏览器地址栏中打开!</p><br/><br/></div></div>");
+
+        helper.setText(sb.toString(), true);
+
+        javaMailSender.send(mimeMessage);
+    }
+
+    @Override
+    public String emailCheck(CheckMail checkMail) {
+        String name = checkMail.getName();
+        String activeCode = checkMail.getActiveCode();
+        TpPersonal tpPersonal = this.selectByName(name);
+        String tpName = tpPersonal.getName();
+        String tpActiveCode = tpPersonal.getActiveCode();
+        Boolean status = tpPersonal.getStatus();
+        if (tpName != null && tpName.equals(name)) {
+            if (activeCode.equals(tpActiveCode)) {
+                if (status == false) {
+                    tpPersonal.setStatus(true);
+                    personalMapper.updateStatus(tpPersonal);
+                    return "激活成功！";
+                } else {
+                    return "已激活";
+                }
+            } else {
+                return "激活码错误！";
+            }
+        }
+        return "用户名错误！";
     }
 
 }

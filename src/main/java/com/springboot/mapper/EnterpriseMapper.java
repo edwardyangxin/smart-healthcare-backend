@@ -45,7 +45,7 @@ public interface EnterpriseMapper {
     })
     List<TpEnterpriseProject> selectProjects(SelectEnterpriseProject selectEnterpriseProject);
 
-    @Select("select * from tp_enterprise_project order by release_time desc limit 10")
+    @Select("select * from tp_enterprise_project order by release_time desc limit 4")
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
             @Result(column = "work_time", property = "workTime"),

@@ -1,6 +1,7 @@
 package com.springboot.service.impl;
 
 
+import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
 import com.springboot.dto.*;
@@ -152,6 +153,14 @@ public class PersonalServiceImpl implements PersonalService {
         TpPersonInfo tpPersonInfo = personalMapper.selectInfoById(personInfo);
         int clickAmount = tpPersonInfo.getClickAmount() + 1;
         tpPersonInfo.setClickAmount(clickAmount);
+        String iconAddress;
+        TpFile tpFile = personalMapper.selectTpFileByName(tpPersonInfo);
+        if (tpFile==null){
+            iconAddress="未上传头像。";
+        }else {
+            iconAddress=tpFile.getPicturePath();
+        }
+        tpPersonInfo.setIconAddress(iconAddress);
         if (clickAmount < 50) {
             tpPersonInfo.setStars(0);
         } else if (50 <= clickAmount && clickAmount < 100) {

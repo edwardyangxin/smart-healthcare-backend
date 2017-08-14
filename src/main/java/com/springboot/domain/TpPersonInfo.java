@@ -42,6 +42,8 @@ public class TpPersonInfo {
 
     private Date registerTime;
 
+    private String iconAddress;
+
     private Integer clickAmount;
 
     private Integer stars;

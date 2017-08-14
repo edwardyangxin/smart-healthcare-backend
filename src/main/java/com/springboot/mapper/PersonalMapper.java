@@ -1,6 +1,7 @@
 package com.springboot.mapper;
 
 
+import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
 import com.springboot.dto.*;
@@ -70,6 +71,7 @@ public interface PersonalMapper {
             @Result(column = "working_years", property = "workingYears"),
             @Result(column = "project_experience", property = "projectExperience"),
             @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "click_amount", property = "clickAmount")
     })
     List<TpPersonInfo> selectInfos(PersonInfo personInfo);
@@ -81,19 +83,29 @@ public interface PersonalMapper {
             @Result(column = "working_years", property = "workingYears"),
             @Result(column = "project_experience", property = "projectExperience"),
             @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "click_amount", property = "clickAmount")
     })
     TpPersonInfo selectInfoById(PersonInfo personInfo);
 
-    @Select("select* from tp_person_info order by register_time desc limit 10")
+    @Select("select* from tp_person_info order by register_time desc limit 5")
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
             @Result(column = "salary_range", property = "salaryRange"),
             @Result(column = "working_years", property = "workingYears"),
             @Result(column = "project_experience", property = "projectExperience"),
             @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "click_amount", property = "clickAmount")
     })
     List<TpPersonInfo> selectLatest();
 
+    @Select("select* from tp_file where name = #{name}")
+    @Results({
+            @Result(column = "file_name", property = "fileName"),
+            @Result(column = "file_path", property = "filePath"),
+            @Result(column = "picture_name", property = "pictureName"),
+            @Result(column = "picture_path", property = "picturePath")
+    })
+    TpFile selectTpFileByName(TpPersonInfo tpPersonInfo);
 }

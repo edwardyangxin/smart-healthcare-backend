@@ -40,6 +40,8 @@ public class TpPersonInfo {
 
     private String cooperationType;
 
+    private String workType;
+
     private Date registerTime;
 
     private String iconAddress;

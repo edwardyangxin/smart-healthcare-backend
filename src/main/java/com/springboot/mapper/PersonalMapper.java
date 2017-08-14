@@ -49,9 +49,9 @@ public interface PersonalMapper {
     void updateStatus(TpPersonal tpPersonal);
 
     @Insert("insert into tp_person_info(name, address, age, city, education, email, salary_range, working_years, " +
-            "project_experience, introduce, language, specialty, tel, cooperation_type, register_time) " +
+            "project_experience, introduce, language, specialty, tel, cooperation_type, work_type, register_time) " +
             "values(#{name}, #{address}, #{age}, #{city}, #{education}, #{email}, #{salaryRange}, #{workingYears}, " +
-            "#{projectExperience}, #{introduce}, #{language}, #{specialty}, #{tel}, #{cooperationType}, #{registerTime})")
+            "#{projectExperience}, #{introduce}, #{language}, #{specialty}, #{tel}, #{cooperationType}, #{workType}, #{registerTime})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newInfo(TpPersonInfo tpPersonInfo);
 
@@ -64,9 +64,10 @@ public interface PersonalMapper {
     @Select("select * from tp_person_info where ((id=#{id}) or (#{id} is null)) and ((name=#{name}) or (#{name} is null)) " +
             "and ((city=#{city}) or (#{city} is null)) and ((language=#{language}) or (#{language} is null))" +
             " and ((specialty=#{specialty}) or (#{specialty} is null)) and ((education=#{education}) or (#{education} is null)) " +
-            "and ((cooperation_type=#{cooperationType}) or (#{cooperationType} is null))")
+            "and ((cooperation_type=#{cooperationType}) or (#{cooperationType} is null)) and ((work_type=#{workType}) or (#{workType} is null))")
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
+            @Result(column = "work_type", property = "workType"),
             @Result(column = "salary_range", property = "salaryRange"),
             @Result(column = "working_years", property = "workingYears"),
             @Result(column = "project_experience", property = "projectExperience"),
@@ -79,6 +80,7 @@ public interface PersonalMapper {
     @Select("select * from tp_person_info where id=#{id}")
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
+            @Result(column = "work_type", property = "workType"),
             @Result(column = "salary_range", property = "salaryRange"),
             @Result(column = "working_years", property = "workingYears"),
             @Result(column = "project_experience", property = "projectExperience"),
@@ -91,6 +93,7 @@ public interface PersonalMapper {
     @Select("select* from tp_person_info order by register_time desc limit 5")
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
+            @Result(column = "work_type", property = "workType"),
             @Result(column = "salary_range", property = "salaryRange"),
             @Result(column = "working_years", property = "workingYears"),
             @Result(column = "project_experience", property = "projectExperience"),

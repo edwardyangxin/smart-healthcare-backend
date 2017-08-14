@@ -12,4 +12,5 @@ public class PersonInfo {
     private String education;
     private String cooperationType;
     private Integer clickAmount;
+    private String workType;
 }

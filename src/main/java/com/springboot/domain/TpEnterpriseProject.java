@@ -8,24 +8,49 @@ import java.util.Date;
 @Data
 @Entity
 public class TpEnterpriseProject {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Integer id;
+
     private String language;
+
     private String contact;
+
     private String tel;
+
     private String email;
+
     private String city;
+
     private String address;
+
     private String introduce;
+
     private String cooperationType;
-    private String sex;
-    private String workTime;
+
     private String industry;
+
     private String requirement;
+
     private String treatment;
-    private String qq;
-    private Date releaseTime;
+
+    private Date registerTime;
+
+    private Integer clickAmount;
+
+    private Integer stars;
+
+    private String workType;
+
+    private String projectTitle;
+
+    private String companyName;
+
+    private String translateType;
+
+    private String iconAddress;
 
 
 }

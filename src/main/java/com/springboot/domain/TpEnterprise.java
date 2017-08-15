@@ -46,4 +46,10 @@ public class TpEnterprise {
     private String city;
 
     private String iconAddress;
+
+    private Boolean status;
+
+    private String activeCode;
+
+    private String email;
 }

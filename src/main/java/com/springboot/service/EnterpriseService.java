@@ -2,11 +2,9 @@ package com.springboot.service;
 
 import com.springboot.domain.TpEnterprise;
 import com.springboot.domain.TpEnterpriseProject;
-import com.springboot.dto.Enterprise;
-import com.springboot.dto.EnterpriseResetPass;
-import com.springboot.dto.Password;
-import com.springboot.dto.SelectEnterpriseProject;
+import com.springboot.dto.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -14,7 +12,7 @@ import java.util.List;
  */
 public interface EnterpriseService {
 
-    String login(String name, String password);
+    String login(Login login, HttpSession session);
 
     TpEnterprise selectByName(String name);
 
@@ -28,7 +26,18 @@ public interface EnterpriseService {
 
     String newProject(TpEnterpriseProject tpEnterpriseProject);
 
-    List<TpEnterpriseProject> selectProjects(SelectEnterpriseProject selectEnterpriseProject);
+    String delProject(EnterpriseProject enterpriseProject);
+
+    List<TpEnterpriseProject> selectProjects(EnterpriseProject enterpriseProject);
+
+    TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject);
 
     List<TpEnterpriseProject> selectLatest();
+
+    void sendMail(CheckMail checkMail) throws Exception;
+
+    String emailCheck(CheckMail checkMail);
+
+
+
 }

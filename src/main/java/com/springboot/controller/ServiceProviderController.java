@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/7/11.
  */
+@RequestMapping(value = "/translate")
 @Controller
 public class ServiceProviderController {
 

@@ -119,9 +119,9 @@ public class PersonalController {
         return personalService.selectInfoById(personInfo);
     }
 
-    //查询最新十条信息
+    //查询最新五条信息
     @RequestMapping(value = "/personal/latest")
-    public List<TpPersonInfo> selectLatestTen() {
+    public List<TpPersonInfo> selectLatestFive() {
         List<TpPersonInfo> tpPersonInfos = personalService.selectLatest();
         return tpPersonInfos;
     }

@@ -24,6 +24,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/7/11.
  */
+@RequestMapping(value = "/translate")
 @Controller
 public class EnterpriseController {
 
@@ -120,10 +121,10 @@ public class EnterpriseController {
         return tpEnterpriseProjects;
     }
 
-    //查询企业最新发布的十条信息
+    //查询企业最新发布的四条信息
     @ResponseBody
     @PostMapping(value = "/enterprise/latest")
-    public List<TpEnterpriseProject> selectLatestTen() {
+    public List<TpEnterpriseProject> selectLatestFour() {
         List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseService.selectLatest();
         return tpEnterpriseProjects;
     }

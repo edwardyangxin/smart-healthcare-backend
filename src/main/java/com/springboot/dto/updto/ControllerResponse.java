@@ -11,18 +11,21 @@ public class ControllerResponse {
     private boolean aBoolean;
 
 
-    public ControllerResponse(String message,boolean aBoolean){
+    public ControllerResponse(String message, boolean aBoolean) {
         this.message = message;
-        this.aBoolean=aBoolean;
+        this.aBoolean = aBoolean;
     }
 
-    public static ControllerResponse create(String message,boolean aBoolean){
-        return new ControllerResponse(message,aBoolean);
+    public static ControllerResponse create(String message, boolean aBoolean) {
+        return new ControllerResponse(message, aBoolean);
     }
 
     public String getMessage() {
         return message;
     }
-    public boolean getABoolean(){return  aBoolean;}
+
+    public boolean getABoolean() {
+        return aBoolean;
+    }
 
 }

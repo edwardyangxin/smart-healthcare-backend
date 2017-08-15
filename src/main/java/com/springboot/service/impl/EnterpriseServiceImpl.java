@@ -28,7 +28,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     private EnterpriseMapper enterpriseMapper;
 
     @Autowired
-    public EnterpriseServiceImpl(EnterpriseMapper enterpriseMapper,JavaMailSender javaMailSender){
+    public EnterpriseServiceImpl(EnterpriseMapper enterpriseMapper, JavaMailSender javaMailSender) {
         this.enterpriseMapper = enterpriseMapper;
         this.javaMailSender = javaMailSender;
     }
@@ -52,8 +52,8 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 //添加用户信息到session中
                 session.setAttribute("name", login.getName());
             }
-        }else {
-            result="您的账户尚未激活。";
+        } else {
+            result = "您的账户尚未激活。";
         }
         return result;
     }
@@ -125,12 +125,12 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
-    public String delProject(EnterpriseProject enterpriseProject){
+    public String delProject(EnterpriseProject enterpriseProject) {
         TpEnterpriseProject tpEnterpriseProject = enterpriseMapper.selectProjectById(enterpriseProject);
-        if (tpEnterpriseProject != null){
+        if (tpEnterpriseProject != null) {
             enterpriseMapper.delProject(enterpriseProject.getId());
             return "删除项目成功！";
-        }else {
+        } else {
             return "这条项目信息不存在";
         }
     }
@@ -142,27 +142,27 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
-    public TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject){
+    public TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject) {
         TpEnterpriseProject tpEnterpriseProject = enterpriseMapper.selectProjectById(enterpriseProject);
         int clickAmount = tpEnterpriseProject.getClickAmount() + 1;
         tpEnterpriseProject.setClickAmount(clickAmount);
         String iconAddress;
         TpFile tpFile = enterpriseMapper.selectTpFileByName(tpEnterpriseProject);
-        if (tpFile==null){
-            iconAddress="未上传头像。";
-        }else {
-            iconAddress=tpFile.getPicturePath();
+        if (tpFile == null) {
+            iconAddress = "未上传头像。";
+        } else {
+            iconAddress = tpFile.getPicturePath();
         }
         tpEnterpriseProject.setIconAddress(iconAddress);
-        if (clickAmount < 50){
+        if (clickAmount < 50) {
             tpEnterpriseProject.setStars(0);
-        }else if (50 <= clickAmount && clickAmount < 100){
+        } else if (50 <= clickAmount && clickAmount < 100) {
             tpEnterpriseProject.setStars(1);
-        }else if (100 <= clickAmount && clickAmount<200){
+        } else if (100 <= clickAmount && clickAmount < 200) {
             tpEnterpriseProject.setStars(2);
-        }else if (200 < clickAmount && clickAmount <400){
+        } else if (200 < clickAmount && clickAmount < 400) {
             tpEnterpriseProject.setStars(3);
-        }else if(400 <= clickAmount && clickAmount < 700){
+        } else if (400 <= clickAmount && clickAmount < 700) {
             tpEnterpriseProject.setStars(4);
         } else if (700 <= clickAmount) {
             tpEnterpriseProject.setStars(5);
@@ -229,5 +229,4 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         }
         return "用户名错误！";
     }
-
 }

@@ -56,8 +56,8 @@ public class PersonalServiceImpl implements PersonalService {
                 //添加用户信息到session中
                 session.setAttribute("name", login.getName());
             }
-        }else {
-            result="您的账户尚未激活。";
+        } else {
+            result = "您的账户尚未激活。";
         }
         return result;
     }
@@ -155,10 +155,10 @@ public class PersonalServiceImpl implements PersonalService {
         tpPersonInfo.setClickAmount(clickAmount);
         String iconAddress;
         TpFile tpFile = personalMapper.selectTpFileByName(tpPersonInfo);
-        if (tpFile==null){
-            iconAddress="未上传头像。";
-        }else {
-            iconAddress=tpFile.getPicturePath();
+        if (tpFile == null) {
+            iconAddress = "未上传头像。";
+        } else {
+            iconAddress = tpFile.getPicturePath();
         }
         tpPersonInfo.setIconAddress(iconAddress);
         if (clickAmount < 50) {

@@ -94,7 +94,7 @@ public class EnterpriseController {
 
     //企业发布项目信息
     @PostMapping(value = "/enterprise/newProject")
-    public String newProject(@RequestBody  TpEnterpriseProject tpEnterpriseProject) {
+    public String newProject(@RequestBody TpEnterpriseProject tpEnterpriseProject) {
         tpEnterpriseProject.setRegisterTime(new Date());
         return enterpriseService.newProject(tpEnterpriseProject);
     }

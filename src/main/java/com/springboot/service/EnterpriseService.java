@@ -39,5 +39,4 @@ public interface EnterpriseService {
     String emailCheck(CheckMail checkMail);
 
 
-
 }

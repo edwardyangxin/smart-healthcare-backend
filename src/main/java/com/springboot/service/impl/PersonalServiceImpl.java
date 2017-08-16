@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -127,7 +128,9 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public String newInfo(TpPersonInfo tpPersonInfo) {
+        tpPersonInfo.setRegisterTime(new Date());
         personalMapper.newInfo(tpPersonInfo);
+        personalMapper.addIconAddress(tpPersonInfo);
         return "发布个人信息成功！";
     }
 

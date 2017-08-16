@@ -58,6 +58,9 @@ public interface PersonalMapper {
     @Update("update tp_person_info set click_amount = #{clickAmount}, stars = #{stars} where id = #{id}")
     void addClickAmount(TpPersonInfo tpPersonInfo);
 
+    @Update("UPDATE tp_person_info SET tp_person_info.icon_address = (SELECT tp_file.picture_path FROM tp_file where name= #{name}) where name = #{name}")
+    void addIconAddress(TpPersonInfo tpPersonInfo);
+
     @Delete("delete from tp_person_info where id = #{id}")
     Integer delInfo(Integer id);
 

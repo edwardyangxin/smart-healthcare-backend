@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -96,7 +95,6 @@ public class PersonalController {
     //发布个人信息、、接受Json格式的参数 Content-Type:application/json
     @PostMapping(value = "/personal/newInfo")
     public String newInfo(@RequestBody TpPersonInfo tpPersonInfo) {
-        tpPersonInfo.setRegisterTime(new Date());
         return personalService.newInfo(tpPersonInfo);
     }
 

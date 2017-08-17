@@ -219,7 +219,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                 if (status == false) {
                     tpEnterprise.setStatus(true);
                     enterpriseMapper.updateStatus(tpEnterprise);
-                    return "激活成功！";
+                    return "账户激活成功！";
                 } else {
                     return "已激活";
                 }

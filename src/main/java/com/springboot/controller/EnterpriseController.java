@@ -126,12 +126,14 @@ public class EnterpriseController {
     }
 
     //发送激活账户邮件
+    @ResponseBody
     @RequestMapping(value = "/enterprise/sendMail")
     public void sendMail(@RequestBody CheckMail checkMail) throws Exception {
         enterpriseService.sendMail(checkMail);
     }
 
     //点击邮件链接激活账户
+    @ResponseBody
     @RequestMapping(value = "/enterprise/emailCheck")
     public String emailCheck(CheckMail checkMail) {
         return enterpriseService.emailCheck(checkMail);

@@ -1,6 +1,7 @@
 package com.springboot.domain;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -36,9 +37,6 @@ public class TpEnterprise {
 
     private String contact;
 
-    @NumberFormat
-    @NotEmpty(message = "联系人电话不能为空！")
-    @NotNull(message = "联系人电话不能为空！")
     private String tel;
 
     private String industry;
@@ -51,5 +49,8 @@ public class TpEnterprise {
 
     private String activeCode;
 
+    @NotEmpty(message = "邮箱地址不能为空！")
+    @NotNull(message = "邮箱地址不能为空！")
+    @Email(message = "邮箱地址不符合规范！")
     private String email;
 }

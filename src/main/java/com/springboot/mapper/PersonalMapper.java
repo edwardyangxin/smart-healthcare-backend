@@ -25,6 +25,7 @@ public interface PersonalMapper {
     @Select("select * from tp_personal where name=#{name}")
     @Results({
             @Result(column = "real_name", property = "realName"),
+            @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "active_code", property = "activeCode")
     })
     TpPersonal selectByName(@Param("name") String name);
@@ -32,6 +33,7 @@ public interface PersonalMapper {
     @Select("select * from tp_personal where real_name=#{realName}")
     @Results({
             @Result(column = "real_name", property = "realName"),
+            @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "active_code", property = "activeCode")
     })
     TpPersonal selectByRealName(@Param("realName") String realName);

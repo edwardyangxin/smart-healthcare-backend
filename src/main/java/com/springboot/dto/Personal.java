@@ -15,11 +15,10 @@ import javax.validation.constraints.Size;
 @Data
 public class Personal {
 
-
+    @NotEmpty(message = "用户名不能为空！")
+    @NotNull(message = "用户名不能为空！")
     private String name;
 
-    @NotEmpty(message = "真实姓名不能为空！")
-    @NotNull(message = "真实姓名不能为空！")
     private String realName;
 
     @Pattern(regexp = "^1[34578]\\d{9}$", message = "手机号码格式不正确！")

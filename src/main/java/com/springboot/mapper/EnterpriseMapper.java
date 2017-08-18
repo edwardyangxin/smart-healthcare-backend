@@ -9,6 +9,7 @@ import com.springboot.dto.EnterpriseResetPass;
 import com.springboot.dto.Password;
 import com.springboot.dto.EnterpriseProject;
 import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -21,22 +22,20 @@ import java.util.List;
 public interface EnterpriseMapper {
 
     @Insert("insert into tp_enterprise(name, password, tel, email, active_code,status) " +
-            "values #{name}, #{password}, #{tel}, #{email}, #{activeCode}, #{status})")
+            "values (#{name}, #{password}, #{tel}, #{email}, #{activeCode}, #{status})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void insertEnterprise(TpEnterprise enterprise);
 
     @Select("select * from tp_enterprise where name=#{name}")
     @Results({
-            @Result(column = "active_code", property = "activeCode")
+            @Result(column = "active_code", property = "activeCode"),
+            @Result(column = "business_license", property = "businessLicense"),
+            @Result(column = "legal_representative", property = "legalRepresentative"),
+            @Result(column = "icon_address", property = "iconAddress"),
     })
     TpEnterprise selectByName(@Param("name") String name);
 
-//    @Insert("insert into tp_enterprise(city, industry, name, tel, password) " +
-//            "values(#{city}, #{industry}, #{name}, #{tel}, #{password})")
-//    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
-//    void insertEnterprise(TpEnterprise enterprise);
-
-    @Update("update tp_enterprise set city = #{city},tel= #{tel},industry = #{industry} where name =#{name}")
+    @Update("update tp_enterprise set city = #{city},tel= #{tel},email = #{email} where name =#{name}")
     void updateEnterpriseByName(Enterprise enterprise);
 
     @Update("update tp_enterprise set password = #{password} where name = #{name}")
@@ -52,7 +51,14 @@ public interface EnterpriseMapper {
 
     @Select("select * from tp_enterprise_project where((language=#{language}) or (#{language} is null)) and ((tel=#{tel}) or (#{tel} is null)) and ((address=#{address}) or (#{address}) is null) and ((requirement=#{requirement}) or (#{requirement} is null)) and ((treatment=#{treatment}) or (#{treatment} is null)) and ((work_type=#{workType}) or (#{workType} is null))")
     @Results({
-            @Result(column = "work_type", property = "workType")
+            @Result(column = "cooperation_type", property = "cooperationType"),
+            @Result(column = "work_type", property = "workType"),
+            @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "project_title", property = "projectTitle"),
+            @Result(column = "company_name", property = "companyName"),
+            @Result(column = "translate_type", property = "translateType"),
+            @Result(column = "click_amount", property = "clickAmount"),
+            @Result(column = "icon_address", property = "iconAddress")
     })
     List<TpEnterpriseProject> selectProjects(EnterpriseProject enterpriseProject);
 
@@ -61,6 +67,11 @@ public interface EnterpriseMapper {
             @Result(column = "cooperation_type", property = "cooperationType"),
             @Result(column = "work_type", property = "workType"),
             @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "project_title", property = "projectTitle"),
+            @Result(column = "company_name", property = "companyName"),
+            @Result(column = "translate_type", property = "translateType"),
+            @Result(column = "click_amount", property = "clickAmount"),
+            @Result(column = "icon_address", property = "iconAddress")
     })
     List<TpEnterpriseProject> selectLatest();
 
@@ -68,7 +79,12 @@ public interface EnterpriseMapper {
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
             @Result(column = "work_type", property = "workType"),
-            @Result(column = "registerTime", property = "register_time")
+            @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "project_title", property = "projectTitle"),
+            @Result(column = "company_name", property = "companyName"),
+            @Result(column = "translate_type", property = "translateType"),
+            @Result(column = "click_amount", property = "clickAmount"),
+            @Result(column = "icon_address", property = "iconAddress")
     })
     TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject);
 
@@ -81,7 +97,7 @@ public interface EnterpriseMapper {
     @Update("update tp_enterprise set status = #{status} where name = #{name}")
     void updateStatus(TpEnterprise tpEnterprise);
 
-    @Select("select* from tp_file where name = #{name}")
+    @Select("select* from tp_file where name = #{contact}")
     @Results({
             @Result(column = "file_name", property = "fileName"),
             @Result(column = "file_path", property = "filePath"),

@@ -30,7 +30,7 @@ public class PersonalController {
 
     //个人登陆
     @PostMapping(value = "/personal/login")
-    public String personalLogin(@Valid Login login, BindingResult bindingResult, HttpSession session) {
+    public String personalLogin(@Valid @RequestBody Login login, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {

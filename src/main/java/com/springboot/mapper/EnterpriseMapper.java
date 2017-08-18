@@ -53,7 +53,7 @@ public interface EnterpriseMapper {
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
             @Result(column = "work_type", property = "workType"),
-            @Result(column = "registerTime", property = "register_time"),
+            @Result(column = "register_time", property = "registerTime"),
             @Result(column = "project_title", property = "projectTitle"),
             @Result(column = "company_name", property = "companyName"),
             @Result(column = "translate_type", property = "translateType"),
@@ -66,7 +66,7 @@ public interface EnterpriseMapper {
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
             @Result(column = "work_type", property = "workType"),
-            @Result(column = "registerTime", property = "register_time"),
+            @Result(column = "register_time", property = "registerTime"),
             @Result(column = "project_title", property = "projectTitle"),
             @Result(column = "company_name", property = "companyName"),
             @Result(column = "translate_type", property = "translateType"),
@@ -79,7 +79,7 @@ public interface EnterpriseMapper {
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
             @Result(column = "work_type", property = "workType"),
-            @Result(column = "registerTime", property = "register_time"),
+            @Result(column = "register_time", property = "registerTime"),
             @Result(column = "project_title", property = "projectTitle"),
             @Result(column = "company_name", property = "companyName"),
             @Result(column = "translate_type", property = "translateType"),

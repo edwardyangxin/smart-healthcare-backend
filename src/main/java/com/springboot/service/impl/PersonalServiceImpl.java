@@ -7,6 +7,7 @@ import com.springboot.domain.TpPersonal;
 import com.springboot.dto.*;
 import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.PersonalService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,7 +23,7 @@ import java.util.UUID;
 /**
  * Created by Administrator on 2017/7/12.
  */
-
+@Slf4j
 @Service
 public class PersonalServiceImpl implements PersonalService {
 
@@ -82,7 +83,13 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public String updatePersonalPass(Password password) {
+    public String updatePersonalPass(Password password, HttpSession session) {
+        try {
+            password.setName(session.getAttribute("name").toString());
+        } catch (NullPointerException e) {
+            log.info(e.toString());
+            return "用户未登录。";
+        }
         String TPPassword = personalMapper.selectByName(password.getName()).getPassword();
         if (password.getPassword().equals(TPPassword)) {
             if (password.getNewPassword().equals(password.getRetypePassword())) {
@@ -91,6 +98,7 @@ public class PersonalServiceImpl implements PersonalService {
                 } else {
                     password.setPassword(password.getNewPassword());
                     personalMapper.updatePassword(password);
+                    session.removeAttribute("name");
                     return "密码修改成功！";
                 }
             } else {
@@ -121,13 +129,25 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public String updatePersonByName(Personal person) {
+    public String updatePersonByName(Personal person,HttpSession session) {
+        try {
+            person.setName(session.getAttribute("name").toString());
+        } catch (Exception e) {
+            log.info(e.toString());
+            return "用户未登录。";
+        }
         personalMapper.updatePersonByName(person);
         return "个人信息更改成功！";
     }
 
     @Override
-    public String newInfo(TpPersonInfo tpPersonInfo) {
+    public String newInfo(TpPersonInfo tpPersonInfo, HttpSession session) {
+        try {
+            tpPersonInfo.setName(session.getAttribute("name").toString());
+        } catch (Exception e) {
+            log.info(e.toString());
+            return "用户未登录。";
+        }
         tpPersonInfo.setRegisterTime(new Date());
         personalMapper.newInfo(tpPersonInfo);
         personalMapper.addIconAddress(tpPersonInfo);

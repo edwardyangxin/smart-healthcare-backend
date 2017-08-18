@@ -61,8 +61,7 @@ public class PersonalController {
                 return error.getDefaultMessage();
             }
         }
-        password.setName(session.getAttribute("name").toString());
-        String result = personalService.updatePersonalPass(password);
+        String result = personalService.updatePersonalPass(password, session);
         return result;
     }
 
@@ -88,14 +87,13 @@ public class PersonalController {
                 return error.getDefaultMessage();
             }
         }
-        person.setName(session.getAttribute("name").toString());
-        return personalService.updatePersonByName(person);
+        return personalService.updatePersonByName(person, session);
     }
 
     //发布个人信息、、接受Json格式的参数 Content-Type:application/json
     @PostMapping(value = "/personal/newInfo")
-    public String newInfo(@RequestBody TpPersonInfo tpPersonInfo) {
-        return personalService.newInfo(tpPersonInfo);
+    public String newInfo(@RequestBody TpPersonInfo tpPersonInfo, HttpSession session) {
+        return personalService.newInfo(tpPersonInfo, session);
     }
 
     //删除已发布的个人信息

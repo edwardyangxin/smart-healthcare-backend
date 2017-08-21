@@ -12,6 +12,8 @@ public class TpEnterpriseProject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
+    private Boolean serviceProvider;
+
     private Integer id;
 
     private String language;

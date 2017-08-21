@@ -1,18 +1,18 @@
 package com.springboot.service;
 
+import com.springboot.domain.TpEnterpriseProject;
+import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpServiceProvider;
-import com.springboot.domain.TpServiceProviderInfo;
-import com.springboot.dto.Password;
-import com.springboot.dto.SelectServiceProviderInfo;
-import com.springboot.dto.ServiceProvider;
+import com.springboot.dto.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/12.
  */
 public interface ServiceProviderService {
-    String login(String name, String password);
+    String login(Login login, HttpSession session);
 
     TpServiceProvider selectByName(String name);
 
@@ -20,11 +20,20 @@ public interface ServiceProviderService {
 
     String updateServiceProviderByName(ServiceProvider serviceProvider);
 
-    String updateServiceProviderPassByName(Password password);
+    String updateServiceProviderPass(Password password, HttpSession session);
 
-    String newInfo(TpServiceProviderInfo tpPersonInfo);
+    String resetServiceProviderPass(ServiceProviderResetPass serviceProviderResetPass);
 
-    List<TpServiceProviderInfo> selectInfos(SelectServiceProviderInfo selectServiceProviderInfo);
+    String newPersonInfo(TpPersonInfo tpPersonInfo,HttpSession session);
 
-    List<TpServiceProviderInfo> selectLatest();
+    String newEnterpriseInfo(TpEnterpriseProject tpEnterpriseProject,HttpSession session);
+
+    List<TpPersonInfo> selectInfoLatest();
+
+    List<TpEnterpriseProject> selectProjectLatest();
+
+
+    void sendMail(CheckMail checkMail) throws Exception;
+
+    String emailCheck(CheckMail checkMail);
 }

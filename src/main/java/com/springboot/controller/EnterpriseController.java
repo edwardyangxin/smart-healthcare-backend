@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,14 +41,14 @@ public class EnterpriseController {
 
     //企业注册
     @RequestMapping(value = "/enterprise/register", method = RequestMethod.POST)
-    public String insertEnterprise(@Valid @RequestBody TpEnterprise enterprise, BindingResult bindingResult) {
+    public String insertEnterprise(@Valid @RequestBody TpEnterprise tpEnterprise, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return error.getDefaultMessage();
             }
         }
-        return enterpriseService.insertEnterprise(enterprise);
+        return enterpriseService.insertEnterprise(tpEnterprise);
     }
 
     //企业密码修改
@@ -61,22 +60,19 @@ public class EnterpriseController {
                 return error.getDefaultMessage();
             }
         }
-        password.setName(session.getAttribute("name").toString());
-        String result = enterpriseService.updateEnterprisePassByName(password);
-        return result;
+        return enterpriseService.updateEnterprisePass(password, session);
     }
 
     //企业信息修改
     @RequestMapping(value = "/enterprise/modifyEnterprise", method = RequestMethod.POST)
-    public String modifyEnterprise(@Valid @RequestBody Enterprise enterprise, BindingResult bindingResult, HttpSession session) {
+    public String modifyEnterprise(@Valid @RequestBody TpEnterprise tpEnterprise, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return error.getDefaultMessage();
             }
         }
-        enterprise.setName(session.getAttribute("name").toString());
-        return enterpriseService.updateEnterpriseByName(enterprise);
+        return enterpriseService.updateEnterpriseByName(tpEnterprise, session);
     }
 
     //企业密码重置
@@ -88,15 +84,25 @@ public class EnterpriseController {
                 return error.getDefaultMessage();
             }
         }
-        String result = enterpriseService.resetEnterprisePass(enterpriseResetPass);
-        return result;
+        return  enterpriseService.resetEnterprisePass(enterpriseResetPass);
     }
 
     //企业发布项目信息
     @PostMapping(value = "/enterprise/newProject")
-    public String newProject(@RequestBody TpEnterpriseProject tpEnterpriseProject) {
-        tpEnterpriseProject.setRegisterTime(new Date());
-        return enterpriseService.newProject(tpEnterpriseProject);
+    public String newProject(@RequestBody TpEnterpriseProject tpEnterpriseProject, HttpSession session) {
+        return enterpriseService.newProject(tpEnterpriseProject, session);
+    }
+
+    //修改已发布的项目信息
+    @RequestMapping(value = "/enterprise/modifyProject", method = RequestMethod.POST)
+    public String modifyProject(@Valid @RequestBody TpEnterpriseProject tpEnterpriseProject, BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return error.getDefaultMessage();
+            }
+        }
+        return enterpriseService.updateEnterpriseProjectById(tpEnterpriseProject, session);
     }
 
     //删除已发布的项目信息

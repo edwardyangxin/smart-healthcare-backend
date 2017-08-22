@@ -41,9 +41,15 @@ public interface ServiceProviderMapper {
     void newInfo(TpServiceProviderInfo tpServiceProviderInfo);
 
     @Select("select * from tp_service_provider_info where ((name=#{name}) or (#{name} is null))")
+    @Results({
+            @Result(column = "register_time", property = "registerTime")
+    })
     List<TpServiceProviderInfo> selectInfos(SelectServiceProviderInfo selectServiceProviderInfo);
 
     @Select("select * from tp_service_provider_info order by register_time desc limit 10")
+    @Results({
+            @Result(column = "register_time", property = "registerTime")
+    })
     List<TpServiceProviderInfo> selectLatest();
 
 }

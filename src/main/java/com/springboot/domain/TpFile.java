@@ -21,5 +21,5 @@ public class TpFile {
     private String filePath;
     private String pictureName;
     private String fileName;
-    private int age;
+    private String uuid;
 }

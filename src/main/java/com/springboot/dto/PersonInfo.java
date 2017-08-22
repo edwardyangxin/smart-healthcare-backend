@@ -13,4 +13,6 @@ public class PersonInfo {
     private String cooperationType;
     private Integer clickAmount;
     private String workType;
+    private String translateType;
+    private String industry;
 }

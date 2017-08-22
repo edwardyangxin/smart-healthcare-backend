@@ -1,5 +1,6 @@
 package com.springboot.service;
 
+import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
 import com.springboot.dto.*;
@@ -15,7 +16,7 @@ public interface PersonalService {
 
     TpPersonal selectByName(String name);
 
-    String insertPerson(TpPersonal tpPersonal);
+    String insertPerson(TpPersonal tpPersonal,TpFile tpFile);
 
     String updatePersonalPass(Password password, HttpSession session);
 
@@ -25,13 +26,15 @@ public interface PersonalService {
 
     String newInfo(TpPersonInfo tpPersonInfo, HttpSession session);
 
+    void updateInfo(TpPersonInfo tpPersonInfo);
+
     String delInfo(PersonInfo personInfo);
 
     List<TpPersonInfo> selectInfos(PersonInfo personInfo);
 
     TpPersonInfo selectInfoById(PersonInfo personInfo);
 
-    List<TpPersonInfo> selectLatest();
+    List<TpPersonInfo> selectLatest(Integer amount);
 
     void sendMail(CheckMail checkMail) throws Exception;
 

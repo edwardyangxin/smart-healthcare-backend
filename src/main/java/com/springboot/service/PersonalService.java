@@ -17,13 +17,13 @@ public interface PersonalService {
 
     String insertPerson(TpPersonal tpPersonal);
 
-    String updatePersonalPass(Password password);
+    String updatePersonalPass(Password password, HttpSession session);
 
     String resetPersonalPass(PersonalResetPass personalResetPass);
 
-    String updatePersonByName(Personal person);
+    String updatePersonByName(Personal person, HttpSession session);
 
-    String newInfo(TpPersonInfo tpPersonInfo);
+    String newInfo(TpPersonInfo tpPersonInfo, HttpSession session);
 
     String delInfo(PersonInfo personInfo);
 

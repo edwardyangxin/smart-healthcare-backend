@@ -17,14 +17,15 @@ import java.util.List;
 @Mapper
 public interface PersonalMapper {
 
-    @Insert("insert into tp_personal(real_Name, name, password, tel, email, active_code,status) " +
-            "values(#{realName}, #{name}, #{password}, #{tel}, #{email}, #{activeCode}, #{status})")
+    @Insert("insert into tp_personal(name, password, email, active_code, status) " +
+            "values(#{name}, #{password}, #{email}, #{activeCode}, #{status})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
-    void insertPerson(TpPersonal person);
+    void insertPerson(TpPersonal tpPersonal);
 
     @Select("select * from tp_personal where name=#{name}")
     @Results({
             @Result(column = "real_name", property = "realName"),
+            @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "active_code", property = "activeCode")
     })
     TpPersonal selectByName(@Param("name") String name);
@@ -32,6 +33,7 @@ public interface PersonalMapper {
     @Select("select * from tp_personal where real_name=#{realName}")
     @Results({
             @Result(column = "real_name", property = "realName"),
+            @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "active_code", property = "activeCode")
     })
     TpPersonal selectByRealName(@Param("realName") String realName);
@@ -57,6 +59,9 @@ public interface PersonalMapper {
 
     @Update("update tp_person_info set click_amount = #{clickAmount}, stars = #{stars} where id = #{id}")
     void addClickAmount(TpPersonInfo tpPersonInfo);
+
+    @Update("UPDATE tp_person_info SET tp_person_info.icon_address = (SELECT tp_file.picture_path FROM tp_file where name= #{name}) where name = #{name}")
+    void addIconAddress(TpPersonInfo tpPersonInfo);
 
     @Delete("delete from tp_person_info where id = #{id}")
     Integer delInfo(Integer id);

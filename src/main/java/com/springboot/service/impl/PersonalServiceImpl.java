@@ -57,6 +57,7 @@ public class PersonalServiceImpl implements PersonalService {
             if (result.equals("登录成功")) {
                 //添加用户信息到session中
                 session.setAttribute("name", login.getName());
+                session.setAttribute("uuid", tpPersonal.getActiveCode());
             }
         } else {
             result = "您的账户尚未激活。";
@@ -70,12 +71,16 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public String insertPerson(TpPersonal tpPersonal) {
+    public String insertPerson(TpPersonal tpPersonal,TpFile tpFile) {
         TpPersonal tpPersonal1 = personalMapper.selectByName(tpPersonal.getName());
-        tpPersonal.setActiveCode(UUID.randomUUID().toString());
+        tpPersonal.setActiveCode(UUID.randomUUID().toString().replaceAll("-", ""));
         tpPersonal.setStatus(false);
+        tpFile.setName(tpPersonal.getName());
+        tpFile.setUuid(tpPersonal.getActiveCode());
+        tpFile.setPicturePath("http://localhost:8080/translate/pictures/default.jpg");
         if (tpPersonal1 == null) {
             personalMapper.insertPerson(tpPersonal);
+            personalMapper.newTpFile(tpFile);
             return "注册成功！";
         } else {
             return "用户" + tpPersonal1.getName() + "已存在！";
@@ -87,7 +92,7 @@ public class PersonalServiceImpl implements PersonalService {
         try {
             password.setName(session.getAttribute("name").toString());
         } catch (NullPointerException e) {
-            log.info(e.toString());
+            log.info("修改密码用户未登录 "+e.toString());
             return "用户未登录。";
         }
         String TPPassword = personalMapper.selectByName(password.getName()).getPassword();
@@ -132,8 +137,8 @@ public class PersonalServiceImpl implements PersonalService {
     public String updatePersonByName(Personal person,HttpSession session) {
         try {
             person.setName(session.getAttribute("name").toString());
-        } catch (Exception e) {
-            log.info(e.toString());
+        } catch (NullPointerException e) {
+            log.info("更改个人资料用户未登录 "+e.toString());
             return "用户未登录。";
         }
         personalMapper.updatePersonByName(person);
@@ -144,14 +149,21 @@ public class PersonalServiceImpl implements PersonalService {
     public String newInfo(TpPersonInfo tpPersonInfo, HttpSession session) {
         try {
             tpPersonInfo.setName(session.getAttribute("name").toString());
-        } catch (Exception e) {
-            log.info(e.toString());
+            tpPersonInfo.setUuid(session.getAttribute("uuid").toString());
+        } catch (NullPointerException e) {
+            log.info("个人发布消息用户未登录 "+e.toString());
             return "用户未登录。";
         }
         tpPersonInfo.setRegisterTime(new Date());
         personalMapper.newInfo(tpPersonInfo);
         personalMapper.addIconAddress(tpPersonInfo);
         return "发布个人信息成功！";
+    }
+
+    @Override
+    public void updateInfo(TpPersonInfo tpPersonInfo){
+        tpPersonInfo.setRegisterTime(new Date());
+        personalMapper.updateInfoById(tpPersonInfo);
     }
 
     @Override
@@ -202,8 +214,8 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public List<TpPersonInfo> selectLatest() {
-        List<TpPersonInfo> tpPersonInfos = personalMapper.selectLatest();
+    public List<TpPersonInfo> selectLatest(Integer amount) {
+        List<TpPersonInfo> tpPersonInfos = personalMapper.selectLatest(amount);
         return tpPersonInfos;
     }
 

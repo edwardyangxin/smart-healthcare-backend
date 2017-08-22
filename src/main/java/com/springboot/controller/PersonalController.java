@@ -1,5 +1,6 @@
 package com.springboot.controller;
 
+import com.springboot.domain.Result;
 import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
@@ -94,7 +95,7 @@ public class PersonalController {
 
     //发布个人信息、、接受Json格式的参数 Content-Type:application/json
     @PostMapping(value = "/personal/newInfo")
-    public String newInfo(@RequestBody TpPersonInfo tpPersonInfo, HttpSession session) {
+    public Result<TpPersonInfo> newInfo(@RequestBody TpPersonInfo tpPersonInfo, HttpSession session) {
         return personalService.newInfo(tpPersonInfo, session);
     }
 

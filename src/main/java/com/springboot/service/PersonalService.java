@@ -1,5 +1,6 @@
 package com.springboot.service;
 
+import com.springboot.domain.Result;
 import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
@@ -24,7 +25,7 @@ public interface PersonalService {
 
     String updatePersonByName(Personal person, HttpSession session);
 
-    String newInfo(TpPersonInfo tpPersonInfo, HttpSession session);
+    Result<TpPersonInfo> newInfo(TpPersonInfo tpPersonInfo, HttpSession session);
 
     void updateInfo(TpPersonInfo tpPersonInfo);
 

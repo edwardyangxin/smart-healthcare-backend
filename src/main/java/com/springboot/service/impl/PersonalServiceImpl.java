@@ -1,12 +1,14 @@
 package com.springboot.service.impl;
 
 
+import com.springboot.domain.Result;
 import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
 import com.springboot.dto.*;
 import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.PersonalService;
+import com.springboot.tools.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,7 +73,7 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public String insertPerson(TpPersonal tpPersonal,TpFile tpFile) {
+    public String insertPerson(TpPersonal tpPersonal, TpFile tpFile) {
         TpPersonal tpPersonal1 = personalMapper.selectByName(tpPersonal.getName());
         tpPersonal.setActiveCode(UUID.randomUUID().toString().replaceAll("-", ""));
         tpPersonal.setStatus(false);
@@ -92,7 +94,7 @@ public class PersonalServiceImpl implements PersonalService {
         try {
             password.setName(session.getAttribute("name").toString());
         } catch (NullPointerException e) {
-            log.info("修改密码用户未登录 "+e.toString());
+            log.info("修改密码用户未登录 " + e.toString());
             return "用户未登录。";
         }
         String TPPassword = personalMapper.selectByName(password.getName()).getPassword();
@@ -134,11 +136,11 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public String updatePersonByName(Personal person,HttpSession session) {
+    public String updatePersonByName(Personal person, HttpSession session) {
         try {
             person.setName(session.getAttribute("name").toString());
         } catch (NullPointerException e) {
-            log.info("更改个人资料用户未登录 "+e.toString());
+            log.info("更改个人资料用户未登录 " + e.toString());
             return "用户未登录。";
         }
         personalMapper.updatePersonByName(person);
@@ -146,22 +148,24 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public String newInfo(TpPersonInfo tpPersonInfo, HttpSession session) {
+    public Result<TpPersonInfo> newInfo(TpPersonInfo tpPersonInfo, HttpSession session) {
         try {
             tpPersonInfo.setName(session.getAttribute("name").toString());
             tpPersonInfo.setUuid(session.getAttribute("uuid").toString());
         } catch (NullPointerException e) {
-            log.info("个人发布消息用户未登录 "+e.toString());
-            return "用户未登录。";
+            log.info("个人发布消息用户未登录 " + e.toString());
+            return ResultUtil.error(400, "个人发布消息用户未登录 ");
+//            return "用户未登录。";
         }
         tpPersonInfo.setRegisterTime(new Date());
         personalMapper.newInfo(tpPersonInfo);
         personalMapper.addIconAddress(tpPersonInfo);
-        return "发布个人信息成功！";
+        return ResultUtil.success();
+//        return "发布个人信息成功！";
     }
 
     @Override
-    public void updateInfo(TpPersonInfo tpPersonInfo){
+    public void updateInfo(TpPersonInfo tpPersonInfo) {
         tpPersonInfo.setRegisterTime(new Date());
         personalMapper.updateInfoById(tpPersonInfo);
     }

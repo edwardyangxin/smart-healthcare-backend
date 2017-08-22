@@ -143,5 +143,4 @@ public class EnterpriseController {
         return enterpriseService.emailCheck(checkMail);
     }
 
-
 }

@@ -24,10 +24,6 @@ public class FileUploadController {
         this.storageService = storageService;
     }
 
-    /*@GetMapping("/")
-    public String index() {
-        return "index";
-    }*/
 
     @GetMapping("/pictures/{filename:.+}")
     @ResponseBody

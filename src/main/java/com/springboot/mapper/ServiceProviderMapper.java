@@ -18,10 +18,15 @@ import java.util.List;
 @Mapper
 public interface ServiceProviderMapper {
 
-    @Insert("insert into tp_service_provider(name, password, tel, email, active_code, status)" +
-            " values(#{name}, #{password}, #{tel}, #{email}, #{activeCode}, #{status})")
+    @Insert("insert into tp_service_provider(city, enterprise_id, user_id, name, password)" +
+            " values(#{city}, #{enterpriseId}, #{userId}, #{name}, #{password})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
-    void insertServiceProvider(TpServiceProvider tpserviceProvider);
+    void insertServiceProvider(TpServiceProvider serviceProvider);
+
+    @Insert("insert into tp_service_provider(name, password, email, active_code,status) " +
+            "values (#{name}, #{password}, #{email}, #{activeCode}, #{status})")
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
+    void newServiceProvider(Register register);
 
     @Select("select * from tp_service_provider where name=#{name}")
     @Results({
@@ -57,9 +62,31 @@ public interface ServiceProviderMapper {
     void newEnterpriseInfo(TpEnterpriseProject tpEnterpriseProject);
 
     @Select("select * from tp_person_info where service_provider=true order by register_time desc limit 10")
+    @Results({
+            @Result(column = "service_provider", property = "serviceProvider"),
+            @Result(column = "cooperation_type", property = "cooperationType"),
+            @Result(column = "work_type", property = "workType"),
+            @Result(column = "salary_range", property = "salaryRange"),
+            @Result(column = "working_years", property = "workingYears"),
+            @Result(column = "project_experience", property = "projectExperience"),
+            @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "icon_address", property = "iconAddress"),
+            @Result(column = "click_amount", property = "clickAmount")
+    })
     List<TpPersonInfo> selectInfoLatest();
 
     @Select("select * from tp_enterprise_project where service_provider=true order by register_time desc limit 10")
+    @Results({
+            @Result(column = "service_provider", property = "serviceProvider"),
+                    @Result(column = "cooperation_type", property = "cooperationType"),
+                    @Result(column = "work_type", property = "workType"),
+                    @Result(column = "register_time", property = "registerTime"),
+                    @Result(column = "project_title", property = "projectTitle"),
+                    @Result(column = "company_name", property = "companyName"),
+                    @Result(column = "translate_type", property = "translateType"),
+                    @Result(column = "click_amount", property = "clickAmount"),
+                    @Result(column = "icon_address", property = "iconAddress")
+    })
     List<TpEnterpriseProject>  selectProjectLatest();
 
     @Update("update tp_service_provider set status = #{status} where name = #{name}")

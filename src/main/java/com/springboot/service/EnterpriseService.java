@@ -18,13 +18,15 @@ public interface EnterpriseService {
 
     String insertEnterprise(TpEnterprise enterprise);
 
-    String updateEnterpriseByName(Enterprise enterprise);
+    String updateEnterpriseByName(TpEnterprise tpEnterprise, HttpSession session);
 
-    String updateEnterprisePassByName(Password password);
+    String updateEnterprisePass(Password password, HttpSession session);
 
     String resetEnterprisePass(EnterpriseResetPass enterpriseResetPass);
 
-    String newProject(TpEnterpriseProject tpEnterpriseProject);
+    String newProject(TpEnterpriseProject tpEnterpriseProject, HttpSession session);
+
+    String updateEnterpriseProjectById(TpEnterpriseProject tpEnterpriseProject, HttpSession session);
 
     String delProject(EnterpriseProject enterpriseProject);
 

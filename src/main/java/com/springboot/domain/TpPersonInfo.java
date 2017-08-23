@@ -38,7 +38,9 @@ public class TpPersonInfo {
 
     private String projectExperience;
 
-    private String specialty;
+    private String translateType;
+
+    private String industry;
 
     private String cooperationType;
 
@@ -47,6 +49,8 @@ public class TpPersonInfo {
     private Date registerTime;
 
     private String iconAddress;
+
+    private String uuid;
 
     private Integer clickAmount;
 

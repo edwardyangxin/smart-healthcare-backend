@@ -3,12 +3,14 @@ package com.springboot.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
+import com.springboot.domain.TpFile;
+import com.springboot.dto.Register;
 import com.springboot.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.imageio.ImageIO;
@@ -16,12 +18,15 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 
 /**
  * Created by Administrator on 2017/7/11.
  */
+@RequestMapping(value = "translate")
 @Controller
 public class IndexController {
 
@@ -34,12 +39,22 @@ public class IndexController {
         this.indexService = indexService;
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/index")
+    @RequestMapping(value = "/")
     public String index() {
-        return "主页";
+        return "index";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String insertPerson(@Valid @RequestBody Register register, TpFile tpFile, HttpServletRequest request, HttpServletResponse response, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return error.getDefaultMessage();
+            }
+        }
+        return indexService.insertPerson(register, tpFile, request, response);
+    }
 
     @RequestMapping(value = "/logout")
     public String serviceProviderLogout(HttpSession session) {
@@ -102,7 +117,6 @@ public class IndexController {
         } else {
             return "Kaptcha_error";
         }
-
     }
 }
 

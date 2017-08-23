@@ -5,6 +5,7 @@ import com.springboot.domain.*;
 import com.springboot.dto.*;
 import com.springboot.mapper.EnterpriseMapper;
 import com.springboot.service.EnterpriseService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,12 +14,14 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 /**
  * Created by Administrator on 2017/7/12.
  */
+@Slf4j
 @Service
 public class EnterpriseServiceImpl implements EnterpriseService {
 
@@ -77,14 +80,25 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
-    public String updateEnterpriseByName(Enterprise enterprise) {
-        enterpriseMapper.updateEnterpriseByName(enterprise);
+    public String updateEnterpriseByName(TpEnterprise tpEnterprise, HttpSession session) {
+        try {
+            tpEnterprise.setName(session.getAttribute("name").toString());
+        } catch (Exception e) {
+            log.info(e.toString());
+            return "用户未登录。";
+        }
+        enterpriseMapper.updateEnterpriseByName(tpEnterprise);
         return "企业信息更改成功！";
     }
 
 
-    @Override
-    public String updateEnterprisePassByName(Password password) {
+    public String updateEnterprisePass(Password password, HttpSession session) {
+        try {
+            password.setName(session.getAttribute("name").toString());
+        }catch (NullPointerException e){
+            log.info(e.toString());
+            return "用户未登录";
+        }
         String TPPassword = enterpriseMapper.selectByName(password.getName()).getPassword();
         if (password.getPassword().equals(TPPassword)) {
             if (password.getNewPassword().equals(password.getRetypePassword())) {
@@ -92,7 +106,8 @@ public class EnterpriseServiceImpl implements EnterpriseService {
                     return "新密码与旧密码相同，请重新输入！";
                 } else {
                     password.setPassword(password.getNewPassword());
-                    enterpriseMapper.updateEnterprisePassByName(password);
+                    enterpriseMapper.updateEnterprisePass(password);
+                    session.removeAttribute("name");
                     return "密码修改成功！";
                 }
             } else {
@@ -119,9 +134,23 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
-    public String newProject(TpEnterpriseProject tpEnterpriseProject) {
+    public String newProject(TpEnterpriseProject tpEnterpriseProject, HttpSession session) {
+        try {
+            tpEnterpriseProject.setCompanyName(session.getAttribute("companyName").toString());
+        } catch (Exception e) {
+            log.info(e.toString());
+            return "用户未登录。";
+        }
+        tpEnterpriseProject.setRegisterTime(new Date());
         enterpriseMapper.newProject(tpEnterpriseProject);
         return "发布企业信息成功";
+    }
+
+    @Override
+    public String updateEnterpriseProjectById(TpEnterpriseProject tpEnterpriseProject, HttpSession session) {
+        tpEnterpriseProject.setRegisterTime(new Date());
+        enterpriseMapper.updateEnterpriseProjectById(tpEnterpriseProject);
+        return "项目信息更改成功！";
     }
 
     @Override

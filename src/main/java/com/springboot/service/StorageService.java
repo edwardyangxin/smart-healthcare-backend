@@ -4,6 +4,7 @@ import com.springboot.dto.updto.ControllerResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
@@ -11,7 +12,7 @@ public interface StorageService {
 
     void init();
 
-    ControllerResponse store(MultipartFile file);
+    ControllerResponse store(MultipartFile file,HttpSession session);
 
     Stream<Path> loadAll();
 
@@ -25,7 +26,7 @@ public interface StorageService {
 
     void deleteAll();
 
-    ControllerResponse storeFile(MultipartFile file);
+    ControllerResponse storeFile(MultipartFile file,HttpSession session);
     //void deleteFile(Path path);
     // void updatePicture(TpFile file);
     //  TpFile findFile(String name);

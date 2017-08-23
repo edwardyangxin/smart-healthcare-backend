@@ -1,5 +1,6 @@
 package com.springboot.service;
 
+import com.springboot.domain.Result;
 import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
@@ -12,29 +13,29 @@ import java.util.List;
  * Created by Administrator on 2017/7/12.
  */
 public interface PersonalService {
-    String login(Login login, HttpSession session);
+    Result<Login> login(Login login, HttpSession session);
 
     TpPersonal selectByName(String name);
 
-    String insertPerson(TpPersonal tpPersonal,TpFile tpFile);
+    Result<TpPersonal> insertPerson(TpPersonal tpPersonal, TpFile tpFile);
 
-    String updatePersonalPass(Password password, HttpSession session);
+    Result<Password> updatePersonalPass(Password password, HttpSession session);
 
     String resetPersonalPass(PersonalResetPass personalResetPass);
 
-    String updatePersonByName(Personal person, HttpSession session);
+    Result<TpPersonal> updatePersonByName(TpPersonal tpPersonal, HttpSession session);
 
-    String newInfo(TpPersonInfo tpPersonInfo, HttpSession session);
+    Result<TpPersonInfo> newInfo(TpPersonInfo tpPersonInfo, HttpSession session);
 
-    void updateInfo(TpPersonInfo tpPersonInfo);
+    Result<TpPersonInfo> updateInfo(TpPersonInfo tpPersonInfo);
 
-    String delInfo(PersonInfo personInfo);
+    Result<PersonInfo> delInfo(PersonInfo personInfo);
 
-    List<TpPersonInfo> selectInfos(PersonInfo personInfo);
+    Result<TpPersonInfo> selectInfos(PersonInfo personInfo);
 
-    TpPersonInfo selectInfoById(PersonInfo personInfo);
+    Result<TpPersonInfo> selectInfoById(PersonInfo personInfo);
 
-    List<TpPersonInfo> selectLatest(Integer amount);
+    Result<TpPersonInfo> selectLatest(Integer amount);
 
     void sendMail(CheckMail checkMail) throws Exception;
 

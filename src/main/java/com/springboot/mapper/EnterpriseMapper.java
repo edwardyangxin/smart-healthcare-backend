@@ -41,7 +41,7 @@ public interface EnterpriseMapper {
     })
     TpEnterprise selectByName(@Param("name") String name);
 
-    @Update("update tp_enterprise set city = #{city},tel= #{tel},email = #{email} where name =#{name}")
+    @Update("update tp_enterprise set city = #{city},tel= #{tel},business_license = #{businessLicense},contact = #{contact},industry = #{industry},legal_representative = #{legalRepresentative} where name =#{name}")
     void updateEnterpriseByName(TpEnterprise tpEnterprise);
 
     @Update("update tp_enterprise set password = #{password} where name = #{name}")

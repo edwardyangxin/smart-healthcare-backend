@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
+
 @RequestMapping(value = "/translate")
 @Controller
 public class FileUploadController {
@@ -21,12 +23,6 @@ public class FileUploadController {
     public FileUploadController(StorageService storageService) {
         this.storageService = storageService;
     }
-
-    @GetMapping("/")
-    public String index() {
-        return "index";
-    }
-
     @GetMapping("/pictures/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> servePicture(@PathVariable String filename) {
@@ -36,7 +32,6 @@ public class FileUploadController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
-
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
@@ -46,19 +41,17 @@ public class FileUploadController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
-
-
     @PostMapping("/uploadPicture")
     @ResponseBody
     public ControllerResponse handlePictureUpload(@RequestParam("file") MultipartFile file,
-                                                  Model model) {
-        return storageService.store(file);
+                                                  Model model,HttpSession session) {
+        return storageService.store(file,session);
     }
 
     @PostMapping("/uploadFile")
     @ResponseBody
     public ControllerResponse handleFileUpload(@RequestParam("file") MultipartFile file,
-                                               Model model) {
-        return storageService.storeFile(file);
+                                               Model model,HttpSession session) {
+        return storageService.storeFile(file,session);
     }
 }

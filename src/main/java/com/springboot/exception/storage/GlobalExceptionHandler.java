@@ -18,6 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
 
     @ResponseBody
+    @ExceptionHandler(Exception.class)
+    public ExceptionResponse handleException(HttpServletRequest request, Exception exc){
+        HttpStatus status = getStatus(request);
+        String message = exc.getMessage();
+        return ExceptionResponse.create(status.value(), message);
+    }
+
+    @ResponseBody
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ExceptionResponse handleStorageFileNotFound(HttpServletRequest request, StorageFileNotFoundException exc) {
         HttpStatus status = getStatus(request);
@@ -27,8 +35,10 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(StorageException.class)
-    public String handleStorageException(StorageException exc) {
-        return exc.getMessage();
+    public ExceptionResponse handleStorageException(HttpServletRequest request,StorageException exc) {
+        HttpStatus status = getStatus(request);
+        String message = exc.getMessage();
+        return ExceptionResponse.create(status.value(), message);
     }
 
 

@@ -9,6 +9,7 @@ import com.springboot.mapper.UploadMapper;
 import com.springboot.service.StorageService;
 import com.springboot.tools.UUIDTool;
 import com.springboot.uploadDir.StorageProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -21,6 +22,7 @@ import org.springframework.web.util.UriComponents;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -32,6 +34,7 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
+@Slf4j
 @Service
 public class FileSystemStorageServiceImpl implements StorageService {
 
@@ -52,25 +55,32 @@ public class FileSystemStorageServiceImpl implements StorageService {
     }
 
     @Override
-    public ControllerResponse store(MultipartFile file) {
-
+    public ControllerResponse store(MultipartFile file, HttpSession session) {
+        try {
+            String a = session.getAttribute("uuid").toString();
+        } catch (NullPointerException e) {
+            log.info("请先登录!" + e.toString());
+            return ControllerResponse.create("请先登录!", false);
+        }
         ControllerResponse checkFormatResponse = checkFormat(file);
         if (!checkFormatResponse.getABoolean()) {
             return checkFormatResponse;
         }
         if (getFormatName(file)) {
         } else {
+            log.info("Maybe not a picture file!");
             return ControllerResponse.create("Maybe not a picture file!", false);
         }
         ControllerResponse copyResponse = copyPicture(file);
         if (copyResponse.getABoolean()) {
             return copyResponse;
         }
+
         ControllerResponse renamePictureResponse = renamePicture(file);
         if (renamePictureResponse.getABoolean()) {
             return renamePictureResponse;
         }
-        String name = uploadMapper.findFile("张三").getPictureName();
+        String name = uploadMapper.findFile(session.getAttribute("uuid").toString()).getPictureName();
         if (name != null) {
             deleteFile(loadPicture(name));
         }
@@ -79,8 +89,13 @@ public class FileSystemStorageServiceImpl implements StorageService {
     }
 
     @Override
-    public ControllerResponse storeFile(MultipartFile file) {
-
+    public ControllerResponse storeFile(MultipartFile file, HttpSession session) {
+        try {
+            String a = session.getAttribute("uuid").toString();
+        } catch (NullPointerException e) {
+            log.info("请先登录!" + e.toString());
+            return ControllerResponse.create("请先登录!", false);
+        }
         ControllerResponse checkFormatResponse = checkFormat(file);
         if (!checkFormatResponse.getABoolean()) {
             return checkFormatResponse;
@@ -93,7 +108,7 @@ public class FileSystemStorageServiceImpl implements StorageService {
         if (renameFileResponse.getABoolean()) {
             return renameFileResponse;
         }
-        String name = uploadMapper.findFile("张三").getFileName();
+        String name = uploadMapper.findFile(session.getAttribute("uuid").toString()).getFileName();
         if (name != null) {
             deleteFile(loadFile(name));
         }
@@ -105,7 +120,6 @@ public class FileSystemStorageServiceImpl implements StorageService {
         TpFile picture = new TpFile();
         picture.setPicturePath(uploadedPictureUrl(loadFile(fileName)).toString());
         picture.setPictureName(fileName);
-        picture.setName("张三");
         uploadMapper.updatePicture(picture);
         return ControllerResponse.create(picture.getPicturePath(), true);
     }
@@ -114,7 +128,6 @@ public class FileSystemStorageServiceImpl implements StorageService {
         TpFile file = new TpFile();
         file.setFilePath(uploadedFileUrl(loadFile(fileName)).toString());
         file.setFileName(fileName);
-        file.setName("张三");
         uploadMapper.updateFile(file);
         return ControllerResponse.create(file.getFilePath(), true);
     }
@@ -127,9 +140,11 @@ public class FileSystemStorageServiceImpl implements StorageService {
             boolean flag = oldPicture.renameTo(newPicture);
             if (flag) {
             } else {
+                log.info("RenameToPicture faild！");
                 return ControllerResponse.create("RenameToPicture faild！", true);
             }
         } catch (SecurityException e) {
+            log.info("RenameToPicture faild！");
             return ControllerResponse.create("RenameToPicture faild！", true);
         }
         return ControllerResponse.create(temName, false);
@@ -143,9 +158,11 @@ public class FileSystemStorageServiceImpl implements StorageService {
             boolean flag = oldFile.renameTo(newFile);
             if (flag) {
             } else {
+                log.info("RenameToFile faild！");
                 return ControllerResponse.create("RenameToFile faild！", true);
             }
         } catch (SecurityException e) {
+            log.info("RenameToFile faild！");
             return ControllerResponse.create("RenameToFile faild！", true);
         }
         return ControllerResponse.create(temName, false);
@@ -155,10 +172,13 @@ public class FileSystemStorageServiceImpl implements StorageService {
         try {
             Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
         } catch (FileAlreadyExistsException e) {
+            log.info("Picture already exist！");
             return ControllerResponse.create("Picture already exist！", true);
         } catch (IOException e) {
+            log.info("Storage file failed！");
             return ControllerResponse.create("Storage file failed！ ", true);
         }
+        log.info("success");
         return ControllerResponse.create("success", false);
     }
 
@@ -166,22 +186,28 @@ public class FileSystemStorageServiceImpl implements StorageService {
         try {
             Files.copy(file.getInputStream(), this.rootFileLocation.resolve(file.getOriginalFilename()));
         } catch (FileAlreadyExistsException e) {
+            log.info("File already exist！");
             return ControllerResponse.create("File already exist！", true);
         } catch (IOException e) {
-            return ControllerResponse.create("Storage file failed！ ", true);
+            log.info("Storage file failed！");
+            return ControllerResponse.create("Storage file failed！", true);
         }
+        log.info("success");
         return ControllerResponse.create("success", false);
     }
 
     public ControllerResponse checkFormat(MultipartFile file) {
         try {
             if (file.isEmpty()) {
+                log.info("文件(内容)为空！");
                 return ControllerResponse.create("文件(内容)为空！", false);
             }
             String suffixName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
+            log.info("文件格式有误！");
             return ControllerResponse.create("文件格式有误！", false);
         }
+        log.info("success");
         return ControllerResponse.create("success", true);
     }
 
@@ -196,7 +222,6 @@ public class FileSystemStorageServiceImpl implements StorageService {
                 .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString()).build();
         return uriComponents.encode().toUri();
     }
-
 
     @Override
     public Path loadPicture(String pictureName) {
@@ -216,9 +241,11 @@ public class FileSystemStorageServiceImpl implements StorageService {
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
+                log.info("Could not read picture: " + filename);
                 throw new StorageFileNotFoundException("Could not read picture: " + filename);
             }
         } catch (MalformedURLException e) {
+            log.info("Could not read picture:" + filename);
             throw new StorageFileNotFoundException("Could not read picture: " + filename, e);
         }
 
@@ -232,10 +259,12 @@ public class FileSystemStorageServiceImpl implements StorageService {
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
-                throw new StorageFileNotFoundException("Could not read picture: " + filename);
+                log.info("Could not read file: " + filename);
+                throw new StorageFileNotFoundException("Could not read file: " + filename);
             }
         } catch (MalformedURLException e) {
-            throw new StorageFileNotFoundException("Could not read picture: " + filename, e);
+            log.info("Could not read file: " + filename);
+            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
         }
 
     }
@@ -250,6 +279,7 @@ public class FileSystemStorageServiceImpl implements StorageService {
         try {
             Files.delete(path);
         } catch (IOException e) {
+            log.info(e.getMessage());
         }
     }
 
@@ -259,6 +289,7 @@ public class FileSystemStorageServiceImpl implements StorageService {
             Files.createDirectory(rootLocation);
             Files.createDirectory(rootFileLocation);
         } catch (IOException e) {
+            log.info("初始化存储失败！");
             throw new StorageException("初始化存储失败！", e);
         }
     }
@@ -291,6 +322,7 @@ public class FileSystemStorageServiceImpl implements StorageService {
                     .filter(path -> !path.equals(this.rootLocation))
                     .map(path -> this.rootLocation.relativize(path));
         } catch (IOException e) {
+            log.info("Failed to read the stored file！");
             throw new StorageException("Failed to read the stored file！", e);
         }
     }

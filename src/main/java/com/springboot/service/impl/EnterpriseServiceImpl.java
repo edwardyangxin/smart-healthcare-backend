@@ -62,6 +62,18 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
+    public TpEnterprise selectEnterpriseByName(HttpSession session) {
+        try {
+            String name = session.getAttribute("name").toString();
+            TpEnterprise tpEnterprise = enterpriseMapper.selectEnterpriseByName(name);
+            return tpEnterprise;
+        } catch (Exception e) {
+            log.info(e.toString());
+        }
+       return null;
+    }
+
+    @Override
     public TpEnterprise selectByName(String name) {
         return enterpriseMapper.selectByName(name);
     }
@@ -206,7 +218,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         return tpEnterpriseProjects;
     }
 
-    @Override
+   @Override
     public void sendMail(CheckMail checkMail) throws Exception {
         String name = checkMail.getName();
         TpEnterprise tpEnterprise = this.selectByName(name);

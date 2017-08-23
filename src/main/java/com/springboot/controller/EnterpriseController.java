@@ -143,4 +143,9 @@ public class EnterpriseController {
         return enterpriseService.emailCheck(checkMail);
     }
 
+    //根据Name查询企业信息
+    @GetMapping(value = "/enterprise/selectEnterprise")
+    public TpEnterprise selectEnterprise(HttpSession session) {
+        return enterpriseService.selectEnterpriseByName(session);
+    }
 }

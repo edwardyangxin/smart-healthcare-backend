@@ -3,10 +3,11 @@ package com.springboot.mapper;
 import com.springboot.domain.TpEnterprise;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpFile;
-import com.springboot.domain.TpPersonInfo;
-import com.springboot.dto.*;
+import com.springboot.dto.EnterpriseProject;
+import com.springboot.dto.EnterpriseResetPass;
+import com.springboot.dto.Password;
+import com.springboot.dto.Register;
 import org.apache.ibatis.annotations.*;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -27,6 +28,9 @@ public interface EnterpriseMapper {
             "values (#{name}, #{password}, #{email}, #{activeCode}, #{status})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newEnterprise(Register register);
+
+    @Select("select name,contact,tel,city from tp_enterprise where name=#{name}")
+    TpEnterprise selectEnterpriseByName(String name);
 
     @Select("select * from tp_enterprise where name=#{name}")
     @Results({

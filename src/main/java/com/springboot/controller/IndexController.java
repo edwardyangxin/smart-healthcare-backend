@@ -39,10 +39,9 @@ public class IndexController {
         this.indexService = indexService;
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/index")
+    @RequestMapping(value = "/")
     public String index() {
-        return "主页";
+        return "index";
     }
 
     @ResponseBody
@@ -118,7 +117,6 @@ public class IndexController {
         } else {
             return "Kaptcha_error";
         }
-
     }
 }
 

@@ -23,8 +23,6 @@ public class FileUploadController {
     public FileUploadController(StorageService storageService) {
         this.storageService = storageService;
     }
-
-
     @GetMapping("/pictures/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> servePicture(@PathVariable String filename) {
@@ -34,7 +32,6 @@ public class FileUploadController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
-
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
@@ -44,7 +41,6 @@ public class FileUploadController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
-
     @PostMapping("/uploadPicture")
     @ResponseBody
     public ControllerResponse handlePictureUpload(@RequestParam("file") MultipartFile file,

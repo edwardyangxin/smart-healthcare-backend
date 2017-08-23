@@ -3,10 +3,7 @@ package com.springboot.mapper;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpServiceProvider;
-import com.springboot.dto.Password;
-import com.springboot.dto.PersonInfo;
-import com.springboot.dto.ServiceProvider;
-import com.springboot.dto.ServiceProviderResetPass;
+import com.springboot.dto.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

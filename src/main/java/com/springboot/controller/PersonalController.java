@@ -1,9 +1,11 @@
 package com.springboot.controller;
 
+import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
 import com.springboot.dto.*;
 import com.springboot.service.PersonalService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -42,14 +44,14 @@ public class PersonalController {
 
     //个人注册
     @RequestMapping(value = "/personal/register", method = RequestMethod.POST)
-    public String insertPerson(@Valid @RequestBody TpPersonal tpPersonal, BindingResult bindingResult) {
+    public String insertPerson(@Valid @RequestBody TpPersonal tpPersonal, TpFile tpFile, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return error.getDefaultMessage();
             }
         }
-        return personalService.insertPerson(tpPersonal);
+        return personalService.insertPerson(tpPersonal, tpFile);
     }
 
     //个人密码修改
@@ -96,6 +98,12 @@ public class PersonalController {
         return personalService.newInfo(tpPersonInfo, session);
     }
 
+    //修改已发布的信息
+    @PostMapping(value = "/personal/modifyInfo")
+    public void updateInfoById(@RequestBody TpPersonInfo tpPersonInfo) {
+        personalService.updateInfo(tpPersonInfo);
+    }
+
     //删除已发布的个人信息
     @RequestMapping(value = "/personal/delInfo")
     public String delInfo(@RequestBody PersonInfo personInfo) {
@@ -117,8 +125,8 @@ public class PersonalController {
 
     //查询最新五条信息
     @RequestMapping(value = "/personal/latest")
-    public List<TpPersonInfo> selectLatestFive() {
-        List<TpPersonInfo> tpPersonInfos = personalService.selectLatest();
+    public List<TpPersonInfo> selectLatestFive(@Param("amount") Integer amount) {
+        List<TpPersonInfo> tpPersonInfos = personalService.selectLatest(amount);
         return tpPersonInfos;
     }
 

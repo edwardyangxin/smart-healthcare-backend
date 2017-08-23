@@ -3,6 +3,7 @@ package com.springboot.mapper;
 import com.springboot.domain.TpServiceProvider;
 import com.springboot.domain.TpServiceProviderInfo;
 import com.springboot.dto.Password;
+import com.springboot.dto.Register;
 import com.springboot.dto.SelectServiceProviderInfo;
 import com.springboot.dto.ServiceProvider;
 import org.apache.ibatis.annotations.*;
@@ -20,6 +21,11 @@ public interface ServiceProviderMapper {
             " values(#{city}, #{enterpriseId}, #{userId}, #{name}, #{password})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void insertServiceProvider(TpServiceProvider serviceProvider);
+
+    @Insert("insert into tp_service_provider(name, password, email, active_code,status) " +
+            "values (#{name}, #{password}, #{email}, #{activeCode}, #{status})")
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
+    void newServiceProvider(Register register);
 
     @Select("select * from tp_service_provider where name=#{name}")
     @Results({
@@ -41,9 +47,15 @@ public interface ServiceProviderMapper {
     void newInfo(TpServiceProviderInfo tpServiceProviderInfo);
 
     @Select("select * from tp_service_provider_info where ((name=#{name}) or (#{name} is null))")
+    @Results({
+            @Result(column = "register_time", property = "registerTime")
+    })
     List<TpServiceProviderInfo> selectInfos(SelectServiceProviderInfo selectServiceProviderInfo);
 
     @Select("select * from tp_service_provider_info order by register_time desc limit 10")
+    @Results({
+            @Result(column = "register_time", property = "registerTime")
+    })
     List<TpServiceProviderInfo> selectLatest();
 
 }

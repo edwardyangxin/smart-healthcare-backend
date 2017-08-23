@@ -85,9 +85,7 @@ public class ServiceProviderController {
             }
         }
         password.setName(session.getAttribute("name").toString());
-        String result = serviceProviderService.updateServiceProviderPassByName(password);
-
-        return result;
+        return serviceProviderService.updateServiceProviderPassByName(password);
     }
 
     //发布供应商信息

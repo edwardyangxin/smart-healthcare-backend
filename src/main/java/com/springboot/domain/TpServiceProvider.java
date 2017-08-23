@@ -24,6 +24,8 @@ public class TpServiceProvider {
     @NotNull(message = "供应商名不能为空！")
     private String name;
 
+    private String companyName;
+
     private String iconAddress;
 
     @NotEmpty(message = "密码不能为空！")
@@ -40,10 +42,23 @@ public class TpServiceProvider {
 
     private String contact;
 
+    @NotEmpty(message = "联系人电话不能为空！")
+    @NotNull(message = "联系人电话不能为空！")
     private String tel;
 
     private Integer userId;
+
     private Integer enterpriseId;
+
+    private Boolean status;
+
+    private String activeCode;
+
+    private String industy;
+
+    @NotEmpty(message = "邮箱不能为空！")
+    @NotNull(message = "邮箱不能为空！")
+    private String email;
 
 
 }

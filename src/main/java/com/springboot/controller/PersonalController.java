@@ -33,11 +33,14 @@ public class PersonalController {
 
     //个人登陆
     @PostMapping(value = "/personal/login")
-    public String personalLogin(@Valid @RequestBody Login login, BindingResult bindingResult, HttpSession session) {
+    public Result<Login> personalLogin(@Valid @RequestBody Login login, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
+                Result result = new Result();
+                result.setCode(304);
+                result.setMsg(error.getDefaultMessage());
+                return result;
             }
         }
         return personalService.login(login, session);
@@ -45,11 +48,14 @@ public class PersonalController {
 
     //个人注册
     @RequestMapping(value = "/personal/register", method = RequestMethod.POST)
-    public String insertPerson(@Valid @RequestBody TpPersonal tpPersonal, TpFile tpFile, BindingResult bindingResult) {
+    public Result<TpPersonal> insertPerson(@Valid @RequestBody TpPersonal tpPersonal, TpFile tpFile, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
+                Result result = new Result();
+                result.setCode(303);
+                result.setMsg(error.getDefaultMessage());
+                return result;
             }
         }
         return personalService.insertPerson(tpPersonal, tpFile);
@@ -57,15 +63,17 @@ public class PersonalController {
 
     //个人密码修改
     @PostMapping(value = "/personal/modifyPass")
-    public String modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
+    public Result<Password> modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
+                Result result = new Result();
+                result.setCode(300);
+                result.setMsg(error.getDefaultMessage());
+                return result;
             }
         }
-        String result = personalService.updatePersonalPass(password, session);
-        return result;
+        return personalService.updatePersonalPass(password, session);
     }
 
     //个人重置密码（真实姓名、邮箱、电话）
@@ -81,16 +89,19 @@ public class PersonalController {
         return result;
     }
 
-    //个人信息修改
+    //完善个人信息
     @RequestMapping(value = "/personal/modifyPerson", method = RequestMethod.POST)
-    public String modifyPerson(@Valid @RequestBody Personal person, BindingResult bindingResult, HttpSession session) {
+    public Result<TpPersonal> modifyPerson(@Valid @RequestBody TpPersonal tpPersonal, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
+                Result result = new Result();
+                result.setCode(301);
+                result.setMsg(error.getDefaultMessage());
+                return result;
             }
         }
-        return personalService.updatePersonByName(person, session);
+        return personalService.updatePersonByName(tpPersonal, session);
     }
 
     //发布个人信息、、接受Json格式的参数 Content-Type:application/json
@@ -101,38 +112,38 @@ public class PersonalController {
 
     //修改已发布的信息
     @PostMapping(value = "/personal/modifyInfo")
-    public void updateInfoById(@RequestBody TpPersonInfo tpPersonInfo) {
-        personalService.updateInfo(tpPersonInfo);
+    public Result<TpPersonInfo> updateInfoById(@RequestBody TpPersonInfo tpPersonInfo) {
+        return personalService.updateInfo(tpPersonInfo);
     }
 
     //删除已发布的个人信息
     @RequestMapping(value = "/personal/delInfo")
-    public String delInfo(@RequestBody PersonInfo personInfo) {
+    public Result<PersonInfo> delInfo(@RequestBody PersonInfo personInfo) {
         return personalService.delInfo(personInfo);
     }
 
     //查询个人发布的信息,可以单条件查询，也可以多条件组合查询
     @PostMapping(value = "/personal/selectInfo")
-    public List<TpPersonInfo> selectInfos(@RequestBody PersonInfo personInfo) {
-        List<TpPersonInfo> tpPersonInfos = personalService.selectInfos(personInfo);
+    public Result<TpPersonInfo> selectInfos(@RequestBody PersonInfo personInfo) {
+        Result<TpPersonInfo> tpPersonInfos = personalService.selectInfos(personInfo);
         return tpPersonInfos;
     }
 
     //通过ID查询一条信息
     @PostMapping(value = "/personal/selectInfoById")
-    public TpPersonInfo selectInfoById(@RequestBody PersonInfo personInfo) {
+    public Result<TpPersonInfo> selectInfoById(@RequestBody PersonInfo personInfo) {
         return personalService.selectInfoById(personInfo);
     }
 
     //查询最新五条信息
     @RequestMapping(value = "/personal/latest")
-    public List<TpPersonInfo> selectLatestFive(@Param("amount") Integer amount) {
-        List<TpPersonInfo> tpPersonInfos = personalService.selectLatest(amount);
+    public Result<TpPersonInfo> selectLatestFive(@Param("amount") Integer amount) {
+        Result<TpPersonInfo> tpPersonInfos = personalService.selectLatest(amount);
         return tpPersonInfos;
     }
 
     //发送激活账户邮件
-    @RequestMapping(value = "/personal/sendMail")
+    @PostMapping(value = "/personal/sendMail")
     public void sendMail(@RequestBody CheckMail checkMail) throws Exception {
         personalService.sendMail(checkMail);
     }

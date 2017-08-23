@@ -49,8 +49,8 @@ public interface PersonalMapper {
     @Update("update tp_personal set password = #{password} where name = #{name}")
     void updatePassword(Password password);
 
-    @Update("update tp_personal set real_Name = #{realName},tel= #{tel},email = #{email} where name =#{name}")
-    void updatePersonByName(Personal person);
+    @Update("update tp_personal set real_Name = #{realName},tel= #{tel},id_card = #{idCard},location = #{location},gender = #{gender} where name =#{name}")
+    void updatePersonByName(TpPersonal tpPersonal);
 
     @Update("update tp_personal set status = #{status} where name = #{name}")
     void updateStatus(TpPersonal tpPersonal);

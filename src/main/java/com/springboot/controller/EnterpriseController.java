@@ -132,7 +132,7 @@ public class EnterpriseController {
     }
 
     //发送激活账户邮件
-    @RequestMapping(value = "/enterprise/sendMail")
+    @PostMapping(value = "/enterprise/sendMail")
     public void sendMail(@RequestBody CheckMail checkMail) throws Exception {
         enterpriseService.sendMail(checkMail);
     }

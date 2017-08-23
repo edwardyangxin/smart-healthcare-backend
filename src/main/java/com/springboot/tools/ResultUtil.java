@@ -1,6 +1,7 @@
 package com.springboot.tools;
 
 import com.springboot.domain.Result;
+import com.springboot.enums.ResultEnum;
 
 public class ResultUtil {
 
@@ -16,10 +17,17 @@ public class ResultUtil {
         return success(null);
     }
 
-    public static Result error(Integer code, String msg) {
+    public static Result error(ResultEnum resultEnum) {
         Result result = new Result();
-        result.setCode(code);
-        result.setMsg(msg);
+        result.setCode(resultEnum.getCode());
+        result.setMsg(resultEnum.getMsg());
+        return result;
+    }
+
+    public static Result success(ResultEnum resultEnum) {
+        Result result = new Result();
+        result.setCode(resultEnum.getCode());
+        result.setMsg(resultEnum.getMsg());
         return result;
     }
 }

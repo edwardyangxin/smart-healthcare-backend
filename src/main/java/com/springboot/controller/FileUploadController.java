@@ -45,7 +45,6 @@ public class FileUploadController {
                 .body(file);
     }
 
-
     @PostMapping("/uploadPicture")
     @ResponseBody
     public ControllerResponse handlePictureUpload(@RequestParam("file") MultipartFile file,

@@ -6,6 +6,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
@@ -17,7 +18,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class TpServiceProvider {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @NotEmpty(message = "供应商名不能为空！")
@@ -35,7 +36,6 @@ public class TpServiceProvider {
     @NotEmpty(message = "所在城市不能为空！")
     @NotNull(message = "所在城市不能为空！")
     private String city;
-
     private String businessLicense;
 
     private String legalRepresentative;
@@ -47,18 +47,14 @@ public class TpServiceProvider {
     private String tel;
 
     private Integer userId;
-
     private Integer enterpriseId;
 
     private Boolean status;
-
     private String activeCode;
-
     private String industy;
 
     @NotEmpty(message = "邮箱不能为空！")
     @NotNull(message = "邮箱不能为空！")
     private String email;
-
 
 }

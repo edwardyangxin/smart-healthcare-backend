@@ -74,42 +74,53 @@ public class IndexServiceImpl implements IndexService {
 
         switch (category) {
             case "personal":
-                TpPersonal tpPersonal = personalMapper.selectByName(registerName);
-                if (tpPersonal == null) {
-                    personalMapper.newPerson(register);
-                    personalMapper.newTpFile(tpFile);
-                    log.info("个人用户"+registerName+"注册成功！");
-                    return ResultUtil.success(ResultEnum.REGISTER_SUCCESS);
-                } else {
-                    log.info("个人用户"+registerName+"已存在！");
-                    return ResultUtil.error(ResultEnum.EXIST_ERROR);
-                }
+                return insertPersonal(registerName, register, tpFile);
             case "enterprise":
-                TpEnterprise tpEnterprise = enterpriseMapper.selectByName(registerName);
-                if (tpEnterprise == null) {
-                    enterpriseMapper.newEnterprise(register);
-                    personalMapper.newTpFile(tpFile);
-                    log.info("企业用户"+registerName+"注册成功！");
-                    return ResultUtil.success(ResultEnum.REGISTER_SUCCESS);
-                } else {
-                    log.info("企业用户"+registerName+"已存在！");
-                    return ResultUtil.error(ResultEnum.EXIST_ERROR);
-                }
+                return insertEnterprise(registerName, register, tpFile);
             case "serviceProvider":
-                TpServiceProvider tpServiceProvider = serviceProviderMapper.selectByName(registerName);
-                if (tpServiceProvider == null) {
-                    serviceProviderMapper.newServiceProvider(register);
-                    personalMapper.newTpFile(tpFile);
-                    log.info("供应商用户"+registerName+"注册成功！");
-                    return ResultUtil.success(ResultEnum.REGISTER_SUCCESS);
-                } else {
-                    log.info("供应商"+registerName+"已存在！");
-                    return ResultUtil.error(ResultEnum.EXIST_ERROR);
-                }
+                return insertServiceProvider(registerName, register, tpFile);
             default:
                 log.info("匹配用户类型时出现错误！");
                 return ResultUtil.error(ResultEnum.MATCHING_USER_TYPE_ERRPR);
         }
+    }
 
+    public Result insertPersonal(String registerName, Register register, TpFile tpFile) {
+        TpPersonal tpPersonal = personalMapper.selectByName(registerName);
+        if (tpPersonal == null) {
+            personalMapper.newPerson(register);
+            personalMapper.newTpFile(tpFile);
+            log.info("个人用户" + registerName + "注册成功！");
+            return ResultUtil.success(ResultEnum.REGISTER_SUCCESS);
+        } else {
+            log.info("个人用户" + registerName + "已存在！");
+            return ResultUtil.error(ResultEnum.EXIST_ERROR);
+        }
+    }
+
+    public Result insertEnterprise(String registerName, Register register, TpFile tpFile) {
+        TpEnterprise tpEnterprise = enterpriseMapper.selectByName(registerName);
+        if (tpEnterprise == null) {
+            enterpriseMapper.newEnterprise(register);
+            personalMapper.newTpFile(tpFile);
+            log.info("企业用户" + registerName + "注册成功！");
+            return ResultUtil.success(ResultEnum.REGISTER_SUCCESS);
+        } else {
+            log.info("企业用户" + registerName + "已存在！");
+            return ResultUtil.error(ResultEnum.EXIST_ERROR);
+        }
+    }
+
+    public Result insertServiceProvider(String registerName, Register register, TpFile tpFile) {
+        TpServiceProvider tpServiceProvider = serviceProviderMapper.selectByName(registerName);
+        if (tpServiceProvider == null) {
+            serviceProviderMapper.newServiceProvider(register);
+            personalMapper.newTpFile(tpFile);
+            log.info("供应商用户" + registerName + "注册成功！");
+            return ResultUtil.success(ResultEnum.REGISTER_SUCCESS);
+        } else {
+            log.info("供应商" + registerName + "已存在！");
+            return ResultUtil.error(ResultEnum.EXIST_ERROR);
+        }
     }
 }

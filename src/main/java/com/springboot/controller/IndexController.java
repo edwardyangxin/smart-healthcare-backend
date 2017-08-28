@@ -61,6 +61,61 @@ public class IndexController {
         return indexService.logout(session);
     }
 
+
+@Override
+    public String insertPerson(Register register, TpFile tpFile, HttpServletRequest request, HttpServletResponse response) {
+
+        register.setActiveCode(UUID.randomUUID().toString().replaceAll("-", ""));
+        register.setStatus(false);
+        tpFile.setName(register.getName());
+        tpFile.setUuid(register.getActiveCode());
+        tpFile.setPicturePath("http://localhost:8080/translate/pictures/default.jpg");
+        String category = register.getCategory();
+        String registerName = register.getName();
+        String clientCode=register.getClientCode();
+
+        HttpSession session = request.getSession();
+        String serverCode = (String) session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=UTF-8");
+        if (clientCode != null && clientCode.equalsIgnoreCase(serverCode)) {
+            if (category.equals("personal")) {
+                TpPersonal tpPersonal = personalMapper.selectByName(registerName);
+                if (tpPersonal == null) {
+                    personalMapper.newPerson(register);
+                    personalMapper.newTpFile(tpFile);
+                    return "注册成功！";
+                } else {
+                    return "用户" + tpPersonal.getName() + "已存在！";
+                }
+            } else if (category.equals("enterprise")) {
+                TpEnterprise tpEnterprise = enterpriseMapper.selectByName(registerName);
+                if (tpEnterprise == null) {
+                    enterpriseMapper.newEnterprise(register);
+                    personalMapper.newTpFile(tpFile);
+                    return "注册成功！";
+                } else {
+                    return "用户" + tpEnterprise.getName() + "已存在！";
+                }
+            } else if (category.equals("serviceProvider")) {
+                TpServiceProvider tpServiceProvider = serviceProviderMapper.selectByName(registerName);
+                if (tpServiceProvider == null) {
+                    serviceProviderMapper.newServiceProvider(register);
+                    personalMapper.newTpFile(tpFile);
+                    return "注册成功！";
+                } else {
+                    return "用户" + tpServiceProvider.getName() + "已存在！";
+                }
+            } else {
+                return "请选择用户类别。";
+            }
+        } else {
+            return "Kaptcha_error";
+        }
+
+
+    }
+    
     /**
      * 获取验证码图片
      */

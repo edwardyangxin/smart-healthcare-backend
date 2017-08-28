@@ -3,9 +3,10 @@ package com.springboot.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
-import com.springboot.domain.TpFile;
+import com.springboot.domain.Result;
 import com.springboot.dto.Register;
 import com.springboot.service.IndexService;
+import com.springboot.tools.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -45,15 +46,15 @@ public class IndexController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String insertPerson(@Valid @RequestBody Register register, TpFile tpFile, HttpServletRequest request, HttpServletResponse response, BindingResult bindingResult) {
+    @PostMapping(value = "/register")
+    public Result insertUser(@Valid @RequestBody Register register, BindingResult bindingResult ,HttpServletRequest request, HttpServletResponse response ) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
+                return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return indexService.insertPerson(register, tpFile, request, response);
+        return indexService.insertUser(register, request, response);
     }
 
     @RequestMapping(value = "/logout")

@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,7 +14,7 @@ import javax.validation.constraints.Size;
 public class Register {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @NotEmpty(message = "用户姓名不能为空！")
@@ -30,11 +31,15 @@ public class Register {
     @Email(message = "邮箱地址不符合规范！")
     private String email;
 
+    //是否激活邮箱
     private Boolean status;
 
+    //激活码
     private String activeCode;
 
+    //类别
     private String category;
 
+    //图片验证码
     private String clientCode;
 }

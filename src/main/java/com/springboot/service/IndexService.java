@@ -1,7 +1,7 @@
 package com.springboot.service;
 
 
-import com.springboot.domain.TpFile;
+import com.springboot.domain.Result;
 import com.springboot.dto.Register;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +15,6 @@ public interface IndexService {
 
     String logout(HttpSession session);
 
-    String insertPerson(Register register, TpFile tpFile, HttpServletRequest request, HttpServletResponse response);
+    Result insertUser(Register register, HttpServletRequest request, HttpServletResponse response);
 
 }

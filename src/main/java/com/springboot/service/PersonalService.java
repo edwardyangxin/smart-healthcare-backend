@@ -14,8 +14,6 @@ import java.util.List;
  */
 public interface PersonalService {
 
-    Result<Login> login(Login login, HttpSession session);
-
     TpPersonal selectByName(String name);
 
     Result<TpPersonal> insertPerson(TpPersonal tpPersonal, TpFile tpFile);

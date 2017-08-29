@@ -3,7 +3,6 @@ package com.springboot.domain;
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,6 +47,8 @@ public class TpEnterprise {
     private Boolean status;
 
     private String activeCode;
+
+    private String uuid;
 
     @NotEmpty(message = "邮箱地址不能为空！")
     @NotNull(message = "邮箱地址不能为空！")

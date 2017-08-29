@@ -4,7 +4,10 @@ import com.springboot.domain.Result;
 import com.springboot.domain.TpEnterprise;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpFile;
-import com.springboot.dto.*;
+import com.springboot.dto.CheckMail;
+import com.springboot.dto.EnterpriseProject;
+import com.springboot.dto.EnterpriseResetPass;
+import com.springboot.dto.Password;
 import com.springboot.mapper.EnterpriseMapper;
 import com.springboot.service.EnterpriseService;
 import com.springboot.tools.ResultUtil;
@@ -19,7 +22,6 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Administrator on 2017/7/12.
@@ -40,31 +42,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
-    public String login(Login login, HttpSession session) {
-        TpEnterprise tpEnterprise = enterpriseMapper.selectByName(login.getName());
-        Boolean status = tpEnterprise.getStatus();
-        String result;
-        if (status == true) {
-            if (tpEnterprise != null) {
-                if (!tpEnterprise.getPassword().equals(login.getPassword())) {
-                    result = "密码错误";
-                } else {
-                    result = "登录成功";
-                }
-            } else {
-                result = "该企业用户不存在";
-            }
-            if (result.equals("登录成功")) {
-                //添加用户信息到session中
-                session.setAttribute("name", login.getName());
-            }
-        } else {
-            result = "您的账户尚未激活。";
-        }
-        return result;
-    }
-
-    @Override
     public TpEnterprise selectEnterpriseByName(HttpSession session) {
         try {
             String name = session.getAttribute("name").toString();
@@ -77,22 +54,10 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
-    public TpEnterprise selectByName(String name) {
-        return enterpriseMapper.selectByName(name);
+    public TpEnterprise selectAllByName(String name) {
+        return enterpriseMapper.selectAllByName(name);
     }
 
-    @Override
-    public String insertEnterprise(TpEnterprise tpEnterprise) {
-        TpEnterprise tpEnterprise1 = enterpriseMapper.selectByName(tpEnterprise.getName());
-        tpEnterprise.setActiveCode(UUID.randomUUID().toString());
-        tpEnterprise.setStatus(false);
-        if (tpEnterprise1 == null) {
-            enterpriseMapper.insertEnterprise(tpEnterprise);
-            return "注册成功！";
-        } else {
-            return "用户" + tpEnterprise1.getName() + "已存在！";
-        }
-    }
 
     @Override
     public String updateEnterpriseByName(TpEnterprise tpEnterprise, HttpSession session) {
@@ -135,7 +100,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
     @Override
     public String resetEnterprisePass(EnterpriseResetPass enterpriseResetPass) {
-        TpEnterprise tpEnterprise = enterpriseMapper.selectByName(enterpriseResetPass.getName());
+        TpEnterprise tpEnterprise = enterpriseMapper.selectAllByName(enterpriseResetPass.getName());
         if (tpEnterprise != null) {
             if (enterpriseResetPass.getTel().equals(tpEnterprise.getTel())) {
                 enterpriseMapper.resetPass(enterpriseResetPass);
@@ -225,7 +190,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
    @Override
     public void sendMail(CheckMail checkMail) throws Exception {
         String name = checkMail.getName();
-        TpEnterprise tpEnterprise = this.selectByName(name);
+        TpEnterprise tpEnterprise = this.selectAllByName(name);
         String activeCode = tpEnterprise.getActiveCode();
         String email = tpEnterprise.getEmail();
 
@@ -255,7 +220,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     public String emailCheck(CheckMail checkMail) {
         String name = checkMail.getName();
         String activeCode = checkMail.getActiveCode();
-        TpEnterprise tpEnterprise = this.selectByName(name);
+        TpEnterprise tpEnterprise = this.selectAllByName(name);
         String tpName = tpEnterprise.getName();
         String tpActiveCode = tpEnterprise.getActiveCode();
         Boolean status = tpEnterprise.getStatus();

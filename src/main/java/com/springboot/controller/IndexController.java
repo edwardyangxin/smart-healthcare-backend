@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import com.springboot.domain.Result;
+import com.springboot.dto.Login;
 import com.springboot.dto.Register;
 import com.springboot.service.IndexService;
 import com.springboot.tools.ResultUtil;
@@ -58,13 +59,9 @@ public class IndexController {
         return indexService.insertUser(register, request, response);
     }
 
-
-
-
-
- /*  @ResponseBody
+    @ResponseBody
     @PostMapping(value = "/login")
-    public Result login(@Valid @RequestBody Login login, BindingResult bindingResult,HttpServletRequest request ) {
+    public Result login(@Valid @RequestBody Login login, BindingResult bindingResult, HttpServletRequest request ) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
@@ -72,7 +69,7 @@ public class IndexController {
             }
         }
         return indexService.login(login,request);
-    }*/
+    }
 
     @RequestMapping(value = "/logout")
     public String serviceProviderLogout(HttpSession session) {

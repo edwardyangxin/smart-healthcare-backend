@@ -3,10 +3,7 @@ package com.springboot.mapper;
 import com.springboot.domain.TpEnterprise;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpFile;
-import com.springboot.dto.EnterpriseProject;
-import com.springboot.dto.EnterpriseResetPass;
-import com.springboot.dto.Password;
-import com.springboot.dto.Register;
+import com.springboot.dto.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -32,6 +29,15 @@ public interface EnterpriseMapper {
     @Select("select name,contact,tel,city from tp_enterprise where name=#{name}")
     TpEnterprise selectEnterpriseByName(String name);
 
+    @Select("select password,status,uuid  from tp_enterprise where name=#{name}")
+    @Results({
+            @Result(column = "active_code", property = "activeCode"),
+            @Result(column = "business_license", property = "businessLicense"),
+            @Result(column = "legal_representative", property = "legalRepresentative"),
+            @Result(column = "icon_address", property = "iconAddress"),
+    })
+    LoginReturn selectByName(@Param("name") String name);
+
     @Select("select * from tp_enterprise where name=#{name}")
     @Results({
             @Result(column = "active_code", property = "activeCode"),
@@ -39,7 +45,7 @@ public interface EnterpriseMapper {
             @Result(column = "legal_representative", property = "legalRepresentative"),
             @Result(column = "icon_address", property = "iconAddress"),
     })
-    TpEnterprise selectByName(@Param("name") String name);
+    TpEnterprise selectAllByName(@Param("name") String name);
 
     @Update("update tp_enterprise set city = #{city},tel= #{tel},business_license = #{businessLicense},contact = #{contact},industry = #{industry},legal_representative = #{legalRepresentative} where name =#{name}")
     void updateEnterpriseByName(TpEnterprise tpEnterprise);

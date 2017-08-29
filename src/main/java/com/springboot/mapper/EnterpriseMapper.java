@@ -71,7 +71,7 @@ public interface EnterpriseMapper {
     })
     List<TpEnterpriseProject> selectProjects(EnterpriseProject enterpriseProject);
 
-    @Select("select * from tp_enterprise_project order by register_time desc limit 4")
+    @Select("select * from tp_enterprise_project where service_provider=false order by register_time desc limit #{amount}")
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
             @Result(column = "work_type", property = "workType"),
@@ -82,7 +82,7 @@ public interface EnterpriseMapper {
             @Result(column = "click_amount", property = "clickAmount"),
             @Result(column = "icon_address", property = "iconAddress")
     })
-    List<TpEnterpriseProject> selectLatest();
+    List<TpEnterpriseProject> selectEnterpriseInfoLatestAmount(@Param("amount") Integer amount);
 
     @Select("select * from tp_enterprise_project where id = #{id}")
     @Results({

@@ -45,6 +45,7 @@ public class IndexController {
         return "index";
     }
 
+    //注册接口
     @ResponseBody
     @PostMapping(value = "/register")
     public Result insertUser(@Valid @RequestBody Register register, BindingResult bindingResult ,HttpServletRequest request, HttpServletResponse response ) {
@@ -56,6 +57,22 @@ public class IndexController {
         }
         return indexService.insertUser(register, request, response);
     }
+
+
+
+
+
+ /*  @ResponseBody
+    @PostMapping(value = "/login")
+    public Result login(@Valid @RequestBody Login login, BindingResult bindingResult,HttpServletRequest request ) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return indexService.login(login,request);
+    }*/
 
     @RequestMapping(value = "/logout")
     public String serviceProviderLogout(HttpSession session) {

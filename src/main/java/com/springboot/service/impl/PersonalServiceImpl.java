@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import sun.rmi.runtime.Log;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
@@ -215,8 +214,9 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
-    public Result<TpPersonInfo> selectLatest(Integer amount) {
-        List<TpPersonInfo> tpPersonInfos = personalMapper.selectLatest(amount);
+    public Result<List<TpPersonInfo>> selectPersonInfoLatestAmount(Integer amount) {
+        List<TpPersonInfo> tpPersonInfos = personalMapper.selectPersonInfoLatestAmount(amount);
+        log.info("查询了个人发布的最新"+amount+"条信息！");
         return ResultUtil.success(tpPersonInfos);
     }
 

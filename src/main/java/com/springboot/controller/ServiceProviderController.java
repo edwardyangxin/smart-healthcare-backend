@@ -1,10 +1,14 @@
 package com.springboot.controller;
 
+import com.springboot.domain.Result;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpPersonInfo;
-import com.springboot.domain.TpServiceProvider;
-import com.springboot.dto.*;
+import com.springboot.dto.CheckMail;
+import com.springboot.dto.Password;
+import com.springboot.dto.ServiceProvider;
+import com.springboot.dto.ServiceProviderResetPass;
 import com.springboot.service.ServiceProviderService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -12,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,29 +32,24 @@ public class ServiceProviderController {
         this.serviceProviderService = serviceProviderService;
     }
 
-    //供应商登录
-    @PostMapping(value = "/serviceProvider/login")
-    public String serviceProviderLogin(@Valid @RequestBody Login login, BindingResult bindingResult, HttpSession session) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        return serviceProviderService.login(login, session);
+    //根据amount的值 查询供应商最新发布的几条“个人信息”
+    @RequestMapping(value = "/serviceProvider/person_latest")
+    public Result<List<TpPersonInfo>> selectPersonInfoLatestAmount(@Param("amount") Integer amount) {
+        return serviceProviderService.selectPersonInfoLatestAmount(amount);
     }
 
-    //供应商注册
-    @RequestMapping(value = "/serviceProvider/register", method = RequestMethod.POST)
-    public String insertServiceProvider(@Valid @RequestBody TpServiceProvider serviceProvider, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        return serviceProviderService.insertServiceProvider(serviceProvider);
+    //根据amount的值查询供应商最新发布的几条“企业信息”
+    @RequestMapping(value = "/serviceProvider/enterprise_latest")
+    public Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(@Param("amount") Integer amount) {
+        return serviceProviderService.selectEnterpriseInfoLatestAmount(amount);
     }
+
+
+
+
+
+
+
 
     //供应商密码修改，需登录后，传入name.password,newpassword,retypePassword
     @PostMapping(value = "/serviceProvider/modifyPass")
@@ -102,18 +100,8 @@ public class ServiceProviderController {
         return serviceProviderService.updateServiceProviderByName(serviceProvider);
     }
 
-    //查询最新四条信息
-    @RequestMapping(value = "/serviceProvider/infolatest")
-    public List<TpPersonInfo> selectInfoLatestFive() {
-        List<TpPersonInfo> tpPersonInfos = serviceProviderService.selectInfoLatest();
-        return tpPersonInfos;
-    }
-    //查询最新四条项目信息
-    @RequestMapping(value = "/serviceProvider/projectlatest")
-    public List<TpEnterpriseProject> selectProjectLatestFive() {
-        List<TpEnterpriseProject> tpEnterpriseProjects = serviceProviderService.selectProjectLatest();
-        return tpEnterpriseProjects;
-    }
+
+
 
     //发送激活账户邮件
     @RequestMapping(value = "/serviceProvider/sendMail")

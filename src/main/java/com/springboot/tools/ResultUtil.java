@@ -9,8 +9,8 @@ public class ResultUtil {
         Result result = new Result();
         result.setCode(200);
         result.setMsg("success");
-        result.setData(object);
         result.setABoolean(true);
+        result.setData(object);
         return result;
     }
 
@@ -37,8 +37,8 @@ public class ResultUtil {
     public static Result error(Object object) {
         Result result = new Result();
         //result.setCode(400);
-        result.setMsg(object);
         result.setABoolean(false);
+        result.setMsg(object);
         return result;
     }
 

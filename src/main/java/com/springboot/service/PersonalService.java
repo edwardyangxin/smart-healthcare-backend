@@ -13,6 +13,7 @@ import java.util.List;
  * Created by Administrator on 2017/7/12.
  */
 public interface PersonalService {
+
     Result<Login> login(Login login, HttpSession session);
 
     TpPersonal selectByName(String name);
@@ -35,7 +36,8 @@ public interface PersonalService {
 
     Result<TpPersonInfo> selectInfoById(PersonInfo personInfo);
 
-    Result<TpPersonInfo> selectLatest(Integer amount);
+    //根据amount的值查询个人最新发布的几条信息
+    Result<List<TpPersonInfo>> selectPersonInfoLatestAmount(Integer amount);
 
     void sendMail(CheckMail checkMail) throws Exception;
 

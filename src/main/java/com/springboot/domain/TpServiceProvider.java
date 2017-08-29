@@ -2,7 +2,6 @@ package com.springboot.domain;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -51,6 +50,7 @@ public class TpServiceProvider {
 
     private Boolean status;
     private String activeCode;
+    private String uuid;
     private String industy;
 
     @NotEmpty(message = "邮箱不能为空！")

@@ -14,9 +14,7 @@ import java.util.List;
  */
 public interface ServiceProviderService {
 
-    String login(Login login, HttpSession session);
-
-    TpServiceProvider selectByName(String name);
+    TpServiceProvider selectAllByName(String name);
 
     String updateServiceProviderByName(ServiceProvider serviceProvider);
 

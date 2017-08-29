@@ -3,6 +3,8 @@ package com.springboot.service.impl;
 
 import com.google.code.kaptcha.Constants;
 import com.springboot.domain.*;
+import com.springboot.dto.Login;
+import com.springboot.dto.LoginReturn;
 import com.springboot.dto.Register;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.EnterpriseMapper;
@@ -71,7 +73,9 @@ public class IndexServiceImpl implements IndexService {
         }
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=UTF-8");
-
+        if(category==null){
+            return ResultUtil.error(ResultEnum.NullPointerException);
+        }
         switch (category) {
             case "personal":
                 return insertPersonal(registerName, register, tpFile);
@@ -85,41 +89,58 @@ public class IndexServiceImpl implements IndexService {
         }
     }
 
-   /* @Override
-    public Result login(Login login,HttpServletRequest request){
-
-
+    @Override
+    public Result login(Login login, HttpServletRequest request) {
         String category = login.getCategory();
-        String name = login.getName();
-        String password  = login.getPassword();
-
-   *//*     try {
-            HttpSession session = request.getSession();
-            String uuid = session.getAttribute( "uuid").toString();
-            if (uuid == null || !clientCode.equalsIgnoreCase(serverCode)) {
-                log.info("");
-                return ResultUtil.error(ResultEnum.VERIFICATION_CODE_ERROE);
-            }
-        } catch (NullPointerException e) {
-            log.info("Session中的验证码为空！");
+        if(category==null){
             return ResultUtil.error(ResultEnum.NullPointerException);
-        }*//*
+        }
+        String name = login.getName();
+        HttpSession session = request.getSession();
+     /*   if (session.getAttribute("uuid").toString().length() == 0) {
+        } else {
+            return ResultUtil.error(ResultEnum.Repeat_login_Error);
+        }*/
         switch (category) {
             case "personal":
-                return insertPersonal(login);
+                LoginReturn loginReturnPersonal = personalMapper.selectByName(name);
+                return userLogin(loginReturnPersonal, login, session);
             case "enterprise":
-                return insertEnterprise(login);
+                LoginReturn loginReturnEnterprise = enterpriseMapper.selectByName(name);
+                return userLogin(loginReturnEnterprise, login, session);
             case "serviceProvider":
-                return insertServiceProvider(registerName, register);
+                LoginReturn loginReturnServiceProvider = serviceProviderMapper.selectByName(name);
+                return userLogin(loginReturnServiceProvider, login, session);
             default:
                 log.info("匹配用户类型时出现错误！");
                 return ResultUtil.error(ResultEnum.MATCHING_USER_TYPE_ERRPR);
         }
-    }*/
+    }
 
+    public Result userLogin(LoginReturn loginReturn, Login login, HttpSession session) {
+        if (loginReturn == null) {
+            log.info("用户"+login.getName()+"不存在！");
+            return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
+        } else {
+            if (loginReturn.getStatus()== true) {
+                if (loginReturn.getPassword().equals(login.getPassword())) {
+                    session.setAttribute("name", login.getName());
+                    session.setAttribute("uuid", loginReturn.getUuid());
+                    log.info("用户"+login.getName()+"登陆成功！");
+                    return ResultUtil.success(ResultEnum.LOGIN_SUCCESS);
+                } else {
+                    log.info("用户"+login.getName()+"密码输入错误！");
+                    return ResultUtil.error(ResultEnum.PASSWORD_ERROR);
+                }
+            } else {
+                log.info("用户"+login.getName()+"没有激活邮箱！");
+                return ResultUtil.error(ResultEnum.NOT_ACTIVE_ERROR);
+            }
+        }
+    }
 
     public Result insertPersonal(String registerName, Register register, TpFile tpFile) {
-        TpPersonal tpPersonal = personalMapper.selectByName(registerName);
+        LoginReturn tpPersonal = personalMapper.selectByName(registerName);
         if (tpPersonal == null) {
             personalMapper.newPerson(register);
             personalMapper.newTpFile(tpFile);
@@ -132,7 +153,7 @@ public class IndexServiceImpl implements IndexService {
     }
 
     public Result insertEnterprise(String registerName, Register register, TpFile tpFile) {
-        TpEnterprise tpEnterprise = enterpriseMapper.selectByName(registerName);
+        LoginReturn tpEnterprise = enterpriseMapper.selectByName(registerName);
         if (tpEnterprise == null) {
             enterpriseMapper.newEnterprise(register);
             personalMapper.newTpFile(tpFile);
@@ -145,7 +166,7 @@ public class IndexServiceImpl implements IndexService {
     }
 
     public Result insertServiceProvider(String registerName, Register register, TpFile tpFile) {
-        TpServiceProvider tpServiceProvider = serviceProviderMapper.selectByName(registerName);
+        LoginReturn tpServiceProvider = serviceProviderMapper.selectByName(registerName);
         if (tpServiceProvider == null) {
             serviceProviderMapper.newServiceProvider(register);
             personalMapper.newTpFile(tpFile);

@@ -2,6 +2,7 @@ package com.springboot.service;
 
 
 import com.springboot.domain.Result;
+import com.springboot.dto.Login;
 import com.springboot.dto.Register;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,6 @@ public interface IndexService {
 
     Result insertUser(Register register, HttpServletRequest request, HttpServletResponse response);
 
-   // Result login(Login login,HttpServletRequest request);
+    Result login(Login login, HttpServletRequest request);
 
 }

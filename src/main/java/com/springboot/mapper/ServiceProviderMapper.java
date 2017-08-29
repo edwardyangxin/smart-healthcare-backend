@@ -25,6 +25,18 @@ public interface ServiceProviderMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newServiceProvider(Register register);
 
+    @Select("select password,status,uuid  from tp_service_provider where name=#{name}")
+    @Results({
+            @Result(id = true, column = "description", property = "description"),
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "icon_address", property = "iconAddress"),
+            @Result(column = "enterprise_id", property = "enterpriseId"),
+            @Result(column = "active_code", property = "activeCode"),
+            @Result(column = "business_license", property = "businessLicense"),
+            @Result(column = "legal_representative", property = "legalRepresentative")
+    })
+    LoginReturn selectByName(@Param("name") String name);
+
     @Select("select * from tp_service_provider where name=#{name}")
     @Results({
             @Result(id = true, column = "description", property = "description"),
@@ -35,7 +47,7 @@ public interface ServiceProviderMapper {
             @Result(column = "business_license", property = "businessLicense"),
             @Result(column = "legal_representative", property = "legalRepresentative")
     })
-    TpServiceProvider selectByName(@Param("name") String name);
+    TpServiceProvider selectAllByName(@Param("name") String name);
 
     @Update("update tp_service_provider set city = #{city},contact=#{contact},tel=#{tel}  where name =#{name}")
     void updateServiceProviderByName(ServiceProvider serviceProvider);

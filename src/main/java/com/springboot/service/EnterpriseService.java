@@ -13,13 +13,9 @@ import java.util.List;
  */
 public interface EnterpriseService {
 
-    String login(Login login, HttpSession session);
-
     TpEnterprise selectEnterpriseByName(HttpSession session);
 
-    TpEnterprise selectByName(String name);
-
-    String insertEnterprise(TpEnterprise enterprise);
+    TpEnterprise selectAllByName(String name);
 
     String updateEnterpriseByName(TpEnterprise tpEnterprise, HttpSession session);
 

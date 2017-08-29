@@ -5,11 +5,15 @@ import com.springboot.domain.Result;
 import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
-import com.springboot.dto.*;
+import com.springboot.dto.CheckMail;
+import com.springboot.dto.Password;
+import com.springboot.dto.PersonInfo;
+import com.springboot.dto.PersonalResetPass;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.PersonalService;
 import com.springboot.tools.ResultUtil;
+import com.springboot.tools.UUIDTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +25,6 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Administrator on 2017/7/12.
@@ -41,38 +44,15 @@ public class PersonalServiceImpl implements PersonalService {
         this.javaMailSender = javaMailSender;
     }
 
-
-    @Override
-    public Result<Login> login(Login login, HttpSession session) {
-        TpPersonal tpPersonal = personalMapper.selectByName(login.getName());
-        if (tpPersonal != null) {
-            Boolean status = tpPersonal.getStatus();
-            if (status == true) {
-                if (!tpPersonal.getPassword().equals(login.getPassword())) {
-                    return ResultUtil.error(ResultEnum.PASSWORD_ERROR);
-                } else {
-                    //添加用户信息到session中
-                    session.setAttribute("name", login.getName());
-                    session.setAttribute("uuid", tpPersonal.getActiveCode());
-                    return ResultUtil.success(ResultEnum.LOGIN_SUCCESS);
-                }
-            } else {
-                return ResultUtil.error(ResultEnum.NOT_ACTIVE_ERROR);
-            }
-        } else {
-            return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
-        }
-    }
-
     @Override
     public TpPersonal selectByName(String name) {
-        return personalMapper.selectByName(name);
+        return personalMapper.selectAllByName(name);
     }
 
     @Override
     public Result<TpPersonal> insertPerson(TpPersonal tpPersonal, TpFile tpFile) {
-        TpPersonal tpPersonal1 = personalMapper.selectByName(tpPersonal.getName());
-        tpPersonal.setActiveCode(UUID.randomUUID().toString().replaceAll("-", ""));
+        TpPersonal tpPersonal1 = personalMapper.selectAllByName(tpPersonal.getName());
+        tpPersonal.setActiveCode(UUIDTool.getUuid());
         tpPersonal.setStatus(false);
         tpFile.setName(tpPersonal.getName());
         tpFile.setUuid(tpPersonal.getActiveCode());
@@ -216,7 +196,7 @@ public class PersonalServiceImpl implements PersonalService {
     @Override
     public Result<List<TpPersonInfo>> selectPersonInfoLatestAmount(Integer amount) {
         List<TpPersonInfo> tpPersonInfos = personalMapper.selectPersonInfoLatestAmount(amount);
-        log.info("查询了个人发布的最新"+amount+"条信息！");
+        log.info("查询了个人发布的最新" + amount + "条信息！");
         return ResultUtil.success(tpPersonInfos);
     }
 

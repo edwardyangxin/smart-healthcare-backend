@@ -36,34 +36,10 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         this.serviceProviderMapper = serviceProviderMapper;
         this.javaMailSender = javaMailSender;
     }
-    @Override
-    public String login(Login login, HttpSession session) {
-        TpServiceProvider tpServiceProvider = serviceProviderMapper.selectByName(login.getName());
-        Boolean status = tpServiceProvider.getStatus();
-        String result;
-        if (status == true) {
-            if (tpServiceProvider != null) {
-                if (!tpServiceProvider.getPassword().equals(login.getPassword())) {
-                    result = "密码错误";
-                } else {
-                    result = "登录成功";
-                }
-            } else {
-                result = "该个人用户不存在";
-            }
-            if (result.equals("登录成功")) {
-                //添加用户信息到session中
-                session.setAttribute("name", login.getName());
-            }
-        } else {
-            result = "您的账户尚未激活。";
-        }
-        return result;
-    }
 
     @Override
-    public TpServiceProvider selectByName(String name) {
-        return serviceProviderMapper.selectByName(name);
+    public TpServiceProvider selectAllByName(String name) {
+        return serviceProviderMapper.selectAllByName(name);
     }
 
 
@@ -102,7 +78,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 
     @Override
     public String resetServiceProviderPass(ServiceProviderResetPass serviceProviderResetPass) {
-        TpServiceProvider tpPersonal = serviceProviderMapper.selectByName(serviceProviderResetPass.getName());
+        TpServiceProvider tpPersonal = serviceProviderMapper.selectAllByName(serviceProviderResetPass.getName());
         if (tpPersonal != null) {
             if (serviceProviderResetPass.getEmail().equals(tpPersonal.getEmail())) {
                 if (serviceProviderResetPass.getTel().equals(tpPersonal.getTel())) {
@@ -167,7 +143,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     @Override
     public void sendMail(CheckMail checkMail) throws Exception {
         String name = checkMail.getName();
-        TpServiceProvider tpServiceProvider = this.selectByName(name);
+        TpServiceProvider tpServiceProvider = this.selectAllByName(name);
         String activeCode = tpServiceProvider.getActiveCode();
         String email = tpServiceProvider.getEmail();
 
@@ -197,7 +173,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     public String emailCheck(CheckMail checkMail) {
         String name = checkMail.getName();
         String activeCode = checkMail.getActiveCode();
-        TpServiceProvider tpServiceProvider = this.selectByName(name);
+        TpServiceProvider tpServiceProvider = this.selectAllByName(name);
         String tpName = tpServiceProvider.getName();
         String tpActiveCode = tpServiceProvider.getActiveCode();
         Boolean status = tpServiceProvider.getStatus();

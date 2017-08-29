@@ -15,7 +15,8 @@ public enum ResultEnum {
     DEL_ERROR(5,"此条信息不存在！"),
     VERIFICATION_CODE_ERROE(7,"请输入正确的验证码"),
     MATCHING_USER_TYPE_ERRPR(8,"匹配用户类型出现错误！"),
-    NullPointerException(9,"空指针异常"),
+    NullPointerException(9,"空指针异常！"),
+    Repeat_login_Error(10,"请勿重复登录！"),
 
     SUCCESS(200,"success"),
     DEL_SUCCESS(4,"删除信息成功！"),

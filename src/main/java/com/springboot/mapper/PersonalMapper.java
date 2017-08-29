@@ -109,7 +109,7 @@ public interface PersonalMapper {
     })
     TpPersonInfo selectInfoById(PersonInfo personInfo);
 
-    @Select("select* from tp_person_info order by register_time desc limit #{amount}")
+    @Select("select * from tp_person_info where service_provider=false order by register_time desc limit #{amount}")
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
             @Result(column = "translate_type", property = "translateType"),
@@ -121,7 +121,7 @@ public interface PersonalMapper {
             @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "click_amount", property = "clickAmount")
     })
-    List<TpPersonInfo> selectLatest(@Param("amount") Integer amount);
+    List<TpPersonInfo> selectPersonInfoLatestAmount(@Param("amount") Integer amount);
 
     @Select("select* from tp_file where name = #{name}")
     @Results({

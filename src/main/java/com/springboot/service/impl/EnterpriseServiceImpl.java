@@ -1,10 +1,13 @@
 package com.springboot.service.impl;
 
+import com.springboot.domain.Result;
+import com.springboot.domain.TpEnterprise;
+import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpFile;
-import com.springboot.domain.*;
 import com.springboot.dto.*;
 import com.springboot.mapper.EnterpriseMapper;
 import com.springboot.service.EnterpriseService;
+import com.springboot.tools.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -213,9 +216,10 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
-    public List<TpEnterpriseProject> selectLatest() {
-        List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseMapper.selectLatest();
-        return tpEnterpriseProjects;
+    public Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(Integer amount){
+        List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseMapper.selectEnterpriseInfoLatestAmount(amount);
+        log.info("查询了企业发布的最新"+amount+"条信息！");
+        return ResultUtil.success(tpEnterpriseProjects);
     }
 
    @Override

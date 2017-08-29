@@ -21,4 +21,7 @@ public class Login {
     @Size(min = 6, max = 16, message = "密码长度必须在6到16之间！")
     private String password;
 
+    //类别
+    private String category;
+
 }

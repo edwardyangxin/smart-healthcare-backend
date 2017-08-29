@@ -1,5 +1,6 @@
 package com.springboot.service;
 
+import com.springboot.domain.Result;
 import com.springboot.domain.TpEnterprise;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.dto.*;
@@ -36,7 +37,8 @@ public interface EnterpriseService {
 
     TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject);
 
-    List<TpEnterpriseProject> selectLatest();
+    //根据amount的值查询企业最新发布的几条信息
+    Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(Integer amount);
 
     void sendMail(CheckMail checkMail) throws Exception;
 

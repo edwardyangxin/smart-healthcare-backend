@@ -85,6 +85,39 @@ public class IndexServiceImpl implements IndexService {
         }
     }
 
+   /* @Override
+    public Result login(Login login,HttpServletRequest request){
+
+
+        String category = login.getCategory();
+        String name = login.getName();
+        String password  = login.getPassword();
+
+   *//*     try {
+            HttpSession session = request.getSession();
+            String uuid = session.getAttribute( "uuid").toString();
+            if (uuid == null || !clientCode.equalsIgnoreCase(serverCode)) {
+                log.info("");
+                return ResultUtil.error(ResultEnum.VERIFICATION_CODE_ERROE);
+            }
+        } catch (NullPointerException e) {
+            log.info("Session中的验证码为空！");
+            return ResultUtil.error(ResultEnum.NullPointerException);
+        }*//*
+        switch (category) {
+            case "personal":
+                return insertPersonal(login);
+            case "enterprise":
+                return insertEnterprise(login);
+            case "serviceProvider":
+                return insertServiceProvider(registerName, register);
+            default:
+                log.info("匹配用户类型时出现错误！");
+                return ResultUtil.error(ResultEnum.MATCHING_USER_TYPE_ERRPR);
+        }
+    }*/
+
+
     public Result insertPersonal(String registerName, Register register, TpFile tpFile) {
         TpPersonal tpPersonal = personalMapper.selectByName(registerName);
         if (tpPersonal == null) {

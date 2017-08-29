@@ -1,5 +1,6 @@
 package com.springboot.service;
 
+import com.springboot.domain.Result;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpServiceProvider;
@@ -12,11 +13,10 @@ import java.util.List;
  * Created by Administrator on 2017/7/12.
  */
 public interface ServiceProviderService {
+
     String login(Login login, HttpSession session);
 
     TpServiceProvider selectByName(String name);
-
-    String insertServiceProvider(TpServiceProvider serviceProvider);
 
     String updateServiceProviderByName(ServiceProvider serviceProvider);
 
@@ -28,10 +28,11 @@ public interface ServiceProviderService {
 
     String newEnterpriseInfo(TpEnterpriseProject tpEnterpriseProject,HttpSession session);
 
-    List<TpPersonInfo> selectInfoLatest();
+    //根据amount的值查询供应商最新发布的几条“个人信息”
+    Result<List<TpPersonInfo>> selectPersonInfoLatestAmount(Integer amount);
 
-    List<TpEnterpriseProject> selectProjectLatest();
-
+    //根据amount的值查询供应商最新发布的几条“企业信息”
+    Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(Integer amount);
 
     void sendMail(CheckMail checkMail) throws Exception;
 

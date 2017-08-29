@@ -1,10 +1,12 @@
 package com.springboot.controller;
 
 import com.springboot.domain.Result;
-import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
-import com.springboot.dto.*;
+import com.springboot.dto.CheckMail;
+import com.springboot.dto.Password;
+import com.springboot.dto.PersonInfo;
+import com.springboot.dto.PersonalResetPass;
 import com.springboot.service.PersonalService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
 import java.util.List;
 
 /**
@@ -31,35 +32,15 @@ public class PersonalController {
         this.personalService = personalService;
     }
 
-    //个人登陆
-    @PostMapping(value = "/personal/login")
-    public Result<Login> personalLogin(@Valid @RequestBody Login login, BindingResult bindingResult, HttpSession session) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                Result result = new Result();
-                result.setCode(304);
-                result.setMsg(error.getDefaultMessage());
-                return result;
-            }
-        }
-        return personalService.login(login, session);
+    //根据amount的值查询个人最新发布的几条信息
+    @RequestMapping(value = "/personal/latest")
+    public Result<List<TpPersonInfo>> selectPersonInfoLatestAmount(@Param("amount") Integer amount) {
+        return personalService.selectPersonInfoLatestAmount(amount);
     }
 
-    //个人注册
-    @RequestMapping(value = "/personal/register", method = RequestMethod.POST)
-    public Result<TpPersonal> insertPerson(@Valid @RequestBody TpPersonal tpPersonal, TpFile tpFile, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                Result result = new Result();
-                result.setCode(303);
-                result.setMsg(error.getDefaultMessage());
-                return result;
-            }
-        }
-        return personalService.insertPerson(tpPersonal, tpFile);
-    }
+
+
+
 
     //个人密码修改
     @PostMapping(value = "/personal/modifyPass")
@@ -129,18 +110,19 @@ public class PersonalController {
         return tpPersonInfos;
     }
 
+
     //通过ID查询一条信息
     @PostMapping(value = "/personal/selectInfoById")
     public Result<TpPersonInfo> selectInfoById(@RequestBody PersonInfo personInfo) {
         return personalService.selectInfoById(personInfo);
     }
 
-    //查询最新五条信息
+ /*   //查询最新五条信息
     @RequestMapping(value = "/personal/latest")
     public Result<TpPersonInfo> selectLatestFive(@Param("amount") Integer amount) {
         Result<TpPersonInfo> tpPersonInfos = personalService.selectLatest(amount);
         return tpPersonInfos;
-    }
+    }*/
 
     //发送激活账户邮件
     @PostMapping(value = "/personal/sendMail")

@@ -10,9 +10,9 @@ public class Result<T> {
 
     private Integer code;
 
-    private boolean aBoolean;
-
     private T msg;
+
+    private boolean aBoolean;
 
     private T data;
 }

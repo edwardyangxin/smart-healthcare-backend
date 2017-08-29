@@ -1,23 +1,24 @@
 package com.springboot.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
+import com.springboot.domain.Result;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpServiceProvider;
 import com.springboot.dto.*;
 import com.springboot.mapper.ServiceProviderMapper;
 import com.springboot.service.ServiceProviderService;
+import com.springboot.tools.ResultUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.mail.javamail.JavaMailSender;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Administrator on 2017/7/12.
@@ -65,18 +66,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         return serviceProviderMapper.selectByName(name);
     }
 
-    @Override
-    public String insertServiceProvider(TpServiceProvider serviceProvider) {
-        TpServiceProvider tpServiceProvider = serviceProviderMapper.selectByName(serviceProvider.getName());
-        serviceProvider.setActiveCode(UUID.randomUUID().toString());
-        serviceProvider.setStatus(false);
-        if (tpServiceProvider == null) {
-            serviceProviderMapper.insertServiceProvider(serviceProvider);
-            return "注册成功！";
-        } else {
-            return "用户" + tpServiceProvider.getName() + "已存在！";
-        }
-    }
 
     @Override
     public String updateServiceProviderByName(ServiceProvider serviceProvider) {
@@ -160,20 +149,21 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         return "发布项目信息成功！";
     }
 
-
     @Override
-    public List<TpPersonInfo> selectInfoLatest() {
-        List<TpPersonInfo> tpPersonInfos;
-        tpPersonInfos = serviceProviderMapper.selectInfoLatest();
-        return tpPersonInfos;
+    public Result<List<TpPersonInfo>> selectPersonInfoLatestAmount(Integer amount) {
+        List<TpPersonInfo> tpPersonInfos = serviceProviderMapper.selectPersonInfoLatestAmount(amount);
+        log.info("查询了供应商最新发布的"+amount+"条个人信息！");
+        return ResultUtil.success(tpPersonInfos);
     }
 
     @Override
-    public List<TpEnterpriseProject> selectProjectLatest() {
-        List<TpEnterpriseProject> tpEnterpriseProjects;
-        tpEnterpriseProjects = serviceProviderMapper.selectProjectLatest();
-        return tpEnterpriseProjects;
+    public Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(Integer amount){
+        List<TpEnterpriseProject> tpEnterpriseProjects = serviceProviderMapper.selectEnterpriseInfoLatestAmount(amount);
+        log.info("查询了供应商最新发布的"+amount+"条企业信息！");
+        return ResultUtil.success(tpEnterpriseProjects);
     }
+
+
     @Override
     public void sendMail(CheckMail checkMail) throws Exception {
         String name = checkMail.getName();

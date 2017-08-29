@@ -58,7 +58,7 @@ public interface ServiceProviderMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newEnterpriseInfo(TpEnterpriseProject tpEnterpriseProject);
 
-    @Select("select * from tp_person_info where service_provider=true order by register_time desc limit 10")
+    @Select("select * from tp_person_info where service_provider=true order by register_time desc limit #{amount}")
     @Results({
             @Result(column = "service_provider", property = "serviceProvider"),
             @Result(column = "cooperation_type", property = "cooperationType"),
@@ -70,9 +70,9 @@ public interface ServiceProviderMapper {
             @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "click_amount", property = "clickAmount")
     })
-    List<TpPersonInfo> selectInfoLatest();
+    List<TpPersonInfo> selectPersonInfoLatestAmount(@Param("amount") Integer amount);
 
-    @Select("select * from tp_enterprise_project where service_provider=true order by register_time desc limit 10")
+    @Select("select * from tp_enterprise_project where service_provider=true order by register_time desc limit #{amount}")
     @Results({
             @Result(column = "service_provider", property = "serviceProvider"),
                     @Result(column = "cooperation_type", property = "cooperationType"),
@@ -84,7 +84,7 @@ public interface ServiceProviderMapper {
                     @Result(column = "click_amount", property = "clickAmount"),
                     @Result(column = "icon_address", property = "iconAddress")
     })
-    List<TpEnterpriseProject>  selectProjectLatest();
+    List<TpEnterpriseProject> selectEnterpriseInfoLatestAmount(@Param("amount") Integer amount);
 
     @Update("update tp_service_provider set status = #{status} where name = #{name}")
     void updateStatus(TpServiceProvider tpServiceProvider);

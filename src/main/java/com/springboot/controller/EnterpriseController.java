@@ -1,9 +1,14 @@
 package com.springboot.controller;
 
+import com.springboot.domain.Result;
 import com.springboot.domain.TpEnterprise;
 import com.springboot.domain.TpEnterpriseProject;
-import com.springboot.dto.*;
+import com.springboot.dto.CheckMail;
+import com.springboot.dto.EnterpriseProject;
+import com.springboot.dto.EnterpriseResetPass;
+import com.springboot.dto.Password;
 import com.springboot.service.EnterpriseService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -27,29 +32,13 @@ public class EnterpriseController {
         this.enterpriseService = enterpriseService;
     }
 
-    //企业登录
-    @PostMapping(value = "/enterprise/login")
-    public String enterpriseLogin(@Valid @RequestBody Login login, BindingResult bindingResult, HttpSession session) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        return enterpriseService.login(login, session);
+    //根据amount的值查询企业最新发布的几条信息
+    @RequestMapping(value = "/enterprise/latest")
+    public Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(@Param("amount") Integer amount) {
+        return enterpriseService.selectEnterpriseInfoLatestAmount(amount);
     }
 
-    //企业注册
-    @RequestMapping(value = "/enterprise/register", method = RequestMethod.POST)
-    public String insertEnterprise(@Valid @RequestBody TpEnterprise tpEnterprise, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        return enterpriseService.insertEnterprise(tpEnterprise);
-    }
+
 
     //企业密码修改
     @PostMapping(value = "/enterprise/modifyPass")
@@ -121,13 +110,6 @@ public class EnterpriseController {
     @PostMapping(value = "/enterprise/selectProject")
     public List<TpEnterpriseProject> selectProjects(@RequestBody EnterpriseProject enterpriseProject) {
         List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseService.selectProjects(enterpriseProject);
-        return tpEnterpriseProjects;
-    }
-
-    //查询企业最新发布的四条信息
-    @PostMapping(value = "/enterprise/latest")
-    public List<TpEnterpriseProject> selectLatestFour() {
-        List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseService.selectLatest();
         return tpEnterpriseProjects;
     }
 

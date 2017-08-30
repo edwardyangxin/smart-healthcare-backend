@@ -28,7 +28,7 @@ public class TpPersonal {
 
     private String email;
 
-    private String gender ;
+    private String gender;
 
     private String idCard;
 

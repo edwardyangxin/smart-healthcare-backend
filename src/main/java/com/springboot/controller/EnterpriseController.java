@@ -38,8 +38,6 @@ public class EnterpriseController {
         return enterpriseService.selectEnterpriseInfoLatestAmount(amount);
     }
 
-
-
     //企业密码修改
     @PostMapping(value = "/enterprise/modifyPass")
     public String modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {

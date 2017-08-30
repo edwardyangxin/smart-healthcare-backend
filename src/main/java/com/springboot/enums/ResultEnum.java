@@ -9,7 +9,7 @@ public enum ResultEnum {
     PASSWORDREPEAT_ERROR(2,"新密码与旧密码相同，请重新输入！"),
     DIFPASSWORD_ERROR(2,"两次输入的新密码不同，请重试！"),
     OLDPASSWORD_ERROR(2,"旧密码输入错误，请重试！"),
-    NOT_ACTIVE_ERROR(3,"您的账户尚未激活！"),
+    NOT_ACTIVE_ERROR(3,"您的账户尚未激活邮箱！"),
     EXIST_ERROR(6,"用户已存在！"),
     NOT_EXIST_ERROR(6,"用户不存在！"),
     DEL_ERROR(5,"此条信息不存在！"),

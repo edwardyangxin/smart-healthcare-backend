@@ -34,8 +34,8 @@ public class Register {
     //是否激活邮箱
     private Boolean status;
 
-    //激活码
-    private String activeCode;
+    //唯一识别UUID
+    private String uuid;
 
     //类别
     private String category;

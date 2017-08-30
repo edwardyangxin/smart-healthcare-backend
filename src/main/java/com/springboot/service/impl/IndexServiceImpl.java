@@ -48,12 +48,12 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public Result insertUser(Register register, HttpServletRequest request, HttpServletResponse response) {
 
-        register.setActiveCode(UUIDTool.getUuid());
+        register.setUuid(UUIDTool.getUuid());
         register.setStatus(false);
 
         TpFile tpFile = new TpFile();
         tpFile.setName(register.getName());
-        tpFile.setUuid(register.getActiveCode());
+        tpFile.setUuid(register.getUuid());
         tpFile.setPicturePath("http://localhost:8080/translate/pictures/default.jpg");
 
         String category = register.getCategory();
@@ -73,7 +73,7 @@ public class IndexServiceImpl implements IndexService {
         }
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=UTF-8");
-        if(category==null){
+        if (category == null) {
             return ResultUtil.error(ResultEnum.NullPointerException);
         }
         switch (category) {
@@ -92,51 +92,86 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public Result login(Login login, HttpServletRequest request) {
         String category = login.getCategory();
-        if(category==null){
+        if (category == null) {
             return ResultUtil.error(ResultEnum.NullPointerException);
         }
         String name = login.getName();
         HttpSession session = request.getSession();
-     /*   if (session.getAttribute("uuid").toString().length() == 0) {
-        } else {
-            return ResultUtil.error(ResultEnum.Repeat_login_Error);
-        }*/
+
         switch (category) {
             case "personal":
-                LoginReturn loginReturnPersonal = personalMapper.selectByName(name);
-                return userLogin(loginReturnPersonal, login, session);
+                try {
+                    if (session.getAttribute("personName").toString().equals(name)) {
+                        return ResultUtil.error(ResultEnum.Repeat_login_Error);
+                    }
+                } catch (NullPointerException e) {
+                }
+                LoginReturn loginReturnPerson = personalMapper.selectByName(name);
+                Result resultPerson = validateUser(loginReturnPerson, login);
+                if (resultPerson.getABoolean()) {
+                    session.setAttribute("personName", login.getName());
+                    session.setAttribute("personUuid", loginReturnPerson.getUuid());
+                    log.info("个人用户" + login.getName() + "登陆成功！");
+                    return ResultUtil.success(ResultEnum.LOGIN_SUCCESS);
+                }
+                return resultPerson;
             case "enterprise":
+                try {
+                    if (session.getAttribute("enterpriseName").toString().equals(name)) {
+                        return ResultUtil.error(ResultEnum.Repeat_login_Error);
+                    }
+                } catch (NullPointerException e) {
+                }
                 LoginReturn loginReturnEnterprise = enterpriseMapper.selectByName(name);
-                return userLogin(loginReturnEnterprise, login, session);
+                Result resultEnterprise = validateUser(loginReturnEnterprise, login);
+                if (resultEnterprise.getABoolean()) {
+                    session.setAttribute("enterpriseName", login.getName());
+                    session.setAttribute("enterpriseUuid", loginReturnEnterprise.getUuid());
+                    log.info("个人用户" + login.getName() + "登陆成功！");
+                    return ResultUtil.success(ResultEnum.LOGIN_SUCCESS);
+                }
+                return resultEnterprise;
             case "serviceProvider":
+                try {
+                    if (session.getAttribute("serviceProviderName").toString().equals(name)) {
+                        return ResultUtil.error(ResultEnum.Repeat_login_Error);
+                    }
+                } catch (NullPointerException e) {
+                }
                 LoginReturn loginReturnServiceProvider = serviceProviderMapper.selectByName(name);
-                return userLogin(loginReturnServiceProvider, login, session);
+                Result resultServiceProvider = validateUser(loginReturnServiceProvider, login);
+                if (resultServiceProvider.getABoolean()) {
+                    session.setAttribute("serviceProviderName", login.getName());
+                    session.setAttribute("serviceProviderUuid", loginReturnServiceProvider.getUuid());
+                    log.info("供应商用户" + login.getName() + "登陆成功！");
+                    return ResultUtil.success(ResultEnum.LOGIN_SUCCESS);
+                }
+                return resultServiceProvider;
             default:
                 log.info("匹配用户类型时出现错误！");
                 return ResultUtil.error(ResultEnum.MATCHING_USER_TYPE_ERRPR);
         }
     }
 
-    public Result userLogin(LoginReturn loginReturn, Login login, HttpSession session) {
-        if (loginReturn == null) {
-            log.info("用户"+login.getName()+"不存在！");
-            return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
-        } else {
-            if (loginReturn.getStatus()== true) {
-                if (loginReturn.getPassword().equals(login.getPassword())) {
-                    session.setAttribute("name", login.getName());
-                    session.setAttribute("uuid", loginReturn.getUuid());
-                    log.info("用户"+login.getName()+"登陆成功！");
-                    return ResultUtil.success(ResultEnum.LOGIN_SUCCESS);
-                } else {
-                    log.info("用户"+login.getName()+"密码输入错误！");
-                    return ResultUtil.error(ResultEnum.PASSWORD_ERROR);
-                }
-            } else {
-                log.info("用户"+login.getName()+"没有激活邮箱！");
-                return ResultUtil.error(ResultEnum.NOT_ACTIVE_ERROR);
+    public Result validateUser(LoginReturn loginReturn, Login login) {
+        try {
+            if (loginReturn.getUuid() == null) {
+                log.info("用户" + login.getName() + "不存在！");
+                return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
             }
+        } catch (NullPointerException e){
+            log.info("用户" + login.getName() + "不存在！");
+            return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
         }
+        if (loginReturn.getStatus() == false) {
+            log.info("用户" + login.getName() + "没有激活邮箱！");
+            return ResultUtil.error(ResultEnum.NOT_ACTIVE_ERROR);
+        }
+        if (!loginReturn.getPassword().equals(login.getPassword())) {
+            log.info("用户" + login.getName() + "密码输入错误！");
+            return ResultUtil.error(ResultEnum.PASSWORD_ERROR);
+        }
+        return ResultUtil.success();
     }
 
     public Result insertPersonal(String registerName, Register register, TpFile tpFile) {

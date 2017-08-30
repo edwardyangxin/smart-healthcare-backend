@@ -22,8 +22,16 @@ public class ResultUtil {
         return result;
     }
 
-    public static Result success() {
+ /*   public static Result success() {
         return success(null);
+    }*/
+
+    public static Result success() {
+        Result result = new Result();
+        result.setCode(200);
+        result.setMsg("success");
+        result.setABoolean(true);
+        return result;
     }
 
     public static Result error(ResultEnum resultEnum) {

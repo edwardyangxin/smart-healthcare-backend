@@ -15,4 +15,6 @@ public class LoginReturn {
     private Boolean status;
 
     private String uuid;
+
+    private int type;
 }

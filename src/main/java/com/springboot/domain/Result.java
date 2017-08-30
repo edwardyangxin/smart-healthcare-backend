@@ -12,7 +12,7 @@ public class Result<T> {
 
     private T msg;
 
-    private boolean aBoolean;
+    private Boolean aBoolean;
 
     private T data;
 }

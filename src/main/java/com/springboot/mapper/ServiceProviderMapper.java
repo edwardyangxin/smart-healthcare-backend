@@ -20,8 +20,8 @@ public interface ServiceProviderMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void insertServiceProvider(TpServiceProvider serviceProvider);
 
-    @Insert("insert into tp_service_provider(name, password, email, active_code,status) " +
-            "values (#{name}, #{password}, #{email}, #{activeCode}, #{status})")
+    @Insert("insert into tp_service_provider(name, password, email, uuid,status) " +
+            "values (#{name}, #{password}, #{email}, #{uuid}, #{status})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newServiceProvider(Register register);
 

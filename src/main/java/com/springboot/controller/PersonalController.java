@@ -38,10 +38,6 @@ public class PersonalController {
         return personalService.selectPersonInfoLatestAmount(amount);
     }
 
-
-
-
-
     //个人密码修改
     @PostMapping(value = "/personal/modifyPass")
     public Result<Password> modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
@@ -117,11 +113,11 @@ public class PersonalController {
         return personalService.selectInfoById(personInfo);
     }
 
- /*   //查询最新五条信息
-    @RequestMapping(value = "/personal/latest")
-    public Result<TpPersonInfo> selectLatestFive(@Param("amount") Integer amount) {
-        Result<TpPersonInfo> tpPersonInfos = personalService.selectLatest(amount);
-        return tpPersonInfos;
+
+/*    //根据Name查询个人信息
+    @GetMapping(value = "/enterprise/selectEnterprise")
+    public TpEnterprise selectEnterprise(HttpSession session) {
+        return enterpriseService.selectEnterpriseByName(session);
     }*/
 
     //发送激活账户邮件

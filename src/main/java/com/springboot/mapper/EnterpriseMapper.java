@@ -29,6 +29,7 @@ public interface EnterpriseMapper {
     @Select("select name,contact,tel,city from tp_enterprise where name=#{name}")
     TpEnterprise selectEnterpriseByName(String name);
 
+
     @Select("select password,status,uuid  from tp_enterprise where name=#{name}")
     @Results({
             @Result(column = "active_code", property = "activeCode"),

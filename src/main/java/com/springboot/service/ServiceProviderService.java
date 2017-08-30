@@ -14,6 +14,9 @@ import java.util.List;
  */
 public interface ServiceProviderService {
 
+    //根据session中的name，去查询供应商用户自身信息
+    Result<TpServiceProvider> selectServiceProviderByName(HttpSession session);
+
     TpServiceProvider selectAllByName(String name);
 
     String updateServiceProviderByName(ServiceProvider serviceProvider);

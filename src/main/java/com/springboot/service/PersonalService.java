@@ -14,7 +14,8 @@ import java.util.List;
  */
 public interface PersonalService {
 
-    TpPersonal selectByName(String name);
+    ////根据session中的name，去查询个人用户自身信息
+    Result<TpPersonal> selectPersonaByName(HttpSession session);
 
     Result<TpPersonal> insertPerson(TpPersonal tpPersonal, TpFile tpFile);
 

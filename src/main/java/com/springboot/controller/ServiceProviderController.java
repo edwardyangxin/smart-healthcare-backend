@@ -3,6 +3,7 @@ package com.springboot.controller;
 import com.springboot.domain.Result;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpPersonInfo;
+import com.springboot.domain.TpServiceProvider;
 import com.springboot.dto.CheckMail;
 import com.springboot.dto.Password;
 import com.springboot.dto.ServiceProvider;
@@ -42,6 +43,12 @@ public class ServiceProviderController {
     @RequestMapping(value = "/serviceProvider/enterprise_latest")
     public Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(@Param("amount") Integer amount) {
         return serviceProviderService.selectEnterpriseInfoLatestAmount(amount);
+    }
+
+    //根据Name查询供应商个人信息
+    @GetMapping(value = "/serviceProvider/selecterviceProvider")
+    public Result<TpServiceProvider> selectServiceProvider(HttpSession session) {
+        return serviceProviderService.selectServiceProviderByName(session);
     }
 
 
@@ -99,8 +106,6 @@ public class ServiceProviderController {
         serviceProvider.setName(session.getAttribute("name").toString());
         return serviceProviderService.updateServiceProviderByName(serviceProvider);
     }
-
-
 
 
     //发送激活账户邮件

@@ -8,6 +8,7 @@ import com.springboot.dto.CheckMail;
 import com.springboot.dto.EnterpriseProject;
 import com.springboot.dto.EnterpriseResetPass;
 import com.springboot.dto.Password;
+import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.EnterpriseMapper;
 import com.springboot.service.EnterpriseService;
 import com.springboot.tools.ResultUtil;
@@ -42,15 +43,15 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
-    public TpEnterprise selectEnterpriseByName(HttpSession session) {
+    public Result<TpEnterprise> selectEnterpriseByName(HttpSession session) {
         try {
-            String name = session.getAttribute("name").toString();
+            String name = session.getAttribute("enterpriseName").toString();
             TpEnterprise tpEnterprise = enterpriseMapper.selectEnterpriseByName(name);
-            return tpEnterprise;
+            return ResultUtil.success(tpEnterprise);
         } catch (Exception e) {
             log.info(e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
         }
-       return null;
     }
 
     @Override

@@ -13,7 +13,8 @@ import java.util.List;
  */
 public interface EnterpriseService {
 
-    TpEnterprise selectEnterpriseByName(HttpSession session);
+    //根据session中的name，去查询企业用户自身信息
+    Result<TpEnterprise> selectEnterpriseByName(HttpSession session);
 
     TpEnterprise selectAllByName(String name);
 

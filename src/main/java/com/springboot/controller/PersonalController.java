@@ -38,6 +38,13 @@ public class PersonalController {
         return personalService.selectPersonInfoLatestAmount(amount);
     }
 
+    //根据Name查询企业信息
+    @GetMapping(value = "/personal/selectPersonal")
+    public Result<TpPersonal> selectEnterprise(HttpSession session) {
+        return personalService.selectPersonaByName(session);
+    }
+
+
     //个人密码修改
     @PostMapping(value = "/personal/modifyPass")
     public Result<Password> modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {

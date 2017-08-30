@@ -38,6 +38,13 @@ public class EnterpriseController {
         return enterpriseService.selectEnterpriseInfoLatestAmount(amount);
     }
 
+    //根据Name查询企业信息
+    @GetMapping(value = "/enterprise/selectEnterprise")
+    public Result<TpEnterprise> selectEnterprise(HttpSession session) {
+        return enterpriseService.selectEnterpriseByName(session);
+    }
+
+
     //企业密码修改
     @PostMapping(value = "/enterprise/modifyPass")
     public String modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
@@ -123,9 +130,5 @@ public class EnterpriseController {
         return enterpriseService.emailCheck(checkMail);
     }
 
-    //根据Name查询企业信息
-    @GetMapping(value = "/enterprise/selectEnterprise")
-    public TpEnterprise selectEnterprise(HttpSession session) {
-        return enterpriseService.selectEnterpriseByName(session);
-    }
+
 }

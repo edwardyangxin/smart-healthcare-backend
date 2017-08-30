@@ -4,7 +4,11 @@ import com.springboot.domain.Result;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpServiceProvider;
-import com.springboot.dto.*;
+import com.springboot.dto.CheckMail;
+import com.springboot.dto.Password;
+import com.springboot.dto.ServiceProvider;
+import com.springboot.dto.ServiceProviderResetPass;
+import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.ServiceProviderMapper;
 import com.springboot.service.ServiceProviderService;
 import com.springboot.tools.ResultUtil;
@@ -38,9 +42,24 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     }
 
     @Override
+    public Result<TpServiceProvider> selectServiceProviderByName(HttpSession session) {
+        try {
+            String name = session.getAttribute("serviceProviderName").toString();
+            TpServiceProvider tpServiceProvider = serviceProviderMapper.selectServiceProviderByName(name);
+            return ResultUtil.success(tpServiceProvider);
+        } catch (Exception e) {
+            log.info(e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
+        }
+    }
+
+
+
+    @Override
     public TpServiceProvider selectAllByName(String name) {
         return serviceProviderMapper.selectAllByName(name);
     }
+
 
 
     @Override

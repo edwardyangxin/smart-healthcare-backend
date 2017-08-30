@@ -44,7 +44,19 @@ public class PersonalServiceImpl implements PersonalService {
         this.javaMailSender = javaMailSender;
     }
 
+
     @Override
+    public Result<TpPersonal> selectPersonaByName(HttpSession session) {
+        try {
+            String name = session.getAttribute("personName").toString();
+            TpPersonal tpPersonal = personalMapper.selectPersonaByName(name);
+            return ResultUtil.success(tpPersonal);
+        } catch (Exception e) {
+            log.info(e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
+        }
+    }
+
     public TpPersonal selectByName(String name) {
         return personalMapper.selectAllByName(name);
     }

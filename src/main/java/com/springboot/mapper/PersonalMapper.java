@@ -22,8 +22,8 @@ public interface PersonalMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void insertPerson(TpPersonal tpPersonal);
 
-    @Insert("insert into tp_personal(name, password, email, active_code, status) " +
-            "values(#{name}, #{password}, #{email}, #{activeCode}, #{status})")
+    @Insert("insert into tp_personal(name, password, email, uuid, status) " +
+            "values(#{name}, #{password}, #{email}, #{uuid}, #{status})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newPerson(Register register);
 
@@ -60,7 +60,10 @@ public interface PersonalMapper {
     @Update("update tp_personal set password = #{password} where name = #{name}")
     void updatePassword(Password password);
 
-    @Update("update tp_personal set real_Name = #{realName},tel= #{tel},id_card = #{idCard},location = #{location},gender = #{gender} where uuid =#{name}")
+    @Update("update tp_personal set real_Name = #{realName},city=#{city}, language=#{language}, icon_address=#{iconAddress}, tel= #{tel},id_card = #{idCard},location = #{location},gender = #{gender} where uuid =#{uuid}")
+    @Results({
+            @Result(column = "icon_address", property = "iconAddress"),
+    })
     void updatePersonByName(TpPersonal tpPersonal);
 
     @Update("update tp_personal set status = #{status} where name = #{name}")

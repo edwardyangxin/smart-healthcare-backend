@@ -44,24 +44,28 @@ public class ServiceProviderController {
     }
 
     //根据amount的值 查询供应商最新发布的几条“个人信息”
+    @ResponseBody
     @RequestMapping(value = "/serviceProvider/person_latest")
     public Result<List<TpPersonInfo>> selectPersonInfoLatestAmount(@Param("amount") Integer amount) {
         return serviceProviderService.selectPersonInfoLatestAmount(amount);
     }
 
     //根据amount的值查询供应商最新发布的几条“企业信息”
+    @ResponseBody
     @RequestMapping(value = "/serviceProvider/enterprise_latest")
     public Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(@Param("amount") Integer amount) {
         return serviceProviderService.selectEnterpriseInfoLatestAmount(amount);
     }
 
     //根据UUID查询供应商个人信息
+    @ResponseBody
     @GetMapping(value = "/serviceProvider/selecterviceProvider")
     public Result<TpServiceProvider> selectServiceProvider(HttpSession session) {
         return serviceProviderService.selectServiceProviderByName(session);
     }
 
     //完善修改供应商信息
+    @ResponseBody
     @RequestMapping(value = "/serviceProvider/modifyServiceProvider", method = RequestMethod.POST)
     public Result updateServiceProviderByName(@Valid @RequestBody TpServiceProvider tpServiceProvider, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -74,6 +78,7 @@ public class ServiceProviderController {
     }
 
     //供应商发布个人信息
+    @ResponseBody
     @PostMapping(value = "/serviceProvider/newPersonInfo")
     public Result newServiceProviderPersonInfo(@Valid @RequestBody TpPersonInfo tpPersonInfo, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -86,6 +91,7 @@ public class ServiceProviderController {
     }
 
     //供应商发布企业信息
+    @ResponseBody
     @PostMapping(value = "/serviceProvider/newEnterpriseInfo")
     public Result newEnterpriseInfo(@Valid @RequestBody TpEnterpriseProject tpEnterpriseProject, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -98,6 +104,7 @@ public class ServiceProviderController {
     }
 
     //修改供应商发布的个人信息
+    @ResponseBody
     @PostMapping(value = "/serviceProvider/modifyPersonInfo")
     public Result updateServiceProviderInfoById(@Valid @RequestBody TpPersonInfo tpPersonInfo, BindingResult bindingResult, HttpSession session) {
         try {
@@ -122,6 +129,7 @@ public class ServiceProviderController {
     }
 
     //修改供应商发布的企业信息
+    @ResponseBody
     @PostMapping(value = "/serviceProvider/modifyEnterpriseInfo")
     public Result updateServiceProviderEnterprseInfoById(@Valid @RequestBody TpEnterpriseProject tpEnterpriseProject, BindingResult bindingResult, HttpSession session) {
         try {

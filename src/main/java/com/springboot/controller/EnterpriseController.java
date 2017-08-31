@@ -34,18 +34,21 @@ public class EnterpriseController {
     }
 
     //根据amount的值查询企业最新发布的几条信息
+    @ResponseBody
     @RequestMapping(value = "/enterprise/latest")
     public Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(@Param("amount") Integer amount) {
         return enterpriseService.selectEnterpriseInfoLatestAmount(amount);
     }
 
     //根据UUID查询企业自身信息
+    @ResponseBody
     @GetMapping(value = "/enterprise/selectEnterprise")
     public Result<TpEnterprise> selectEnterprise(HttpSession session) {
         return enterpriseService.selectEnterpriseByName(session);
     }
 
     //完善修改企业信息
+    @ResponseBody
     @RequestMapping(value = "/enterprise/modifyEnterprise", method = RequestMethod.POST)
     public Result  modifyEnterprise(@Valid @RequestBody TpEnterprise tpEnterprise, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -58,6 +61,7 @@ public class EnterpriseController {
     }
 
     //企业发布项目信息
+    @ResponseBody
     @PostMapping(value = "/enterprise/newProject")
     public Result newEnterpriseProject(@Valid @RequestBody TpEnterpriseProject tpEnterpriseProject, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -70,6 +74,7 @@ public class EnterpriseController {
     }
 
     //修改企业已发布的项目信息
+    @ResponseBody
     @RequestMapping(value = "/enterprise/modifyProject", method = RequestMethod.POST)
     public Result updateEnterpriseProjectById(@Valid @RequestBody TpEnterpriseProject tpEnterpriseProject, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {

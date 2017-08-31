@@ -42,5 +42,9 @@ public class TpPersonal {
 
     private String uuid;
 
+    private  String city;
+
+    private String language;
+
 
 }

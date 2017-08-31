@@ -34,18 +34,21 @@ public class PersonalController {
     }
 
     //根据amount的值查询个人最新发布的几条信息
+    @ResponseBody
     @RequestMapping(value = "/personal/latest")
     public Result<List<TpPersonInfo>> selectPersonInfoLatestAmount(@Param("amount") Integer amount) {
         return personalService.selectPersonInfoLatestAmount(amount);
     }
 
     //根据UUID查询个人自身信息
+    @ResponseBody
     @GetMapping(value = "/personal/selectPersonal")
     public Result<TpPersonal> selectPersonaByName(HttpSession session) {
         return personalService.selectPersonaByName(session);
     }
 
     //完善修改个人信息
+    @ResponseBody
     @RequestMapping(value = "/personal/modifyPerson", method = RequestMethod.POST)
     public Result modifyPerson(@Valid @RequestBody TpPersonal tpPersonal, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -59,6 +62,7 @@ public class PersonalController {
 
 
     //发布个人信息接受Json格式的参数 Content-Type:application/json
+    @ResponseBody
     @PostMapping(value = "/personal/newInfo")
     public Result newPersonInfo(@Valid @RequestBody TpPersonInfo tpPersonInfo,  BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -71,6 +75,7 @@ public class PersonalController {
     }
 
     //修改个人已发布的信息
+    @ResponseBody
     @PostMapping(value = "/personal/modifyInfo")
     public Result updateInfoById(@Valid @RequestBody TpPersonInfo tpPersonInfo,  BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -83,6 +88,7 @@ public class PersonalController {
     }
 
     //删除一条已发布的个人信息
+    @ResponseBody
     @RequestMapping(value = "/personal/delInfo")
     public Result deletePersonInfo(@RequestBody PersonInfo personInfo) {
         return personalService.deletePersonInfo(personInfo);

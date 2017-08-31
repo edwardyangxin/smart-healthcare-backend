@@ -23,6 +23,7 @@ public class FileUploadController {
     public FileUploadController(StorageService storageService) {
         this.storageService = storageService;
     }
+
     @GetMapping("/pictures/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> servePicture(@PathVariable String filename) {

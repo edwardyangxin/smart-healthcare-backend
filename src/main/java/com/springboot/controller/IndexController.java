@@ -59,6 +59,7 @@ public class IndexController {
         return indexService.insertUser(register, request, response);
     }
 
+    //登陆接口
     @ResponseBody
     @PostMapping(value = "/login")
     public Result login(@Valid @RequestBody Login login, BindingResult bindingResult, HttpServletRequest request ) {

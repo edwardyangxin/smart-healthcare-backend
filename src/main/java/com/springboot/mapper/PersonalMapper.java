@@ -35,8 +35,8 @@ public interface PersonalMapper {
     })
     LoginReturn selectByName(@Param("name") String name);
 
-    @Select("select  name,contact,tel,city  from tp_personal where name=#{name}")
-    TpPersonal selectPersonaByName(@Param("name") String name);
+    @Select("select  name,contact,tel,city  from tp_personal where uuid=#{uuid}")
+    TpPersonal selectPersonaByName(String uuid);
 
     @Select("select * from tp_personal where name=#{name}")
     @Results({
@@ -60,7 +60,7 @@ public interface PersonalMapper {
     @Update("update tp_personal set password = #{password} where name = #{name}")
     void updatePassword(Password password);
 
-    @Update("update tp_personal set real_Name = #{realName},tel= #{tel},id_card = #{idCard},location = #{location},gender = #{gender} where name =#{name}")
+    @Update("update tp_personal set real_Name = #{realName},tel= #{tel},id_card = #{idCard},location = #{location},gender = #{gender} where uuid =#{name}")
     void updatePersonByName(TpPersonal tpPersonal);
 
     @Update("update tp_personal set status = #{status} where name = #{name}")
@@ -82,7 +82,7 @@ public interface PersonalMapper {
     @Update("update tp_person_info set click_amount = #{clickAmount}, stars = #{stars} where id = #{id}")
     void addClickAmount(TpPersonInfo tpPersonInfo);
 
-    @Update("UPDATE tp_person_info SET tp_person_info.icon_address = (SELECT tp_file.picture_path FROM tp_file where name= #{name}) where name = #{name}")
+    @Update("UPDATE tp_person_info SET tp_person_info.icon_address = (SELECT tp_file.picture_path FROM tp_file where uuid= #{uuid}) where uuid = #{uuid}")
     void addIconAddress(TpPersonInfo tpPersonInfo);
 
     @Delete("delete from tp_person_info where id = #{id}")

@@ -49,11 +49,11 @@ public interface ServiceProviderMapper {
     })
     TpServiceProvider selectAllByName(@Param("name") String name);
 
-    @Select("select name,contact,tel,city from tp_service_provider where name=#{name}")
-    TpServiceProvider selectServiceProviderByName(String name);
+    @Select("select name,contact,tel,city from tp_service_provider where uuid=#{uuid}")
+    TpServiceProvider selectServiceProviderByName(String uuid);
 
-    @Update("update tp_service_provider set city = #{city},contact=#{contact},tel=#{tel}  where name =#{name}")
-    void updateServiceProviderByName(ServiceProvider serviceProvider);
+    @Update("update tp_service_provider set city = #{city},contact=#{contact},tel=#{tel}  where uuid =#{uuid}")
+    void updateServiceProviderByName(TpServiceProvider tpServiceProvider);
 
     @Update("update tp_service_provider set password = #{password} where name = #{name}")
     void updateServiceProviderPass(Password password);

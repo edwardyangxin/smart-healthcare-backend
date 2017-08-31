@@ -14,6 +14,10 @@ public class TpEnterpriseProject {
 
     private Integer id;
 
+    private String name;
+
+    private String uuid;
+
     private Boolean serviceProvider;
 
     private String language;

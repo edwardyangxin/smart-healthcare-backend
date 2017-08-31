@@ -48,14 +48,68 @@ public class PersonalServiceImpl implements PersonalService {
     @Override
     public Result<TpPersonal> selectPersonaByName(HttpSession session) {
         try {
-            String name = session.getAttribute("personName").toString();
-            TpPersonal tpPersonal = personalMapper.selectPersonaByName(name);
+            String uuid = session.getAttribute("personUuid").toString();
+            TpPersonal tpPersonal = personalMapper.selectPersonaByName(uuid);
             return ResultUtil.success(tpPersonal);
         } catch (Exception e) {
-            log.info(e.toString());
+            log.info("未登录" + e.toString());
             return ResultUtil.error(ResultEnum.NOT_LOGIN);
         }
     }
+
+    @Override
+    public Result updatePersonByName(TpPersonal tpPersonal, HttpSession session) {
+        try {
+            String uuid = session.getAttribute("personUuid").toString();
+            tpPersonal.setUuid(uuid);
+            personalMapper.updatePersonByName(tpPersonal);
+            log.info(uuid + "更改个人资料成功！");
+            return ResultUtil.success(ResultEnum.UPDATE_SUCCESS);
+        } catch (NullPointerException e) {
+            log.info("更改个人资料时，用户未登录 " + e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
+        }
+    }
+
+    @Override
+    public Result newPersonInfo(TpPersonInfo tpPersonInfo, HttpSession session) {
+        try {
+            String name = session.getAttribute("personName").toString();
+            String uuid = session.getAttribute("personUuid").toString();
+            tpPersonInfo.setName(name);
+            tpPersonInfo.setUuid(uuid);
+            tpPersonInfo.setRegisterTime(new Date());
+            tpPersonInfo.setServiceProvider(false);
+            personalMapper.newInfo(tpPersonInfo);
+            personalMapper.addIconAddress(tpPersonInfo);
+            log.info("个人用户:"+name+"发布个人信息成功！");
+            return ResultUtil.success();
+        } catch (NullPointerException e) {
+            log.info("发布个人消息时，用户未登录 " + e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
+        }
+
+    }
+
+
+    @Override
+    public Result updatPersonInfo(TpPersonInfo tpPersonInfo,HttpSession session) {
+        try {
+            String name = session.getAttribute("personName").toString();
+            String uuid = session.getAttribute("personUuid").toString();
+            tpPersonInfo.setName(name);
+            tpPersonInfo.setUuid(uuid);
+            tpPersonInfo.setRegisterTime(new Date());
+            tpPersonInfo.setServiceProvider(false);
+            personalMapper.updateInfoById(tpPersonInfo);
+            log.info("个人用户:"+name+"修改发布信息成功！");
+            return ResultUtil.success(ResultEnum.UPDATE_SUCCESS);
+        } catch (NullPointerException e) {
+            log.info("修改个人发布信息时，用户未登录 " + e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
+        }
+    }
+
 
     public TpPersonal selectByName(String name) {
         return personalMapper.selectAllByName(name);
@@ -124,42 +178,11 @@ public class PersonalServiceImpl implements PersonalService {
         }
     }
 
-    @Override
-    public Result<TpPersonal> updatePersonByName(TpPersonal tpPersonal, HttpSession session) {
-        try {
-            tpPersonal.setName(session.getAttribute("name").toString());
-        } catch (NullPointerException e) {
-            log.info("更改个人资料用户未登录 " + e.toString());
-            return ResultUtil.error(ResultEnum.NOT_LOGIN);
-        }
-        personalMapper.updatePersonByName(tpPersonal);
-        return ResultUtil.success(ResultEnum.UPDATE_SUCCESS);
-    }
+
+
 
     @Override
-    public Result<TpPersonInfo> newInfo(TpPersonInfo tpPersonInfo, HttpSession session) {
-        try {
-            tpPersonInfo.setName(session.getAttribute("name").toString());
-            tpPersonInfo.setUuid(session.getAttribute("uuid").toString());
-        } catch (NullPointerException e) {
-            log.info("个人发布消息用户未登录 " + e.toString());
-            return ResultUtil.error(ResultEnum.NOT_LOGIN);
-        }
-        tpPersonInfo.setRegisterTime(new Date());
-        personalMapper.newInfo(tpPersonInfo);
-        personalMapper.addIconAddress(tpPersonInfo);
-        return ResultUtil.success();
-    }
-
-    @Override
-    public Result<TpPersonInfo> updateInfo(TpPersonInfo tpPersonInfo) {
-        tpPersonInfo.setRegisterTime(new Date());
-        personalMapper.updateInfoById(tpPersonInfo);
-        return ResultUtil.success(ResultEnum.UPDATE_SUCCESS);
-    }
-
-    @Override
-    public Result<PersonInfo> delInfo(PersonInfo personInfo) {
+    public Result deletePersonInfo(PersonInfo personInfo) {
         TpPersonInfo tpPersonInfo = personalMapper.selectInfoById(personInfo);
         if (tpPersonInfo != null) {
             personalMapper.delInfo(personInfo.getId());

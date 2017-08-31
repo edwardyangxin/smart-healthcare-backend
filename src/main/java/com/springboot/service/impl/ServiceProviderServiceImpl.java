@@ -6,7 +6,6 @@ import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpServiceProvider;
 import com.springboot.dto.CheckMail;
 import com.springboot.dto.Password;
-import com.springboot.dto.ServiceProvider;
 import com.springboot.dto.ServiceProviderResetPass;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.ServiceProviderMapper;
@@ -44,15 +43,83 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     @Override
     public Result<TpServiceProvider> selectServiceProviderByName(HttpSession session) {
         try {
-            String name = session.getAttribute("serviceProviderName").toString();
-            TpServiceProvider tpServiceProvider = serviceProviderMapper.selectServiceProviderByName(name);
+            String uuid = session.getAttribute("serviceProviderUuid").toString();
+            TpServiceProvider tpServiceProvider = serviceProviderMapper.selectServiceProviderByName(uuid);
             return ResultUtil.success(tpServiceProvider);
         } catch (Exception e) {
-            log.info(e.toString());
+            log.info("未登录" + e.toString());
             return ResultUtil.error(ResultEnum.NOT_LOGIN);
         }
     }
 
+    @Override
+    public Result<List<TpPersonInfo>> selectPersonInfoLatestAmount(Integer amount) {
+        List<TpPersonInfo> tpPersonInfos = serviceProviderMapper.selectPersonInfoLatestAmount(amount);
+        log.info("查询了供应商最新发布的" + amount + "条个人信息！");
+        return ResultUtil.success(tpPersonInfos);
+    }
+
+    @Override
+    public Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(Integer amount) {
+        List<TpEnterpriseProject> tpEnterpriseProjects = serviceProviderMapper.selectEnterpriseInfoLatestAmount(amount);
+        log.info("查询了供应商最新发布的" + amount + "条企业信息！");
+        return ResultUtil.success(tpEnterpriseProjects);
+    }
+
+
+    @Override
+    public Result updateServiceProviderByName(TpServiceProvider tpServiceProvider, HttpSession session) {
+        try {
+            String uuid = session.getAttribute("serviceProviderUuid").toString();
+            tpServiceProvider.setUuid(uuid);
+            serviceProviderMapper.updateServiceProviderByName(tpServiceProvider);
+            log.info(uuid + "修改供应商资料成功！");
+            return ResultUtil.success(ResultEnum.UPDATE_SUCCESS);
+        } catch (Exception e) {
+            log.info("修改供应商资料时，用户未登录" + e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
+        }
+    }
+
+    @Override
+    public Result newServiceProviderPersonInfo(TpPersonInfo tpPersonInfo, HttpSession session) {
+        try {
+            String name = session.getAttribute("serviceProviderName").toString();
+            String uuid = session.getAttribute("serviceProviderUuid").toString();
+            tpPersonInfo.setName(name);
+            tpPersonInfo.setUuid(uuid);
+            tpPersonInfo.setRegisterTime(new Date());
+            tpPersonInfo.setServiceProvider(true);
+            serviceProviderMapper.newPersonInfo(tpPersonInfo);
+            serviceProviderMapper.addIconAddress(tpPersonInfo);
+            log.info("供应商用户:" + name + "发布个人信息成功！");
+            return ResultUtil.success();
+        } catch (NullPointerException e) {
+            log.info("供应商发布个人消息时，企业用户未登录 " + e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
+        }
+
+    }
+
+    @Override
+    public Result newServiceProviderEnterpriseInfo(TpEnterpriseProject tpEnterpriseProject, HttpSession session) {
+        try {
+            String name = session.getAttribute("serviceProviderName").toString();
+            String uuid = session.getAttribute("serviceProviderUuid").toString();
+            tpEnterpriseProject.setName(name);
+            tpEnterpriseProject.setUuid(uuid);
+            tpEnterpriseProject.setRegisterTime(new Date());
+            tpEnterpriseProject.setServiceProvider(true);
+            serviceProviderMapper.newEnterpriseInfo(tpEnterpriseProject);
+            serviceProviderMapper.addEnterpriseIconAddress(tpEnterpriseProject);
+            log.info("企业用户:" + name + "发布个人信息成功！");
+            return ResultUtil.success();
+        } catch (NullPointerException e) {
+            log.info("发布企业消息时，用户未登录 " + e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
+        }
+
+    }
 
 
     @Override
@@ -60,13 +127,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         return serviceProviderMapper.selectAllByName(name);
     }
 
-
-
-    @Override
-    public String updateServiceProviderByName(ServiceProvider serviceProvider) {
-        serviceProviderMapper.updateServiceProviderByName(serviceProvider);
-        return "供应商信息更改成功！";
-    }
 
     @Override
     public String updateServiceProviderPass(Password password, HttpSession session) {
@@ -112,50 +172,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         } else {
             return "没有此用户！";
         }
-    }
-    @Override
-    public String newPersonInfo(TpPersonInfo tpPersonInfo,HttpSession session) {
-        try {
-            tpPersonInfo.setName(session.getAttribute("name").toString());
-        } catch (Exception e) {
-            log.info(e.toString());
-            return "用户未登录。";
-        }
-        tpPersonInfo.setRegisterTime(new Date());
-        serviceProviderMapper.newPersonInfo(tpPersonInfo);
-        serviceProviderMapper.addIconAddress(tpPersonInfo);
-
-        return "发布个人信息成功！";
-    }
-
-    @Override
-    public String newEnterpriseInfo(TpEnterpriseProject tpEnterpriseProject,HttpSession session) {
-        try {
-            tpEnterpriseProject.setCompanyName(session.getAttribute("name").toString());
-        } catch (Exception e) {
-            log.info(e.toString());
-            return "用户未登录。";
-        }
-        tpEnterpriseProject.setRegisterTime(new Date());
-        tpEnterpriseProject.setServiceProvider(true);
-        serviceProviderMapper.newEnterpriseInfo(tpEnterpriseProject);
-        serviceProviderMapper.addEnterpriseIconAddress(tpEnterpriseProject);
-
-        return "发布项目信息成功！";
-    }
-
-    @Override
-    public Result<List<TpPersonInfo>> selectPersonInfoLatestAmount(Integer amount) {
-        List<TpPersonInfo> tpPersonInfos = serviceProviderMapper.selectPersonInfoLatestAmount(amount);
-        log.info("查询了供应商最新发布的"+amount+"条个人信息！");
-        return ResultUtil.success(tpPersonInfos);
-    }
-
-    @Override
-    public Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(Integer amount){
-        List<TpEnterpriseProject> tpEnterpriseProjects = serviceProviderMapper.selectEnterpriseInfoLatestAmount(amount);
-        log.info("查询了供应商最新发布的"+amount+"条企业信息！");
-        return ResultUtil.success(tpEnterpriseProjects);
     }
 
 

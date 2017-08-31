@@ -45,31 +45,82 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public Result<TpEnterprise> selectEnterpriseByName(HttpSession session) {
         try {
-            String name = session.getAttribute("enterpriseName").toString();
+            String name = session.getAttribute("enterpriseUuid").toString();
             TpEnterprise tpEnterprise = enterpriseMapper.selectEnterpriseByName(name);
             return ResultUtil.success(tpEnterprise);
         } catch (Exception e) {
-            log.info(e.toString());
+            log.info("未登录"+ e.getMessage());
             return ResultUtil.error(ResultEnum.NOT_LOGIN);
         }
     }
 
     @Override
-    public TpEnterprise selectAllByName(String name) {
-        return enterpriseMapper.selectAllByName(name);
+    public Result updateEnterpriseByName(TpEnterprise tpEnterprise, HttpSession session) {
+        try {
+            String uuid = session.getAttribute("enterpriseUuid").toString();
+            tpEnterprise.setUuid(uuid);
+            enterpriseMapper.updateEnterpriseByName(tpEnterprise);
+            log.info(uuid + "修改企业资料成功！");
+            return ResultUtil.success(ResultEnum.UPDATE_SUCCESS);
+        } catch (Exception e) {
+            log.info("修改企业资料时，用户未登录 " + e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
+        }
+
+    }
+
+    @Override
+    public Result newEnterpriseProject(TpEnterpriseProject tpEnterpriseProject, HttpSession session) {
+        try {
+            String name = session.getAttribute("enterpriseName").toString();
+            String uuid = session.getAttribute("enterpriseUuid").toString();
+            tpEnterpriseProject.setName(name);
+            tpEnterpriseProject.setUuid(uuid);
+            tpEnterpriseProject.setRegisterTime(new Date());
+            tpEnterpriseProject.setServiceProvider(false);
+            enterpriseMapper.newProject(tpEnterpriseProject);
+            log.info("企业用户:"+name+"发布个人信息成功！");
+            return ResultUtil.success();
+        } catch (NullPointerException e) {
+            log.info("发布企业消息时，用户未登录 " + e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
+        }
+    }
+
+    @Override
+    public Result updateEnterpriseProjectById(TpEnterpriseProject tpEnterpriseProject, HttpSession session) {
+        try {
+            String name = session.getAttribute("enterpriseName").toString();
+            String uuid = session.getAttribute("enterpriseUuid").toString();
+            tpEnterpriseProject.setName(name);
+            tpEnterpriseProject.setUuid(uuid);
+            tpEnterpriseProject.setRegisterTime(new Date());
+            enterpriseMapper.updateEnterpriseProjectById(tpEnterpriseProject);
+            log.info("企业用户:"+name+"修改发布信息成功！");
+            return ResultUtil.success();
+        } catch (NullPointerException e) {
+            log.info("企业用户修改发布信息时未登录 " + e.toString());
+            return ResultUtil.error(ResultEnum.NOT_LOGIN);
+        }
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
-    public String updateEnterpriseByName(TpEnterprise tpEnterprise, HttpSession session) {
-        try {
-            tpEnterprise.setName(session.getAttribute("name").toString());
-        } catch (Exception e) {
-            log.info(e.toString());
-            return "用户未登录。";
-        }
-        enterpriseMapper.updateEnterpriseByName(tpEnterprise);
-        return "企业信息更改成功！";
+    public TpEnterprise selectAllByName(String name) {
+        return enterpriseMapper.selectAllByName(name);
     }
 
 
@@ -114,25 +165,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         }
     }
 
-    @Override
-    public String newProject(TpEnterpriseProject tpEnterpriseProject, HttpSession session) {
-        try {
-            tpEnterpriseProject.setCompanyName(session.getAttribute("companyName").toString());
-        } catch (Exception e) {
-            log.info(e.toString());
-            return "用户未登录。";
-        }
-        tpEnterpriseProject.setRegisterTime(new Date());
-        enterpriseMapper.newProject(tpEnterpriseProject);
-        return "发布企业信息成功";
-    }
 
-    @Override
-    public String updateEnterpriseProjectById(TpEnterpriseProject tpEnterpriseProject, HttpSession session) {
-        tpEnterpriseProject.setRegisterTime(new Date());
-        enterpriseMapper.updateEnterpriseProjectById(tpEnterpriseProject);
-        return "项目信息更改成功！";
-    }
 
     @Override
     public String delProject(EnterpriseProject enterpriseProject) {

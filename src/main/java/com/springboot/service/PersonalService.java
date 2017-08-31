@@ -14,8 +14,20 @@ import java.util.List;
  */
 public interface PersonalService {
 
-    ////根据session中的name，去查询个人用户自身信息
+    //根据session中的UUID，去查询个人用户自身信息
     Result<TpPersonal> selectPersonaByName(HttpSession session);
+
+    //完善修改个人信息
+    Result  updatePersonByName(TpPersonal tpPersonal, HttpSession session);
+
+    //发布个人信息
+    Result newPersonInfo(TpPersonInfo tpPersonInfo, HttpSession session);
+
+    //修改个人发布信息
+    Result updatPersonInfo(TpPersonInfo tpPersonInfo,HttpSession session);
+
+    //删除个人发布信息
+    Result<PersonInfo> deletePersonInfo(PersonInfo personInfo);
 
     Result<TpPersonal> insertPerson(TpPersonal tpPersonal, TpFile tpFile);
 
@@ -23,13 +35,13 @@ public interface PersonalService {
 
     String resetPersonalPass(PersonalResetPass personalResetPass);
 
-    Result<TpPersonal> updatePersonByName(TpPersonal tpPersonal, HttpSession session);
 
-    Result<TpPersonInfo> newInfo(TpPersonInfo tpPersonInfo, HttpSession session);
 
-    Result<TpPersonInfo> updateInfo(TpPersonInfo tpPersonInfo);
 
-    Result<PersonInfo> delInfo(PersonInfo personInfo);
+
+
+
+
 
     Result<TpPersonInfo> selectInfos(PersonInfo personInfo);
 

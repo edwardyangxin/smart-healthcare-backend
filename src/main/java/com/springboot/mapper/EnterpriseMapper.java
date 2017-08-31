@@ -26,8 +26,8 @@ public interface EnterpriseMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newEnterprise(Register register);
 
-    @Select("select name,contact,tel,city from tp_enterprise where name=#{name}")
-    TpEnterprise selectEnterpriseByName(String name);
+    @Select("select name,contact,tel,city from tp_enterprise where uuid=#{uuid}")
+    TpEnterprise selectEnterpriseByName(String uuid);
 
 
     @Select("select password,status,uuid  from tp_enterprise where name=#{name}")
@@ -48,7 +48,7 @@ public interface EnterpriseMapper {
     })
     TpEnterprise selectAllByName(@Param("name") String name);
 
-    @Update("update tp_enterprise set city = #{city},tel= #{tel},business_license = #{businessLicense},contact = #{contact},industry = #{industry},legal_representative = #{legalRepresentative} where name =#{name}")
+    @Update("update tp_enterprise set city = #{city},tel= #{tel},business_license = #{businessLicense},contact = #{contact},industry = #{industry},legal_representative = #{legalRepresentative} where uuid =#{uuid}")
     void updateEnterpriseByName(TpEnterprise tpEnterprise);
 
     @Update("update tp_enterprise set password = #{password} where name = #{name}")

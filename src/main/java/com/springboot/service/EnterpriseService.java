@@ -13,20 +13,32 @@ import java.util.List;
  */
 public interface EnterpriseService {
 
-    //根据session中的name，去查询企业用户自身信息
+    //根据amount的值查询企业最新发布的几条信息
+    Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(Integer amount);
+
+    //根据session中的UUID，去查询企业用户自身信息
     Result<TpEnterprise> selectEnterpriseByName(HttpSession session);
+
+    //完善修改企业信息
+    Result updateEnterpriseByName(TpEnterprise tpEnterprise, HttpSession session);
+
+    //企业发布消息
+    Result newEnterpriseProject(TpEnterpriseProject tpEnterpriseProject, HttpSession session);
+
+    //修改企业已发布的项目信息
+    Result updateEnterpriseProjectById(TpEnterpriseProject tpEnterpriseProject, HttpSession session);
 
     TpEnterprise selectAllByName(String name);
 
-    String updateEnterpriseByName(TpEnterprise tpEnterprise, HttpSession session);
+
 
     String updateEnterprisePass(Password password, HttpSession session);
 
     String resetEnterprisePass(EnterpriseResetPass enterpriseResetPass);
 
-    String newProject(TpEnterpriseProject tpEnterpriseProject, HttpSession session);
 
-    String updateEnterpriseProjectById(TpEnterpriseProject tpEnterpriseProject, HttpSession session);
+
+
 
     String delProject(EnterpriseProject enterpriseProject);
 
@@ -34,8 +46,7 @@ public interface EnterpriseService {
 
     TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject);
 
-    //根据amount的值查询企业最新发布的几条信息
-    Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(Integer amount);
+
 
     void sendMail(CheckMail checkMail) throws Exception;
 

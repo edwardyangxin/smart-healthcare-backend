@@ -8,6 +8,7 @@ import com.springboot.dto.EnterpriseProject;
 import com.springboot.dto.EnterpriseResetPass;
 import com.springboot.dto.Password;
 import com.springboot.service.EnterpriseService;
+import com.springboot.tools.ResultUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -38,66 +39,71 @@ public class EnterpriseController {
         return enterpriseService.selectEnterpriseInfoLatestAmount(amount);
     }
 
-    //根据Name查询企业信息
+    //根据UUID查询企业自身信息
     @GetMapping(value = "/enterprise/selectEnterprise")
     public Result<TpEnterprise> selectEnterprise(HttpSession session) {
         return enterpriseService.selectEnterpriseByName(session);
     }
 
-
-    //企业密码修改
-    @PostMapping(value = "/enterprise/modifyPass")
-    public String modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        return enterpriseService.updateEnterprisePass(password, session);
-    }
-
-    //企业信息修改
+    //完善修改企业信息
     @RequestMapping(value = "/enterprise/modifyEnterprise", method = RequestMethod.POST)
-    public String modifyEnterprise(@Valid @RequestBody TpEnterprise tpEnterprise, BindingResult bindingResult, HttpSession session) {
+    public Result  modifyEnterprise(@Valid @RequestBody TpEnterprise tpEnterprise, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
+                return ResultUtil.error(error.getDefaultMessage());
             }
         }
         return enterpriseService.updateEnterpriseByName(tpEnterprise, session);
     }
 
-    //企业密码重置
-    @PostMapping(value = "/enterprise/resetPass")
-    public String resetPass(@Valid @RequestBody EnterpriseResetPass enterpriseResetPass, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        return  enterpriseService.resetEnterprisePass(enterpriseResetPass);
-    }
-
     //企业发布项目信息
     @PostMapping(value = "/enterprise/newProject")
-    public String newProject(@RequestBody TpEnterpriseProject tpEnterpriseProject, HttpSession session) {
-        return enterpriseService.newProject(tpEnterpriseProject, session);
-    }
-
-    //修改已发布的项目信息
-    @RequestMapping(value = "/enterprise/modifyProject", method = RequestMethod.POST)
-    public String modifyProject(@Valid @RequestBody TpEnterpriseProject tpEnterpriseProject, BindingResult bindingResult, HttpSession session) {
+    public Result newEnterpriseProject(@Valid @RequestBody TpEnterpriseProject tpEnterpriseProject, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return enterpriseService.newEnterpriseProject(tpEnterpriseProject, session);
+    }
+
+    //修改企业已发布的项目信息
+    @RequestMapping(value = "/enterprise/modifyProject", method = RequestMethod.POST)
+    public Result updateEnterpriseProjectById(@Valid @RequestBody TpEnterpriseProject tpEnterpriseProject, BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
             }
         }
         return enterpriseService.updateEnterpriseProjectById(tpEnterpriseProject, session);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //删除已发布的项目信息
     @PostMapping(value = "/enterprise/delProject")
@@ -118,6 +124,28 @@ public class EnterpriseController {
         return tpEnterpriseProjects;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //发送激活账户邮件
     @PostMapping(value = "/enterprise/sendMail")
     public void sendMail(@RequestBody CheckMail checkMail) throws Exception {
@@ -128,6 +156,32 @@ public class EnterpriseController {
     @RequestMapping(value = "/enterprise/emailCheck")
     public String emailCheck(CheckMail checkMail) {
         return enterpriseService.emailCheck(checkMail);
+    }
+
+    //企业密码修改
+    @PostMapping(value = "/enterprise/modifyPass")
+    public String modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return error.getDefaultMessage();
+            }
+        }
+        return enterpriseService.updateEnterprisePass(password, session);
+    }
+
+
+
+    //企业密码重置
+    @PostMapping(value = "/enterprise/resetPass")
+    public String resetPass(@Valid @RequestBody EnterpriseResetPass enterpriseResetPass, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return error.getDefaultMessage();
+            }
+        }
+        return  enterpriseService.resetEnterprisePass(enterpriseResetPass);
     }
 
 

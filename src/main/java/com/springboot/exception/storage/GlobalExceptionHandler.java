@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  /*  @ResponseBody
+ /*   @ResponseBody
     @ExceptionHandler(Exception.class)
     public ExceptionResponse handleException(HttpServletRequest request, Exception exc){
         HttpStatus status = getStatus(request);

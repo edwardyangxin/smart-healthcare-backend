@@ -58,5 +58,4 @@ public class TpEnterpriseProject {
 
     private String iconAddress;
 
-
 }

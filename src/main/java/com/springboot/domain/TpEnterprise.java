@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * Created by Administrator on 2017/7/11.
@@ -20,14 +19,14 @@ public class TpEnterprise {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
+/*
     @NotEmpty(message = "企业名不能为空！")
-    @NotNull(message = "企业名不能为空！")
+    @NotNull(message = "企业名不能为空！")*/
     private String name;
 
-    @NotEmpty(message = "密码不能为空！")
+  /*  @NotEmpty(message = "密码不能为空！")
     @NotNull(message = "密码不能为空！")
-    @Size(min = 6, max = 16, message = "密码长度必须在6到16之间！")
+    @Size(min = 6, max = 16, message = "密码长度必须在6到16之间！")*/
     private String password;
 
     private String businessLicense;

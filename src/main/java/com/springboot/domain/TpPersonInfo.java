@@ -56,4 +56,6 @@ public class TpPersonInfo {
 
     private Boolean serviceProvider;
 
+     private String specialty;
+
 }

@@ -74,6 +74,19 @@ public interface PersonalMapper {
             "values(#{name}, #{address}, #{age}, #{city}, #{education}, #{email}, #{salaryRange}, #{workingYears}, " +
             "#{projectExperience}, #{introduce}, #{language}, #{translateType}, #{industry}, #{uuid}, #{tel}, #{cooperationType}, #{workType}, #{registerTime})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
+    @Results({
+            @Result(column = "salary_range", property = "salaryRange"),
+            @Result(column = "working_years", property = "workingYears"),
+            @Result(column = "project_experience", property = "projectExperience"),
+            @Result(column = "translate_type", property = "translateType"),
+            @Result(column = "cooperation_type", property = "cooperationType"),
+            @Result(column = "work_type", property = "workType"),
+            @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "service_provider",property = "serviceProvider"),
+            @Result(column = "icon_address", property = "iconAddress"),
+            @Result(column = "click_amount", property = "clickAmount")
+    })
+
     void newInfo(TpPersonInfo tpPersonInfo);
 
     @Update("update tp_person_info set address = #{address}, age = #{age}, city = #{city}, education = #{education}, " +

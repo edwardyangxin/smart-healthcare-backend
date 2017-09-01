@@ -12,8 +12,6 @@ public class TpPersonInfo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private Boolean serviceProvider;
-
     private String name;
 
     private String address;
@@ -55,5 +53,7 @@ public class TpPersonInfo {
     private Integer clickAmount;
 
     private Integer stars;
+
+    private Boolean serviceProvider;
 
 }

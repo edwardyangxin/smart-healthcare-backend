@@ -25,6 +25,7 @@ public class KaptchaAutoConfiguration {
     public DefaultKaptcha getKaptchaBean() {
 
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
+
         Properties properties = new Properties();
         properties.setProperty(Constants.KAPTCHA_BORDER, kaptchaProperties.getBorder());
         properties.setProperty(Constants.KAPTCHA_BORDER_COLOR, kaptchaProperties.getBorderColor());

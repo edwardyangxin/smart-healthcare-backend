@@ -66,7 +66,7 @@ public interface ServiceProviderMapper {
             "values(#{name},#{serviceProvider}, #{address}, #{age}, #{city}, #{education}, #{email}, #{salaryRange}, #{workingYears}, " +
             "#{projectExperience}, #{introduce}, #{language}, #{specialty}, #{tel}, #{cooperationType}, #{workType}, #{registerTime})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
-        @Results({
+    @Results({
             @Result(column = "service_provider", property = "serviceProvider"),
             @Result(column = "salary_range", property = "salaryRange"),
             @Result(column = "working_years", property = "workingYears"),
@@ -101,14 +101,14 @@ public interface ServiceProviderMapper {
     @Select("select * from tp_enterprise_project where service_provider=true order by register_time desc limit #{amount}")
     @Results({
             @Result(column = "service_provider", property = "serviceProvider"),
-                    @Result(column = "cooperation_type", property = "cooperationType"),
-                    @Result(column = "work_type", property = "workType"),
-                    @Result(column = "register_time", property = "registerTime"),
-                    @Result(column = "project_title", property = "projectTitle"),
-                    @Result(column = "company_name", property = "companyName"),
-                    @Result(column = "translate_type", property = "translateType"),
-                    @Result(column = "click_amount", property = "clickAmount"),
-                    @Result(column = "icon_address", property = "iconAddress")
+            @Result(column = "cooperation_type", property = "cooperationType"),
+            @Result(column = "work_type", property = "workType"),
+            @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "project_title", property = "projectTitle"),
+            @Result(column = "company_name", property = "companyName"),
+            @Result(column = "translate_type", property = "translateType"),
+            @Result(column = "click_amount", property = "clickAmount"),
+            @Result(column = "icon_address", property = "iconAddress")
     })
     List<TpEnterpriseProject> selectEnterpriseInfoLatestAmount(@Param("amount") Integer amount);
 

@@ -63,9 +63,20 @@ public interface EnterpriseMapper {
     @Update("update tp_enterprise set password = #{newPassword} where name = #{name}")
     void resetPass(EnterpriseResetPass enterpriseResetPass);
 
-    @Insert("insert into tp_enterprise_project(language, contact, tel, email, city, address, introduce, cooperation_type, industry, requirement, treatment, register_time, work_type, project_title, company_name, translate_type ,service_provider)" +
-            "values(#{language}, #{contact}, #{tel}, #{email}, #{city}, #{address},#{introduce}, #{cooperationType}, #{industry}, #{requirement}, #{treatment}, #{registerTime}, #{workType}, #{projectTitle}, #{companyName},#{translateType}, #{serviceProvider})")
+    @Insert("insert into tp_enterprise_project(language, service_provider,contact, tel, email, city, address, introduce, cooperation_type, industry, requirement, treatment, register_time, work_type, project_title, company_name, translate_type)" +
+            "values(#{language},#{serviceProvider}, #{contact}, #{tel}, #{email}, #{city}, #{address},#{introduce}, #{cooperationType}, #{industry}, #{requirement}, #{treatment}, #{registerTime}, #{workType}, #{projectTitle}, #{companyName}, #{translateType})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
+    @Results({
+            @Result(column = "cooperation_type", property = "cooperationType"),
+            @Result(column = "work_type", property = "workType"),
+            @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "project_title", property = "projectTitle"),
+            @Result(column = "company_name", property = "companyName"),
+            @Result(column = "translate_type", property = "translateType"),
+            @Result(column = "service_provider",property = "serviceProvider"),
+            @Result(column = "click_amount", property = "clickAmount"),
+            @Result(column = "icon_address", property = "iconAddress")
+    })
     void newProject(TpEnterpriseProject tpEnterpriseProject);
 
     @Update("update tp_enterprise_project set language= #{language},contact= #{contact},tel = #{tel},email = #{email},city = #{city}, address = #{address},introduce = #{introduce},cooperation_type = #{cooperationType},industry = #{industry},requirement = #{requirement},treatment = #{treatment},work_type = #{workType},project_title = #{projectTitle},project_title = #{projectTitle} where id =#{id}")

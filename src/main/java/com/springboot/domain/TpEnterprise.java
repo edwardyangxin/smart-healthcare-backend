@@ -49,8 +49,8 @@ public class TpEnterprise {
 
     private String uuid;
 
-    @NotEmpty(message = "邮箱地址不能为空！")
+    /*@NotEmpty(message = "邮箱地址不能为空！")
     @NotNull(message = "邮箱地址不能为空！")
-    @Email(message = "邮箱地址不符合规范！")
+    @Email(message = "邮箱地址不符合规范！")*/
     private String email;
 }

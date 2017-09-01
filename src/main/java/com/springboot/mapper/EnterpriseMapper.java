@@ -48,7 +48,13 @@ public interface EnterpriseMapper {
     })
     TpEnterprise selectAllByName(@Param("name") String name);
 
-    @Update("update tp_enterprise set city = #{city},tel= #{tel},business_license = #{businessLicense},contact = #{contact},industry = #{industry},legal_representative = #{legalRepresentative} where uuid =#{uuid}")
+    @Update("update tp_enterprise set city = #{city},tel= #{tel},business_license = #{businessLicense},contact = #{contact},industry = #{industry},legal_representative = #{legalRepresentative}," +
+            "email = #{email} where uuid =#{uuid}")
+    @Results({
+            @Result(column = "business_license", property = "businessLicense"),
+            @Result(column = "legal_representative", property = "legalRepresentative"),
+            @Result(column = "icon_address", property = "iconAddress"),
+    })
     void updateEnterpriseByName(TpEnterprise tpEnterprise);
 
     @Update("update tp_enterprise set password = #{password} where name = #{name}")
@@ -57,8 +63,8 @@ public interface EnterpriseMapper {
     @Update("update tp_enterprise set password = #{newPassword} where name = #{name}")
     void resetPass(EnterpriseResetPass enterpriseResetPass);
 
-    @Insert("insert into tp_enterprise_project(language, contact, tel, email, city, address, introduce, cooperation_type, industry, requirement, treatment, register_time, work_type, project_title, company_name, translate_type)" +
-            "values(#{language}, #{contact}, #{tel}, #{email}, #{city}, #{address},#{introduce}, #{cooperationType}, #{industry}, #{requirement}, #{treatment}, #{registerTime}, #{workType}, #{projectTitle}, #{companyName}, #{translateType})")
+    @Insert("insert into tp_enterprise_project(language, contact, tel, email, city, address, introduce, cooperation_type, industry, requirement, treatment, register_time, work_type, project_title, company_name, translate_type ,service_provider)" +
+            "values(#{language}, #{contact}, #{tel}, #{email}, #{city}, #{address},#{introduce}, #{cooperationType}, #{industry}, #{requirement}, #{treatment}, #{registerTime}, #{workType}, #{projectTitle}, #{companyName},#{translateType}, #{serviceProvider})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newProject(TpEnterpriseProject tpEnterpriseProject);
 

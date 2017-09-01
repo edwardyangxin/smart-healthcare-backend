@@ -66,6 +66,17 @@ public interface ServiceProviderMapper {
             "values(#{name},#{serviceProvider}, #{address}, #{age}, #{city}, #{education}, #{email}, #{salaryRange}, #{workingYears}, " +
             "#{projectExperience}, #{introduce}, #{language}, #{specialty}, #{tel}, #{cooperationType}, #{workType}, #{registerTime})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
+        @Results({
+            @Result(column = "service_provider", property = "serviceProvider"),
+            @Result(column = "salary_range", property = "salaryRange"),
+            @Result(column = "working_years", property = "workingYears"),
+            @Result(column = "project_experience", property = "projectExperience"),
+            @Result(column = "cooperation_type", property = "cooperationType"),
+            @Result(column = "work_type", property = "workType"),
+            @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "icon_address", property = "iconAddress"),
+            @Result(column = "click_amount", property = "clickAmount")
+    })
     void newPersonInfo(TpPersonInfo tpPersonInfo);
 
     @Insert("insert into tp_enterprise_project(language,service_provider, contact, tel, email, city, address, introduce, cooperation_type, industry, requirement, treatment, register_time, work_type, project_title, company_name, translate_type)" +

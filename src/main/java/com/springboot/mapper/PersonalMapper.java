@@ -35,7 +35,7 @@ public interface PersonalMapper {
     })
     LoginReturn selectByName(@Param("name") String name);
 
-    @Select("select  name,contact,tel,city  from tp_personal where uuid=#{uuid}")
+    @Select({"select  name,tel,city  from tp_personal where uuid=#{uuid}"})
     TpPersonal selectPersonaByName(String uuid);
 
     @Select("select * from tp_personal where name=#{name}")
@@ -60,7 +60,8 @@ public interface PersonalMapper {
     @Update("update tp_personal set password = #{password} where name = #{name}")
     void updatePassword(Password password);
 
-    @Update("update tp_personal set real_Name = #{realName},city=#{city}, language=#{language}, icon_address=#{iconAddress}, tel= #{tel},id_card = #{idCard},location = #{location},gender = #{gender} where uuid =#{uuid}")
+    @Update("update tp_personal set real_Name = #{realName},city=#{city}, language=#{language}, icon_address=#{iconAddress}," +
+            " tel= #{tel},id_card = #{idCard},location = #{location},gender = #{gender} where uuid =#{uuid}")
     @Results({
             @Result(column = "icon_address", property = "iconAddress"),
     })
@@ -69,9 +70,9 @@ public interface PersonalMapper {
     @Update("update tp_personal set status = #{status} where name = #{name}")
     void updateStatus(TpPersonal tpPersonal);
 
-    @Insert("insert into tp_person_info(name, address, age, city, education, email, salary_range, working_years, " +
+    @Insert("insert into tp_person_info(name, service_provider, address, age, city, education, email, salary_range, working_years, " +
             "project_experience, introduce, language, translate_type, industry, uuid, tel, cooperation_type, work_type, register_time) " +
-            "values(#{name}, #{address}, #{age}, #{city}, #{education}, #{email}, #{salaryRange}, #{workingYears}, " +
+            "values(#{name}, #{serviceProvider}, #{address}, #{age}, #{city}, #{education}, #{email}, #{salaryRange}, #{workingYears}, " +
             "#{projectExperience}, #{introduce}, #{language}, #{translateType}, #{industry}, #{uuid}, #{tel}, #{cooperationType}, #{workType}, #{registerTime})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     @Results({

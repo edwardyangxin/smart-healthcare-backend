@@ -112,7 +112,7 @@ public class PersonalServiceImpl implements PersonalService {
 
   @Override
     public Result deletePersonInfo(Integer id,HttpSession session) {
-        TpPersonInfo tpPersonInfo = personalMapper.selectPersonInfoById(id);
+        TpPersonInfo tpPersonInfo = personalMapper.selectInfoById(id);
         if (tpPersonInfo == null) {
             return ResultUtil.error(ResultEnum.DEL_ERROR);
         }
@@ -191,8 +191,6 @@ public class PersonalServiceImpl implements PersonalService {
         }
     }
 
-
-
     @Override
     public Result<TpPersonInfo> selectInfos(PersonInfo personInfo) {
         List<TpPersonInfo> tpPersonInfos = personalMapper.selectInfos(personInfo);
@@ -201,7 +199,7 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public Result<TpPersonInfo> selectInfoById(PersonInfo personInfo) {
-        TpPersonInfo tpPersonInfo = personalMapper.selectInfoById(personInfo);
+        TpPersonInfo tpPersonInfo = personalMapper.selectInfoById(personInfo.getId());
         int clickAmount = tpPersonInfo.getClickAmount() + 1;
         tpPersonInfo.setClickAmount(clickAmount);
         String iconAddress;

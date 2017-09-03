@@ -102,8 +102,8 @@ public interface PersonalMapper {
     @Update("UPDATE tp_person_info SET tp_person_info.icon_address = (SELECT tp_file.picture_path FROM tp_file where uuid= #{uuid}) where uuid = #{uuid}")
     void addIconAddress(TpPersonInfo tpPersonInfo);
 
-     @Delete("delete from tp_person_info where id = #{id}")
-    Integer deletePersonInfo(Integer id);
+     @Delete("delete from tp_person_info where id = #{id} and uuid = #{uuid}")
+    Integer deletePersonInfo(Integer id,String uuid);
 
     @Select("select * from tp_person_info where ((id=#{id}) or (#{id} is null)) and ((name=#{name}) or (#{name} is null)) " +
             "and ((city=#{city}) or (#{city} is null)) and ((language=#{language}) or (#{language} is null))" +
@@ -135,7 +135,7 @@ public interface PersonalMapper {
             @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "click_amount", property = "clickAmount")
     })
-    TpPersonInfo selectInfoById(PersonInfo personInfo);
+    TpPersonInfo selectInfoById(Integer id);
 
     @Select("select * from tp_person_info where service_provider=false order by register_time desc limit #{amount}")
     @Results({

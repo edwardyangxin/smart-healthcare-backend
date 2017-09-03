@@ -8,6 +8,8 @@ import com.springboot.dto.CheckMail;
 import com.springboot.dto.Password;
 import com.springboot.dto.ServiceProviderResetPass;
 import com.springboot.enums.ResultEnum;
+import com.springboot.mapper.EnterpriseMapper;
+import com.springboot.mapper.PersonalMapper;
 import com.springboot.mapper.ServiceProviderMapper;
 import com.springboot.service.ServiceProviderService;
 import com.springboot.tools.ResultUtil;
@@ -33,11 +35,16 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     private String username;
     private JavaMailSender javaMailSender;
     private ServiceProviderMapper serviceProviderMapper;
+    private PersonalMapper personalMapper;
+    private EnterpriseMapper enterpriseMapper;
 
     @Autowired
-    public ServiceProviderServiceImpl(ServiceProviderMapper serviceProviderMapper, JavaMailSender javaMailSender) {
+    public ServiceProviderServiceImpl(ServiceProviderMapper serviceProviderMapper,PersonalMapper personalMapper,
+                                     EnterpriseMapper enterpriseMapper,JavaMailSender javaMailSender) {
         this.serviceProviderMapper = serviceProviderMapper;
         this.javaMailSender = javaMailSender;
+        this.personalMapper = personalMapper;
+        this.enterpriseMapper = enterpriseMapper;
     }
 
     @Override
@@ -123,11 +130,11 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 
    @Override
     public Result delPersonPro(Integer id, HttpSession session){
-        TpPersonInfo tpPersonInfo = personalMapper.selectPersonInfoById(id);
-        if (tpPersonInfo == null) {
+        String uuid = session.getAttribute("serviceProviderUuid").toString();
+        Integer ids = personalMapper.deletePersonInfo(id,uuid);
+        if (ids == null) {
             return ResultUtil.error(ResultEnum.DEL_ERROR);
         }
-        String uuid = session.getAttribute("serviceProviderUuid").toString();
         String name = session.getAttribute("serviceProviderName").toString();
         personalMapper.deletePersonInfo(id,uuid);
         log.info("供应商用户:"+name+",删除了一条id为："+id+"的，发布的个人信息");

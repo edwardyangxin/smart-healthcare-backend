@@ -188,7 +188,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
     @Override
     public TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject) {
-        TpEnterpriseProject tpEnterpriseProject = enterpriseMapper.selectProjectById(enterpriseProject);
+        TpEnterpriseProject tpEnterpriseProject = enterpriseMapper.selectProjectById(enterpriseProject.getId());
         int clickAmount = tpEnterpriseProject.getClickAmount() + 1;
         tpEnterpriseProject.setClickAmount(clickAmount);
         String iconAddress;

@@ -40,11 +40,6 @@ public interface EnterpriseService {
     String resetEnterprisePass(EnterpriseResetPass enterpriseResetPass);
 
 
-
-
-
-    String delProject(EnterpriseProject enterpriseProject);
-
     List<TpEnterpriseProject> selectProjects(EnterpriseProject enterpriseProject);
 
     TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject);

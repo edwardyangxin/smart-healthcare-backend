@@ -38,7 +38,7 @@ public interface ServiceProviderService {
     Result delPersonPro(Integer id, HttpSession session);
 
     //根据id删除一条供应商已发布的企业信息
-    Result delPersonPro(Integer id, HttpSession session);
+    Result delEnterprisePro(Integer id, HttpSession session);
 
 
 

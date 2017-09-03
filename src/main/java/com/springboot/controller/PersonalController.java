@@ -87,11 +87,11 @@ public class PersonalController {
         return personalService.updatPersonInfo(tpPersonInfo,session);
     }
 
-    //删除一条已发布的个人信息
+    //根据id删除一条已发布的个人信息
     @ResponseBody
-    @RequestMapping(value = "/personal/delInfo")
-    public Result deletePersonInfo(@RequestBody PersonInfo personInfo) {
-        return personalService.deletePersonInfo(personInfo);
+    @RequestMapping(value = "/personal/delPersonInfo/{id}")
+    public Result deletePersonInfo(@PathVariable Integer id,HttpSession session) {
+        return personalService.deletePersonInfo(id,session);
     }
 
 

@@ -104,6 +104,19 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         }
     }
 
+  @Override
+    public Result deleteEnterpriseProject(Integer id,HttpSession session) {
+        TpEnterpriseProject tpEnterpriseProject = enterpriseMapper.selectProjectById(id);
+        if (tpEnterpriseProject == null) {
+            return ResultUtil.error(ResultEnum.DEL_ERROR);
+        }
+        String uuid = session.getAttribute("enterpriseUuid").toString();
+        String name = session.getAttribute("enterpriseName").toString();
+        enterpriseMapper.deleteEnterpriseProject(id,uuid);
+        log.info("企业用户删除了一条id为："+id+"的发布信息");
+        return ResultUtil.success();
+    }
+
 
 
 
@@ -166,17 +179,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
 
-
-    @Override
-    public String delProject(EnterpriseProject enterpriseProject) {
-        TpEnterpriseProject tpEnterpriseProject = enterpriseMapper.selectProjectById(enterpriseProject);
-        if (tpEnterpriseProject != null) {
-            enterpriseMapper.delProject(enterpriseProject.getId());
-            return "删除项目成功！";
-        } else {
-            return "这条项目信息不存在";
-        }
-    }
 
     @Override
     public List<TpEnterpriseProject> selectProjects(EnterpriseProject enterpriseProject) {

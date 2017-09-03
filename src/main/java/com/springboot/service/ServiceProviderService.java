@@ -33,7 +33,12 @@ public interface ServiceProviderService {
 
    //供应商发布企业信息
     Result newServiceProviderEnterpriseInfo(TpEnterpriseProject tpEnterpriseProject,HttpSession session);
+    
+    //根据id删除一条供应商已发布的个人信息
+    Result delPersonPro(Integer id, HttpSession session);
 
+    //根据id删除一条供应商已发布的企业信息
+    Result delPersonPro(Integer id, HttpSession session);
 
 
 

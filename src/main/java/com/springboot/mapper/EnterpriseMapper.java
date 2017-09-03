@@ -121,8 +121,8 @@ public interface EnterpriseMapper {
     })
     TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject);
 
-    @Delete("delete from tp_enterprise_project where id = #{id}")
-    Integer delProject(Integer id);
+    @Delete("delete from tp_enterprise_project where id = #{id} and uuid=#{uuid}")
+    Integer deleteEnterpriseProject(Integer id,String uuid);
 
     @Update("update tp_enterprise_project set click_amount = #{clickAmount}, stars = #{stars} where id = #{id}")
     void addClickAmount(TpEnterpriseProject tpEnterpriseProject);

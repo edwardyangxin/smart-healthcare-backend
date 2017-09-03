@@ -42,9 +42,6 @@ public interface EnterpriseService {
 
 
 
-
-    String delProject(EnterpriseProject enterpriseProject);
-
     List<TpEnterpriseProject> selectProjects(EnterpriseProject enterpriseProject);
 
     TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject);

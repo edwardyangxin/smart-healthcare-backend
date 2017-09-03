@@ -28,6 +28,9 @@ public interface EnterpriseService {
     //修改企业已发布的项目信息
     Result updateEnterpriseProjectById(TpEnterpriseProject tpEnterpriseProject, HttpSession session);
 
+    //删除企业已发布的项目信息
+    Result deleteEnterpriseProject(Integer id,HttpSession session);
+
     TpEnterprise selectAllByName(String name);
 
 

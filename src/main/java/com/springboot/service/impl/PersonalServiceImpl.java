@@ -110,6 +110,19 @@ public class PersonalServiceImpl implements PersonalService {
         }
     }
 
+  @Override
+    public Result deletePersonInfo(Integer id,HttpSession session) {
+        TpPersonInfo tpPersonInfo = personalMapper.selectPersonInfoById(id);
+        if (tpPersonInfo == null) {
+            return ResultUtil.error(ResultEnum.DEL_ERROR);
+        }
+        String uuid = session.getAttribute("personUuid").toString();
+        String name = session.getAttribute("personName").toString();
+        personalMapper.deletePersonInfo(id,uuid);
+        log.info("个人用户"+name+",删除了一条id为："+id+"的发布信息");
+        return ResultUtil.success();
+    }
+
 
     public TpPersonal selectByName(String name) {
         return personalMapper.selectAllByName(name);
@@ -179,18 +192,6 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
 
-
-
-    @Override
-    public Result deletePersonInfo(PersonInfo personInfo) {
-        TpPersonInfo tpPersonInfo = personalMapper.selectInfoById(personInfo);
-        if (tpPersonInfo != null) {
-            personalMapper.delInfo(personInfo.getId());
-            return ResultUtil.success();
-        } else {
-            return ResultUtil.error(ResultEnum.DEL_ERROR);
-        }
-    }
 
     @Override
     public Result<TpPersonInfo> selectInfos(PersonInfo personInfo) {

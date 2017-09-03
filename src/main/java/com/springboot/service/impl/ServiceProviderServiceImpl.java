@@ -121,6 +121,32 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 
     }
 
+   @Override
+    public Result delPersonPro(Integer id, HttpSession session){
+        TpPersonInfo tpPersonInfo = personalMapper.selectPersonInfoById(id);
+        if (tpPersonInfo == null) {
+            return ResultUtil.error(ResultEnum.DEL_ERROR);
+        }
+        String uuid = session.getAttribute("serviceProviderUuid").toString();
+        String name = session.getAttribute("serviceProviderName").toString();
+        personalMapper.deletePersonInfo(id,uuid);
+        log.info("供应商用户:"+name+",删除了一条id为："+id+"的，发布的个人信息");
+        return ResultUtil.success();
+    }
+
+    @Override
+    public Result delEnterprisePro(Integer id, HttpSession session){
+        TpEnterpriseProject tpEnterpriseProject = enterpriseMapper.selectProjectById(id);
+        if (tpEnterpriseProject == null) {
+            return ResultUtil.error(ResultEnum.DEL_ERROR);
+        }
+        String uuid = session.getAttribute("serviceProviderUuid").toString();
+        String name = session.getAttribute("serviceProviderName").toString();
+        enterpriseMapper.deleteEnterpriseProject(id,uuid);
+        log.info("企业用户:"+name+",删除了一条id为："+id+"的发布信息");
+        return ResultUtil.success();
+    }
+    
 
     @Override
     public TpServiceProvider selectAllByName(String name) {

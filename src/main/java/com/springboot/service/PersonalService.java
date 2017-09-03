@@ -27,7 +27,7 @@ public interface PersonalService {
     Result updatPersonInfo(TpPersonInfo tpPersonInfo,HttpSession session);
 
     //删除个人发布信息
-    Result<PersonInfo> deletePersonInfo(Integer id,,HttpSession session);
+    Result<PersonInfo> deletePersonInfo(Integer id, HttpSession session);
 
     Result<TpPersonal> insertPerson(TpPersonal tpPersonal, TpFile tpFile);
 

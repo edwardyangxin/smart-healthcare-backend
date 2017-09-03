@@ -87,34 +87,12 @@ public class EnterpriseController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //删除已发布的项目信息
-    @PostMapping(value = "/enterprise/delProject")
-    public String delProject(@RequestBody EnterpriseProject enterpriseProject) {
-        return enterpriseService.delProject(enterpriseProject);
+     //删除企业已发布的项目信息
+    @PostMapping(value = "/enterprise/delEnterpriseProject/{id}")
+    public Result deleteEnterpriseProject(@PathVariable Integer id,HttpSession session) {
+        return enterpriseService.deleteEnterpriseProject(id,session);
     }
+
 
     //通过ID查询一条项目信息
     @PostMapping(value = "/enterprise/selectProjectById")

@@ -154,6 +154,19 @@ public class ServiceProviderController {
     }
 
 
+    //根据id删除一条供应商已发布的个人信息
+    @ResponseBody
+    @RequestMapping(value = "/serviceProvider/delPersonPro/{id}")
+    public Result delPersonPro(@PathVariable Integer id,HttpSession session) {
+        return serviceProviderService.delPersonPro(id,session);
+    }
+
+    //根据删除一条已发布的企业信息
+    @ResponseBody
+    @RequestMapping(value = "/serviceProvider/delEnterprisePro/{id}")
+    public Result delEnterprisePro(@PathVariable Integer id,HttpSession session) {
+        return serviceProviderService.delEnterprisePro(id,session);
+    }
 
 
 

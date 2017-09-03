@@ -119,7 +119,7 @@ public interface EnterpriseMapper {
             @Result(column = "click_amount", property = "clickAmount"),
             @Result(column = "icon_address", property = "iconAddress")
     })
-    TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject);
+    TpEnterpriseProject selectProjectById(Integer id);
 
     @Delete("delete from tp_enterprise_project where id = #{id} and uuid=#{uuid}")
     Integer deleteEnterpriseProject(Integer id,String uuid);

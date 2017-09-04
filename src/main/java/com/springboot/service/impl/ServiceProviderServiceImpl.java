@@ -161,52 +161,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     }
 
 
-    @Override
-    public String updateServiceProviderPass(Password password, HttpSession session) {
-        try {
-            password.setName(session.getAttribute("name").toString());
-        } catch (NullPointerException e) {
-            log.info(e.toString());
-            return "用户未登录。";
-        }
-        String TPPassword = serviceProviderMapper.selectByName(password.getName()).getPassword();
-        if (password.getPassword().equals(TPPassword)) {
-            if (password.getNewPassword().equals(password.getRetypePassword())) {
-                if (TPPassword.equals(password.getNewPassword())) {
-                    return "新密码与旧密码相同，请重新输入！";
-                } else {
-                    password.setPassword(password.getNewPassword());
-                    serviceProviderMapper.updateServiceProviderPass(password);
-                    session.removeAttribute("name");
-                    return "密码修改成功！";
-                }
-            } else {
-                return "两次输入的新密码不同，请重试！";
-            }
-        } else {
-            return "旧密码输入错误，请重试！";
-        }
-    }
-
-    @Override
-    public String resetServiceProviderPass(ServiceProviderResetPass serviceProviderResetPass) {
-        TpServiceProvider tpPersonal = serviceProviderMapper.selectAllByName(serviceProviderResetPass.getName());
-        if (tpPersonal != null) {
-            if (serviceProviderResetPass.getEmail().equals(tpPersonal.getEmail())) {
-                if (serviceProviderResetPass.getTel().equals(tpPersonal.getTel())) {
-                    serviceProviderMapper.resetPass(serviceProviderResetPass);
-                    return "重置密码成功。";
-                } else {
-                    return "电话号码错误，请重试！";
-                }
-            } else {
-                return "Email错误，请重试！";
-            }
-        } else {
-            return "没有此用户！";
-        }
-    }
-
 
     @Override
     public void sendMail(CheckMail checkMail) throws Exception {

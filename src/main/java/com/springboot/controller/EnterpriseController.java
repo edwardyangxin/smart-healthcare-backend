@@ -130,26 +130,6 @@ public class EnterpriseController {
         return  enterpriseService.resetEnterprisePass(resetPass);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //发送激活账户邮件
     @PostMapping(value = "/enterprise/sendMail")
     public void sendMail(@RequestBody CheckMail checkMail) throws Exception {

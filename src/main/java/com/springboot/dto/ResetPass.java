@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
  * Created by gux on 2017/8/2.
  */
 @Data
-public class EnterpriseResetPass {
+public class ResetPass {
 
     @NotEmpty(message = "企业用户名不能为空！")
     @NotNull(message = "企业用户名不能为空！")
@@ -22,6 +22,10 @@ public class EnterpriseResetPass {
     @NotNull(message = "手机号码不能为空！")
     private String tel;
 
+    @NotEmpty(message = "邮箱地址不能为空！")
+    @NotNull(message = "邮箱地址不能为空！")
+    @Email(message = "邮箱地址不符合规范！")
+    private String email;
 
     @NotEmpty(message = "新密码不能为空！")
     @NotNull(message = "新密码不能为空！")

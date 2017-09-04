@@ -137,48 +137,6 @@ public class PersonalController {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //个人密码修改
-    @PostMapping(value = "/personal/modifyPass")
-    public Result<Password> modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                Result result = new Result();
-                result.setCode(300);
-                result.setMsg(error.getDefaultMessage());
-                return result;
-            }
-        }
-        return personalService.updatePersonalPass(password, session);
-    }
-
-    //个人重置密码（真实姓名、邮箱、电话）
-    @PostMapping(value = "/personal/resetPass")
-    public String resetPass(@Valid @RequestBody PersonalResetPass personalResetPass, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        String result = personalService.resetPersonalPass(personalResetPass);
-        return result;
-    }
-
     //发送激活账户邮件
     @PostMapping(value = "/personal/sendMail")
     public void sendMail(@RequestBody CheckMail checkMail) throws Exception {

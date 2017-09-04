@@ -146,31 +146,6 @@ public class EnterpriseController {
         return enterpriseService.emailCheck(checkMail);
     }
 
-    //企业密码修改
-    @PostMapping(value = "/enterprise/modifyPass")
-    public String modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        return enterpriseService.updateEnterprisePass(password, session);
-    }
-
-
-
-    //企业密码重置
-    @PostMapping(value = "/enterprise/resetPass")
-    public String resetPass(@Valid @RequestBody EnterpriseResetPass enterpriseResetPass, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        return  enterpriseService.resetEnterprisePass(enterpriseResetPass);
-    }
-
+   
 
 }

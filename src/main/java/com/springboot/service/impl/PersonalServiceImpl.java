@@ -145,51 +145,6 @@ public class PersonalServiceImpl implements PersonalService {
         }
     }
 
-    @Override
-    public Result<Password> updatePersonalPass(Password password, HttpSession session) {
-        try {
-            password.setName(session.getAttribute("name").toString());
-        } catch (NullPointerException e) {
-            log.info("修改密码用户未登录 " + e.toString());
-            return ResultUtil.error(ResultEnum.NOT_LOGIN);
-        }
-        String TPPassword = personalMapper.selectByName(password.getName()).getPassword();
-        if (password.getPassword().equals(TPPassword)) {
-            if (password.getNewPassword().equals(password.getRetypePassword())) {
-                if (TPPassword.equals(password.getNewPassword())) {
-                    return ResultUtil.error(ResultEnum.PASSWORDREPEAT_ERROR);
-                } else {
-                    password.setPassword(password.getNewPassword());
-                    personalMapper.updatePassword(password);
-                    session.removeAttribute("name");
-                    return ResultUtil.success(ResultEnum.PASSRESET_SUCCESS);
-                }
-            } else {
-                return ResultUtil.error(ResultEnum.DIFPASSWORD_ERROR);
-            }
-        } else {
-            return ResultUtil.error(ResultEnum.OLDPASSWORD_ERROR);
-        }
-    }
-
-    @Override
-    public String resetPersonalPass(PersonalResetPass personalResetPass) {
-        TpPersonal tpPersonal = personalMapper.selectByRealName(personalResetPass.getRealName());
-        if (tpPersonal != null) {
-            if (personalResetPass.getEmail().equals(tpPersonal.getEmail())) {
-                if (personalResetPass.getTel().equals(tpPersonal.getTel())) {
-                    personalMapper.resetPass(personalResetPass);
-                    return "重置密码成功。";
-                } else {
-                    return "电话号码错误，请重试！";
-                }
-            } else {
-                return "Email错误，请重试！";
-            }
-        } else {
-            return "没有此用户！";
-        }
-    }
 
     @Override
     public Result<TpPersonInfo> selectInfos(PersonInfo personInfo) {

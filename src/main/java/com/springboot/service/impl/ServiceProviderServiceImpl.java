@@ -201,13 +201,10 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         return ResultUtil.success(ResultEnum.PASSRESET_SUCCESS);
 
     }
-
-
     @Override
     public TpServiceProvider selectAllByName(String name) {
         return serviceProviderMapper.selectAllByName(name);
     }
-
     @Override
     public Result resetServiceProviderPass(ResetPass resetPass) {
         TpServiceProvider tpServiceProvider = serviceProviderMapper.selectAllByName(resetPass.getName());

@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-
 /**
  * Created by Administrator on 2017/7/12.
  */
@@ -38,6 +37,7 @@ public interface EnterpriseMapper {
             @Result(column = "icon_address", property = "iconAddress"),
     })
     LoginReturn selectByName(@Param("name") String name);
+
 
     @Select("select * from tp_enterprise where name=#{name}")
     @Results({
@@ -82,7 +82,7 @@ public interface EnterpriseMapper {
     @Update("update tp_enterprise_project set language= #{language},contact= #{contact},tel = #{tel},email = #{email},city = #{city}, address = #{address},introduce = #{introduce},cooperation_type = #{cooperationType},industry = #{industry},requirement = #{requirement},treatment = #{treatment},work_type = #{workType},project_title = #{projectTitle},project_title = #{projectTitle} where id =#{id}")
     void updateEnterpriseProjectById(TpEnterpriseProject tpEnterpriseProject);
 
-    @Select("select * from tp_enterprise_project where((language=#{language}) or (#{language} is null)) and ((tel=#{tel}) or (#{tel} is null)) and ((address=#{address}) or (#{address}) is null) and ((requirement=#{requirement}) or (#{requirement} is null)) and ((treatment=#{treatment}) or (#{treatment} is null)) and ((work_type=#{workType}) or (#{workType} is null))")
+    @Select("select * from tp_enterprise_project where((language=#{language}) or (#{language} is null)) and ((tel=#{tel}) or (#{tel} is null)) and ((address=#{address}) or (#{address}) is null) and ((requirement=#{requirement}) or (#{requirement} is null)) and ((treatment=#{treatment}) or (#{treatment} is null)) and ((work_type=#{workType}) or (#{workType} is null)) ")
     @Results({
             @Result(column = "cooperation_type", property = "cooperationType"),
             @Result(column = "work_type", property = "workType"),

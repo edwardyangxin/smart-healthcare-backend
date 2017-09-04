@@ -103,55 +103,6 @@ public class ServiceProviderController {
         return serviceProviderService.newServiceProviderEnterpriseInfo(tpEnterpriseProject, session);
     }
 
-    //修改供应商发布的个人信息
-    @ResponseBody
-    @PostMapping(value = "/serviceProvider/modifyPersonInfo")
-    public Result updateServiceProviderInfoById(@Valid @RequestBody TpPersonInfo tpPersonInfo, BindingResult bindingResult, HttpSession session) {
-        try {
-            String name = session.getAttribute("serviceProviderName").toString();
-            String uuid = session.getAttribute("serviceProviderUuid").toString();
-            tpPersonInfo.setName(name);
-            tpPersonInfo.setUuid(uuid);
-        } catch (NullPointerException e) {
-            log.info("供应商修改发布的个人信息时，未登录 " + e.toString());
-            return ResultUtil.error(ResultEnum.NOT_LOGIN);
-        }
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return ResultUtil.error(error.getDefaultMessage());
-            }
-        }
-        tpPersonInfo.setRegisterTime(new Date());
-        personalMapper.updateInfoById(tpPersonInfo);
-        log.info("供应商:" + session.getAttribute("serviceProviderUuid").toString() + "修改个人发布信息成功！");
-        return ResultUtil.success(ResultEnum.UPDATE_SUCCESS);
-    }
-
-    //修改供应商发布的企业信息
-    @ResponseBody
-    @PostMapping(value = "/serviceProvider/modifyEnterpriseInfo")
-    public Result updateServiceProviderEnterprseInfoById(@Valid @RequestBody TpEnterpriseProject tpEnterpriseProject, BindingResult bindingResult, HttpSession session) {
-        try {
-            String name = session.getAttribute("serviceProviderName").toString();
-            String uuid = session.getAttribute("serviceProviderUuid").toString();
-            tpEnterpriseProject.setName(name);
-            tpEnterpriseProject.setUuid(uuid);
-        } catch (NullPointerException e) {
-            log.info("修改供应商发布的企业信息时，未登录 " + e.toString());
-            return ResultUtil.error(ResultEnum.NOT_LOGIN);
-        }
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return ResultUtil.error(error.getDefaultMessage());
-            }
-        }
-        tpEnterpriseProject.setRegisterTime(new Date());
-        enterpriseMapper.updateEnterpriseProjectById(tpEnterpriseProject);
-        log.info("供应商:" + session.getAttribute("serviceProviderUuid").toString() + "修改企业发布信息成功！");
-        return ResultUtil.success(ResultEnum.UPDATE_SUCCESS);
-    }
 
 
     //根据id删除一条供应商已发布的个人信息
@@ -180,31 +131,7 @@ public class ServiceProviderController {
 
 
 
-    //供应商密码修改，需登录后，传入name.password,newpassword,retypePassword
-    @PostMapping(value = "/serviceProvider/modifyPass")
-    public String modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        String result = serviceProviderService.updateServiceProviderPass(password, session);
-        return result;
-    }
 
-    //供应商重置密码（真实姓名、邮箱、电话）,需传入name,tel,email,newPassword
-    @PostMapping(value = "/serviceProvider/resetPass")
-    public String resetPass(@Valid @RequestBody ServiceProviderResetPass serviceProviderResetPass, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        String result = serviceProviderService.resetServiceProviderPass(serviceProviderResetPass);
-        return result;
-    }
 
 
     //发送激活账户邮件

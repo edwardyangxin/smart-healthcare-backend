@@ -6,8 +6,7 @@ import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpServiceProvider;
 import com.springboot.dto.CheckMail;
 import com.springboot.dto.Password;
-import com.springboot.dto.ServiceProviderResetPass;
-import com.springboot.enums.ResultEnum;
+import com.springboot.dto.ResetPass;
 import com.springboot.mapper.EnterpriseMapper;
 import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.ServiceProviderService;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -103,6 +101,32 @@ public class ServiceProviderController {
         return serviceProviderService.newServiceProviderEnterpriseInfo(tpEnterpriseProject, session);
     }
 
+    //修改供应商发布的个人信息
+    @ResponseBody
+    @PostMapping(value = "/serviceProvider/modifyPersonInfo")
+    public Result updateServiceProviderInfoById(@Valid @RequestBody TpPersonInfo tpPersonInfo, BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return serviceProviderService.updateServicePersonPro(tpPersonInfo, session);
+    }
+
+    //修改供应商发布的企业信息
+    @ResponseBody
+    @PostMapping(value = "/serviceProvider/modifyEnterprisePro")
+    public Result updateServiceProviderEnterprseInfoById(@Valid @RequestBody TpEnterpriseProject tpEnterpriseProject, BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return serviceProviderService.updateServiceEnterprisePro(tpEnterpriseProject, session);
+
+    }
 
 
     //根据id删除一条供应商已发布的个人信息
@@ -119,6 +143,17 @@ public class ServiceProviderController {
         return serviceProviderService.delEnterprisePro(id,session);
     }
 
+    //供应商密码修改，需登录后，传入name.password,newpassword,retypePassword
+    @PostMapping(value = "/serviceProvider/modifyPass")
+    public Result modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return serviceProviderService.updateServiceProviderPass(password, session);
+    }
 
 
 
@@ -131,6 +166,19 @@ public class ServiceProviderController {
 
 
 
+
+
+    //供应商重置密码（用户名、邮箱、电话）,需传入name,tel,email,newPassword
+    @PostMapping(value = "/serviceProvider/resetPass")
+    public Result resetPass(@Valid @RequestBody ResetPass resetPass, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return serviceProviderService.resetServiceProviderPass(resetPass);
+    }
 
 
 

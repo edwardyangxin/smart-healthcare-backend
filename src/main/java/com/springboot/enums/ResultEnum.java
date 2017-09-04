@@ -17,13 +17,17 @@ public enum ResultEnum {
     MATCHING_USER_TYPE_ERRPR(8,"匹配用户类型出现错误！"),
     NullPointerException(9,"空指针异常！"),
     Repeat_login_Error(10,"请勿重复登录！"),
+    Repeat_tel_Error(10,"手机号不正确！"),
+    Repeat_eamil_Error(10,"邮箱不正确！"),
 
     SUCCESS(200,"success"),
     DEL_SUCCESS(4,"删除信息成功！"),
     REGISTER_SUCCESS(4,"注册成功！"),
     LOGIN_SUCCESS(4,"登录成功! "),
     PASSRESET_SUCCESS(4,"密码修改成功！"),
+    PASSSFIND_SUCCESS(4,"密码找回成功！"),
     UPDATE_SUCCESS(4,"更新信息成功！");
+
 
     private Integer code;
 

@@ -4,7 +4,10 @@ import com.springboot.domain.Result;
 import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
-import com.springboot.dto.*;
+import com.springboot.dto.CheckMail;
+import com.springboot.dto.Password;
+import com.springboot.dto.PersonInfo;
+import com.springboot.dto.ResetPass;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -28,6 +31,12 @@ public interface PersonalService {
 
     //删除个人发布信息
     Result<PersonInfo> deletePersonInfo(Integer id, HttpSession session);
+
+    //修改个人用户密码
+    Result updatePersonalPass(Password password, HttpSession session);
+
+    //重置个人密码
+    Result resetPersonalPass(ResetPass resetPass);
 
     Result<TpPersonal> insertPerson(TpPersonal tpPersonal, TpFile tpFile);
 

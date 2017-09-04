@@ -31,6 +31,12 @@ public interface EnterpriseService {
     //删除企业已发布的项目信息
     Result deleteEnterpriseProject(Integer id,HttpSession session);
 
+    //修改企业用户密码
+    Result updateEnterprisePass(Password password, HttpSession session);
+
+    //重置企业用户密码
+    Result resetEnterprisePass(ResetPass resetPass);
+
     TpEnterprise selectAllByName(String name);
 
 

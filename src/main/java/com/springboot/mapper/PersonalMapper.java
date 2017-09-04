@@ -27,13 +27,13 @@ public interface PersonalMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newPerson(Register register);
 
-    @Select("select password,status,uuid from tp_personal where name=#{name}")
+    @Select("select password,status,uuid from tp_personal where uuid=#{uuid}")
     @Results({
             @Result(column = "real_name", property = "realName"),
             @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "active_code", property = "activeCode")
     })
-    LoginReturn selectByName(@Param("name") String name);
+    LoginReturn selectByName(@Param("name") String uuid);
 
     @Select({"select  name,tel,city  from tp_personal where uuid=#{uuid}"})
     TpPersonal selectPersonaByName(String uuid);
@@ -54,10 +54,10 @@ public interface PersonalMapper {
     })
     TpPersonal selectByRealName(@Param("realName") String realName);
 
-    @Update("update tp_personal set password=#{newPassword} where real_name =#{realName}")
-    void resetPass(PersonalResetPass personalResetPass);
+    @Update("update tp_personal set password=#{newPassword} where uuid =#{uuid}")
+    void resetPass(ResetPass resetPass);
 
-    @Update("update tp_personal set password = #{password} where name = #{name}")
+    @Update("update tp_personal set password = #{password} where uuid = #{uuid}")
     void updatePassword(Password password);
 
     @Update("update tp_personal set real_Name = #{realName},city=#{city}, language=#{language}, icon_address=#{iconAddress}," +
@@ -93,7 +93,7 @@ public interface PersonalMapper {
     @Update("update tp_person_info set address = #{address}, age = #{age}, city = #{city}, education = #{education}, " +
             "email = #{email}, salary_range = #{salaryRange}, working_years = #{workingYears}, project_experience = #{projectExperience}, " +
             "introduce = #{introduce}, language = #{language}, translate_type = #{translateType}, industry = #{industry}, tel = #{tel}, " +
-            "cooperation_type = #{cooperationType}, work_type = #{workType}, click_amount = #{clickAmount}, register_time = #{registerTime} where id = #{id}")
+            "cooperation_type = #{cooperationType}, work_type = #{workType}, click_amount = #{clickAmount}, register_time = #{registerTime} where uuid={uuid} and id = #{id}")
     void updateInfoById(TpPersonInfo tpPersonInfo);
 
     @Update("update tp_person_info set click_amount = #{clickAmount}, stars = #{stars} where id = #{id}")

@@ -5,7 +5,7 @@ import com.springboot.domain.TpEnterprise;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.dto.CheckMail;
 import com.springboot.dto.EnterpriseProject;
-import com.springboot.dto.EnterpriseResetPass;
+import com.springboot.dto.ResetPass;
 import com.springboot.dto.Password;
 import com.springboot.service.EnterpriseService;
 import com.springboot.tools.ResultUtil;
@@ -86,17 +86,11 @@ public class EnterpriseController {
         return enterpriseService.updateEnterpriseProjectById(tpEnterpriseProject, session);
     }
 
-
-
     //根据id和uuid删除企业已发布的项目信息
     @PostMapping(value = "/enterprise/delEnterpriseProject/{id}")
     public Result deleteEnterpriseProject(@PathVariable Integer id,HttpSession session) {
         return enterpriseService.deleteEnterpriseProject(id,session);
     }
-
-
-
-
 
 
     //通过ID查询一条项目信息
@@ -111,6 +105,67 @@ public class EnterpriseController {
         List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseService.selectProjects(enterpriseProject);
         return tpEnterpriseProjects;
     }
+
+    //企业密码修改
+    @PostMapping(value = "/enterprise/modifyPass")
+    public Result modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return enterpriseService.updateEnterprisePass(password, session);
+    }
+
+    //企业密码重置
+    @PostMapping(value = "/enterprise/resetPass")
+    public Result resetPass(@Valid @RequestBody ResetPass resetPass, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return  enterpriseService.resetEnterprisePass(resetPass);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //发送激活账户邮件
+    @PostMapping(value = "/enterprise/sendMail")
+    public void sendMail(@RequestBody CheckMail checkMail) throws Exception {
+        enterpriseService.sendMail(checkMail);
+    }
+
+    //点击邮件链接激活账户
+    @RequestMapping(value = "/enterprise/emailCheck")
+    public String emailCheck(CheckMail checkMail) {
+        return enterpriseService.emailCheck(checkMail);
+    }
+
+
+
+
+
 
 
 
@@ -146,6 +201,6 @@ public class EnterpriseController {
         return enterpriseService.emailCheck(checkMail);
     }
 
-   
+
 
 }

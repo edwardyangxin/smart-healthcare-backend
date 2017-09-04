@@ -49,7 +49,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
             TpEnterprise tpEnterprise = enterpriseMapper.selectEnterpriseByName(name);
             return ResultUtil.success(tpEnterprise);
         } catch (Exception e) {
-            log.info("未登录"+ e.getMessage());
+            log.info("企业用户未登录" + e.getMessage());
             return ResultUtil.error(ResultEnum.NOT_LOGIN);
         }
     }
@@ -82,7 +82,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
             log.info("企业用户:"+name+"发布个人信息成功！");
             return ResultUtil.success();
         } catch (NullPointerException e) {
-            log.info("发布企业消息时，用户未登录 " + e.toString());
+            log.info("企业用户发布消息时，未登录 " + e.toString());
             return ResultUtil.error(ResultEnum.NOT_LOGIN);
         }
     }
@@ -96,7 +96,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
             tpEnterpriseProject.setUuid(uuid);
             tpEnterpriseProject.setRegisterTime(new Date());
             enterpriseMapper.updateEnterpriseProjectById(tpEnterpriseProject);
-            log.info("企业用户:"+name+"修改发布信息成功！");
+            log.info("企业用户:" + name + "修改发布信息成功！");
             return ResultUtil.success();
         } catch (NullPointerException e) {
             log.info("企业用户修改发布信息时未登录 " + e.toString());
@@ -104,38 +104,74 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         }
     }
 
-  @Override
-    public Result deleteEnterpriseProject(Integer id,HttpSession session) {
+    @Override
+    public Result deleteEnterpriseProject(Integer id, HttpSession session) {
         TpEnterpriseProject tpEnterpriseProject = enterpriseMapper.selectProjectById(id);
         if (tpEnterpriseProject == null) {
             return ResultUtil.error(ResultEnum.DEL_ERROR);
         }
         String uuid = session.getAttribute("enterpriseUuid").toString();
         String name = session.getAttribute("enterpriseName").toString();
-        enterpriseMapper.deleteEnterpriseProject(id,uuid);
-        log.info("企业用户删除了一条id为："+id+"的发布信息");
+        enterpriseMapper.deleteEnterpriseProject(id, uuid);
+        log.info("企业用户删除了一条id为：" + id + "的发布信息");
         return ResultUtil.success();
     }
 
+    @Override
+    public Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(Integer amount) {
+        List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseMapper.selectEnterpriseInfoLatestAmount(amount);
+        log.info("查询了企业发布的最新" + amount + "条信息！");
+        return ResultUtil.success(tpEnterpriseProjects);
+    }
 
+    public Result updateEnterprisePass(Password password, HttpSession session) {
+        String uuid = session.getAttribute("enterpriseUuid").toString();
+        String passwordReturn = enterpriseMapper.selectByName(uuid).getPassword();
+        if (!password.getPassword().equals(passwordReturn)) {
+            log.info("旧密码不正确！");
+            return ResultUtil.error(ResultEnum.OLDPASSWORD_ERROR);
+        }
+        if (!password.getNewPassword().equals(password.getRetypePassword())) {
+            log.info("两次输入的新密码不一致！请重新输入！");
+            return ResultUtil.error(ResultEnum.DIFPASSWORD_ERROR);
+        }
+        if (passwordReturn.equals(password.getNewPassword())) {
+            log.info("新旧密码相同，请重新输入新密码！");
+            return ResultUtil.error(ResultEnum.PASSWORDREPEAT_ERROR);
+        }
+        password.setPassword(password.getNewPassword());
+        enterpriseMapper.updateEnterprisePass(password);
+        return ResultUtil.success(ResultEnum.PASSRESET_SUCCESS);
 
-
-
-
-
-
-
-
-
-
-
-
+    }
 
     @Override
     public TpEnterprise selectAllByName(String name) {
         return enterpriseMapper.selectAllByName(name);
     }
 
+
+    @Override
+    public Result resetEnterprisePass(ResetPass resetPass) {
+        TpEnterprise tpEnterprise = enterpriseMapper.selectAllByName(resetPass.getName());
+        String name = resetPass.getName();
+        if (tpEnterprise == null) {
+            log.info("重置企业密码时，无此用户！"+resetPass.getName());
+            return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
+        }
+        if (!resetPass.getEmail().equals(tpEnterprise.getEmail())) {
+            log.info(name+"重置企业密码时，邮箱输入不正确！错误邮箱："+resetPass.getEmail());
+            return ResultUtil.error(ResultEnum.Repeat_eamil_Error);
+        }
+        if (!resetPass.getTel().equals(tpEnterprise.getTel())) {
+            log.info(name+"重置企业密码时,手机号输入不正确！错误手机号："+resetPass.getTel());
+            return ResultUtil.error(ResultEnum.Repeat_tel_Error);
+        }
+        resetPass.setUuid(tpEnterprise.getUuid());
+        enterpriseMapper.resetPass(resetPass);
+        log.info("企业用户：" +name+ "重置密码成功！");
+        return ResultUtil.success(ResultEnum.PASSSFIND_SUCCESS);
+    }
 
 
 

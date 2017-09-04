@@ -6,7 +6,7 @@ import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpServiceProvider;
 import com.springboot.dto.CheckMail;
 import com.springboot.dto.Password;
-import com.springboot.dto.ServiceProviderResetPass;
+import com.springboot.dto.ResetPass;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.EnterpriseMapper;
 import com.springboot.mapper.PersonalMapper;
@@ -39,8 +39,8 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     private EnterpriseMapper enterpriseMapper;
 
     @Autowired
-    public ServiceProviderServiceImpl(ServiceProviderMapper serviceProviderMapper,PersonalMapper personalMapper,
-                                     EnterpriseMapper enterpriseMapper,JavaMailSender javaMailSender) {
+    public ServiceProviderServiceImpl(ServiceProviderMapper serviceProviderMapper, PersonalMapper personalMapper,
+                                      EnterpriseMapper enterpriseMapper, JavaMailSender javaMailSender) {
         this.serviceProviderMapper = serviceProviderMapper;
         this.javaMailSender = javaMailSender;
         this.personalMapper = personalMapper;
@@ -131,35 +131,104 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
    @Override
     public Result delPersonPro(Integer id, HttpSession session){
         String uuid = session.getAttribute("serviceProviderUuid").toString();
-        Integer ids = personalMapper.deletePersonInfo(id,uuid);
+        Integer ids = personalMapper.deletePersonInfo(id, uuid);
         if (ids == null) {
             return ResultUtil.error(ResultEnum.DEL_ERROR);
         }
         String name = session.getAttribute("serviceProviderName").toString();
-        personalMapper.deletePersonInfo(id,uuid);
-        log.info("供应商用户:"+name+",删除了一条id为："+id+"的，发布的个人信息");
+        personalMapper.deletePersonInfo(id, uuid);
+        log.info("供应商用户:" + name + ",删除了一条id为：" + id + "的，发布的个人信息");
         return ResultUtil.success();
     }
 
     @Override
-    public Result delEnterprisePro(Integer id, HttpSession session){
+    public Result delEnterprisePro(Integer id, HttpSession session) {
         TpEnterpriseProject tpEnterpriseProject = enterpriseMapper.selectProjectById(id);
         if (tpEnterpriseProject == null) {
             return ResultUtil.error(ResultEnum.DEL_ERROR);
         }
         String uuid = session.getAttribute("serviceProviderUuid").toString();
         String name = session.getAttribute("serviceProviderName").toString();
-        enterpriseMapper.deleteEnterpriseProject(id,uuid);
-        log.info("企业用户:"+name+",删除了一条id为："+id+"的发布信息");
+        enterpriseMapper.deleteEnterpriseProject(id, uuid);
+        log.info("企业用户:" + name + ",删除了一条id为：" + id + "的发布信息");
         return ResultUtil.success();
     }
-    
+
+
+    @Override
+    public Result updateServicePersonPro(TpPersonInfo tpPersonInfo, HttpSession session) {
+        String name = session.getAttribute("serviceProviderName").toString();
+        String uuid = session.getAttribute("serviceProviderUuid").toString();
+        tpPersonInfo.setName(name);
+        tpPersonInfo.setUuid(uuid);
+        tpPersonInfo.setRegisterTime(new Date());
+        personalMapper.updateInfoById(tpPersonInfo);
+        log.info("供应商:" +name + "修改个人发布信息成功！");
+        return ResultUtil.success(ResultEnum.UPDATE_SUCCESS);
+    }
+
+    @Override
+    public Result updateServiceEnterprisePro(TpEnterpriseProject tpEnterpriseProject, HttpSession session) {
+        String name = session.getAttribute("serviceProviderName").toString();
+        String uuid = session.getAttribute("serviceProviderUuid").toString();
+        tpEnterpriseProject.setName(name);
+        tpEnterpriseProject.setUuid(uuid);
+        tpEnterpriseProject.setRegisterTime(new Date());
+        enterpriseMapper.updateEnterpriseProjectById(tpEnterpriseProject);
+        log.info("供应商:" +name + "修改企业发布信息成功！");
+        return ResultUtil.success(ResultEnum.UPDATE_SUCCESS);
+    }
+
+
+    @Override
+    public Result updateServiceProviderPass(Password password, HttpSession session) {
+        String uuid = session.getAttribute("enterpriseUuid").toString();
+        String passwordReturn = serviceProviderMapper.selectByName(uuid).getPassword();
+        if (!password.getPassword().equals(passwordReturn)) {
+            log.info("旧密码不正确！");
+            return ResultUtil.error(ResultEnum.OLDPASSWORD_ERROR);
+        }
+        if (!password.getNewPassword().equals(password.getRetypePassword())) {
+            log.info("两次输入的新密码不一致！请重新输入！");
+            return ResultUtil.error(ResultEnum.DIFPASSWORD_ERROR);
+        }
+        if (passwordReturn.equals(password.getNewPassword())) {
+            log.info("新旧密码相同，请重新输入新密码！");
+            return ResultUtil.error(ResultEnum.PASSWORDREPEAT_ERROR);
+        }
+        password.setPassword(password.getNewPassword());
+        serviceProviderMapper.updateServiceProviderPass(password);
+        return ResultUtil.success(ResultEnum.PASSRESET_SUCCESS);
+
+    }
+
 
     @Override
     public TpServiceProvider selectAllByName(String name) {
         return serviceProviderMapper.selectAllByName(name);
     }
 
+    @Override
+    public Result resetServiceProviderPass(ResetPass resetPass) {
+        TpServiceProvider tpServiceProvider = serviceProviderMapper.selectAllByName(resetPass.getName());
+        String name = resetPass.getName();
+        if (tpServiceProvider == null) {
+            log.info("重置供应商密码时，无此用户！"+resetPass.getName());
+            return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
+        }
+        if (!resetPass.getEmail().equals(tpServiceProvider.getEmail())) {
+            log.info(name+"重置供应商密码时，邮箱输入不正确！错误邮箱："+resetPass.getEmail());
+            return ResultUtil.error(ResultEnum.Repeat_eamil_Error);
+        }
+        if (!resetPass.getTel().equals(tpServiceProvider.getTel())) {
+            log.info(name+"重置供应商密码时,手机号输入不正确！错误手机号："+resetPass.getTel());
+            return ResultUtil.error(ResultEnum.Repeat_tel_Error);
+        }
+        resetPass.setUuid(tpServiceProvider.getUuid());
+        serviceProviderMapper.resetPass(resetPass);
+        log.info("供应商用户：" +name+ "重置密码成功！");
+        return ResultUtil.success(ResultEnum.PASSSFIND_SUCCESS);
+    }
 
 
     @Override

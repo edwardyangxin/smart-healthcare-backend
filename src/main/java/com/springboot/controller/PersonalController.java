@@ -64,7 +64,7 @@ public class PersonalController {
     //发布个人信息接受Json格式的参数 Content-Type:application/json
     @ResponseBody
     @PostMapping(value = "/personal/newInfo")
-    public Result newPersonInfo(@Valid @RequestBody TpPersonInfo tpPersonInfo,  BindingResult bindingResult, HttpSession session) {
+    public Result newPersonInfo(@Valid @RequestBody TpPersonInfo tpPersonInfo, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
@@ -77,21 +77,21 @@ public class PersonalController {
     //修改个人已发布的信息
     @ResponseBody
     @PostMapping(value = "/personal/modifyInfo")
-    public Result updateInfoById(@Valid @RequestBody TpPersonInfo tpPersonInfo,  BindingResult bindingResult, HttpSession session) {
+    public Result updateInfoById(@Valid @RequestBody TpPersonInfo tpPersonInfo, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return personalService.updatPersonInfo(tpPersonInfo,session);
+        return personalService.updatPersonInfo(tpPersonInfo, session);
     }
 
     //根据id删除一条已发布的个人信息
     @ResponseBody
     @RequestMapping(value = "/personal/delPersonInfo/{id}")
-    public Result deletePersonInfo(@PathVariable Integer id,HttpSession session) {
-        return personalService.deletePersonInfo(id,session);
+    public Result deletePersonInfo(@PathVariable Integer id, HttpSession session) {
+        return personalService.deletePersonInfo(id, session);
     }
 
 
@@ -136,6 +136,19 @@ public class PersonalController {
     }
 
 
+
+    //个人重置密码（真实姓名、邮箱、电话）
+    @PostMapping(value = "/personal/resetPass")
+    public String resetPass(@Valid @RequestBody PersonalResetPass personalResetPass, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return error.getDefaultMessage();
+            }
+        }
+        String result = personalService.resetPersonalPass(personalResetPass);
+        return result;
+    }
 
     //发送激活账户邮件
     @PostMapping(value = "/personal/sendMail")

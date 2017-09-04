@@ -55,11 +55,11 @@ public interface ServiceProviderMapper {
     @Update("update tp_service_provider set city = #{city},contact=#{contact},tel=#{tel}  where uuid =#{uuid}")
     void updateServiceProviderByName(TpServiceProvider tpServiceProvider);
 
-    @Update("update tp_service_provider set password = #{password} where name = #{name}")
+    @Update("update tp_service_provider set password = #{password} where uuid = #{uuid}")
     void updateServiceProviderPass(Password password);
 
-    @Update("update tp_service_provider set password=#{newPassword} where name =#{name}")
-    void resetPass(ServiceProviderResetPass serviceProviderResetPass);
+    @Update("update tp_service_provider set password=#{newPassword} where uuid =#{uuid}")
+    void resetPass(ResetPass resetPass);
 
     @Insert("insert into tp_person_info(name,service_provider,address, age, city, education, email, salary_range, working_years, " +
             "project_experience, introduce, language, specialty, tel, cooperation_type, work_type, register_time) " +
@@ -115,7 +115,7 @@ public interface ServiceProviderMapper {
     @Update("update tp_service_provider set status = #{status} where name = #{name}")
     void updateStatus(TpServiceProvider tpServiceProvider);
 
-    @Update("UPDATE tp_person_info SET tp_person_info.icon_address = (SELECT tp_file.picture_path FROM tp_file where name= #{name}) where name = #{name}")
+    @Update("UPDATE tp_person_info SET tp_person_info.icon_address = (SELECT tp_file.picture_path FROM tp_file where uuid= #{uuid}) where uuid = #{uuid}")
     void addIconAddress(TpPersonInfo tpPersonInfo);
 
     @Update("UPDATE tp_enterprise_project SET tp_enterprise_project.icon_address = (SELECT tp_file.picture_path FROM tp_file where name= #{companyName}) where company_name = #{companyName}")

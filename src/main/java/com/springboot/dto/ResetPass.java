@@ -1,6 +1,7 @@
 package com.springboot.dto;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -31,4 +32,6 @@ public class ResetPass {
     @NotNull(message = "新密码不能为空！")
     @Size(min = 6, max = 16, message = "新密码长度必须在6到16之间！")
     private String newPassword;
+
+    private String uuid;
 }

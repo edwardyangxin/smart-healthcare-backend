@@ -8,7 +8,7 @@ import com.springboot.domain.TpPersonal;
 import com.springboot.dto.CheckMail;
 import com.springboot.dto.Password;
 import com.springboot.dto.PersonInfo;
-import com.springboot.dto.PersonalResetPass;
+import com.springboot.dto.ResetPass;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.PersonalService;
@@ -145,6 +145,48 @@ public class PersonalServiceImpl implements PersonalService {
         }
     }
 
+    @Override
+    public Result updatePersonalPass(Password password, HttpSession session) {
+        String uuid = session.getAttribute("enterpriseUuid").toString();
+        String passwordReturn = personalMapper.selectByName(uuid).getPassword();
+        if (!password.getPassword().equals(passwordReturn)) {
+            log.info("旧密码不正确！");
+            return ResultUtil.error(ResultEnum.OLDPASSWORD_ERROR);
+        }
+        if (!password.getNewPassword().equals(password.getRetypePassword())) {
+            log.info("两次输入的新密码不一致！请重新输入！");
+            return ResultUtil.error(ResultEnum.DIFPASSWORD_ERROR);
+        }
+        if (passwordReturn.equals(password.getNewPassword())) {
+            log.info("新旧密码相同，请重新输入新密码！");
+            return ResultUtil.error(ResultEnum.PASSWORDREPEAT_ERROR);
+        }
+        password.setPassword(password.getNewPassword());
+        personalMapper.updatePassword(password);
+        return ResultUtil.success(ResultEnum.PASSRESET_SUCCESS);
+    }
+
+    @Override
+    public Result resetPersonalPass(ResetPass resetPass) {
+            TpPersonal tpPersonal = personalMapper.selectAllByName(resetPass.getName());
+            String name = resetPass.getName();
+            if (tpPersonal == null) {
+                log.info("重置个人密码时，无此用户！"+resetPass.getName());
+                return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
+            }
+            if (!resetPass.getEmail().equals(tpPersonal.getEmail())) {
+                log.info(name+"重置个人密码时，邮箱输入不正确！错误邮箱："+resetPass.getEmail());
+                return ResultUtil.error(ResultEnum.Repeat_eamil_Error);
+            }
+            if (!resetPass.getTel().equals(tpPersonal.getTel())) {
+                log.info(name+"重置个人密码时,手机号输入不正确！错误手机号："+resetPass.getTel());
+                return ResultUtil.error(ResultEnum.Repeat_tel_Error);
+            }
+            resetPass.setUuid(tpPersonal.getUuid());
+            personalMapper.resetPass(resetPass);
+            log.info("个人用户：" +name+ "重置密码成功！");
+            return ResultUtil.success(ResultEnum.PASSSFIND_SUCCESS);
+    }
 
     @Override
     public Result<TpPersonInfo> selectInfos(PersonInfo personInfo) {

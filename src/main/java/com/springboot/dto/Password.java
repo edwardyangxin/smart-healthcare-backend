@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Data
 public class Password {
 
-    private String name;
+    private String uuid;
 
     @NotEmpty(message = "旧密码不能为空！")
     @NotNull(message = "旧密码不能为空！")

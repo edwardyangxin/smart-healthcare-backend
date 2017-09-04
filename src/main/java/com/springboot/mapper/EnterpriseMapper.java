@@ -29,23 +29,23 @@ public interface EnterpriseMapper {
     TpEnterprise selectEnterpriseByName(String uuid);
 
 
-    @Select("select password,status,uuid  from tp_enterprise where name=#{name}")
+    @Select("select password,status,uuid  from tp_enterprise where uuid=#{uuid}")
     @Results({
             @Result(column = "active_code", property = "activeCode"),
             @Result(column = "business_license", property = "businessLicense"),
             @Result(column = "legal_representative", property = "legalRepresentative"),
             @Result(column = "icon_address", property = "iconAddress"),
     })
-    LoginReturn selectByName(@Param("name") String name);
+    LoginReturn selectByName(@Param("uuid") String uuid);
 
-    @Select("select * from tp_enterprise where name=#{name}")
+    @Select("select * from tp_enterprise where uuid=#{uuid}")
     @Results({
             @Result(column = "active_code", property = "activeCode"),
             @Result(column = "business_license", property = "businessLicense"),
             @Result(column = "legal_representative", property = "legalRepresentative"),
             @Result(column = "icon_address", property = "iconAddress"),
     })
-    TpEnterprise selectAllByName(@Param("name") String name);
+    TpEnterprise selectAllByName(@Param("uuid") String uuid);
 
     @Update("update tp_enterprise set city = #{city},tel= #{tel},business_license = #{businessLicense},contact = #{contact},industry = #{industry},legal_representative = #{legalRepresentative}," +
             "email = #{email} where uuid =#{uuid}")
@@ -56,11 +56,11 @@ public interface EnterpriseMapper {
     })
     void updateEnterpriseByName(TpEnterprise tpEnterprise);
 
-    @Update("update tp_enterprise set password = #{password} where name = #{name}")
+    @Update("update tp_enterprise set password = #{password} where  = #{uuid}")
     void updateEnterprisePass(Password password);
 
-    @Update("update tp_enterprise set password = #{newPassword} where name = #{name}")
-    void resetPass(EnterpriseResetPass enterpriseResetPass);
+    @Update("update tp_enterprise set password = #{newPassword} where uuid = #{uuid}")
+    void resetPass(ResetPass resetPass);
 
     @Insert("insert into tp_enterprise_project(language, service_provider,contact, tel, email, city, address, introduce, cooperation_type, industry, requirement, treatment, register_time, work_type, project_title, company_name, translate_type)" +
             "values(#{language},#{serviceProvider}, #{contact}, #{tel}, #{email}, #{city}, #{address},#{introduce}, #{cooperationType}, #{industry}, #{requirement}, #{treatment}, #{registerTime}, #{workType}, #{projectTitle}, #{companyName}, #{translateType})")
@@ -78,7 +78,7 @@ public interface EnterpriseMapper {
     })
     void newProject(TpEnterpriseProject tpEnterpriseProject);
 
-    @Update("update tp_enterprise_project set language= #{language},contact= #{contact},tel = #{tel},email = #{email},city = #{city}, address = #{address},introduce = #{introduce},cooperation_type = #{cooperationType},industry = #{industry},requirement = #{requirement},treatment = #{treatment},work_type = #{workType},project_title = #{projectTitle},project_title = #{projectTitle} where id =#{id}")
+    @Update("update tp_enterprise_project set language= #{language},contact= #{contact},tel = #{tel},email = #{email},city = #{city}, address = #{address},introduce = #{introduce},cooperation_type = #{cooperationType},industry = #{industry},requirement = #{requirement},treatment = #{treatment},work_type = #{workType},project_title = #{projectTitle},project_title = #{projectTitle} where uuid=#{uuid} and id =#{id}")
     void updateEnterpriseProjectById(TpEnterpriseProject tpEnterpriseProject);
 
     @Select("select * from tp_enterprise_project where((language=#{language}) or (#{language} is null)) and ((tel=#{tel}) or (#{tel} is null)) and ((address=#{address}) or (#{address}) is null) and ((requirement=#{requirement}) or (#{requirement} is null)) and ((treatment=#{treatment}) or (#{treatment} is null)) and ((work_type=#{workType}) or (#{workType} is null)) ")

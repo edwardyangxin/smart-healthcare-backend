@@ -31,9 +31,7 @@ public interface PersonalService {
 
     Result<TpPersonal> insertPerson(TpPersonal tpPersonal, TpFile tpFile);
 
-    Result<Password> updatePersonalPass(Password password, HttpSession session);
 
-    String resetPersonalPass(PersonalResetPass personalResetPass);
 
 
     Result<TpPersonInfo> selectInfos(PersonInfo personInfo);

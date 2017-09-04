@@ -35,9 +35,6 @@ public interface EnterpriseService {
 
 
 
-    String updateEnterprisePass(Password password, HttpSession session);
-
-    String resetEnterprisePass(EnterpriseResetPass enterpriseResetPass);
 
 
     List<TpEnterpriseProject> selectProjects(EnterpriseProject enterpriseProject);

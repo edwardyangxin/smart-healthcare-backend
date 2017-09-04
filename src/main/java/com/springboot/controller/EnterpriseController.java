@@ -88,7 +88,7 @@ public class EnterpriseController {
 
 
 
-    //删除企业已发布的项目信息
+    //根据id和uuid删除企业已发布的项目信息
     @PostMapping(value = "/enterprise/delEnterpriseProject/{id}")
     public Result deleteEnterpriseProject(@PathVariable Integer id,HttpSession session) {
         return enterpriseService.deleteEnterpriseProject(id,session);

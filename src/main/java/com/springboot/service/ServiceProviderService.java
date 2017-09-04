@@ -45,10 +45,6 @@ public interface ServiceProviderService {
 
     TpServiceProvider selectAllByName(String name);
 
-    String updateServiceProviderPass(Password password, HttpSession session);
-
-    String resetServiceProviderPass(ServiceProviderResetPass serviceProviderResetPass);
-
     void sendMail(CheckMail checkMail) throws Exception;
 
     String emailCheck(CheckMail checkMail);

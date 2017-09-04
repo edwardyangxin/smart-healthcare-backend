@@ -95,24 +95,19 @@ public class PersonalController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //个人密码修改
+    @PostMapping(value = "/personal/modifyPass")
+    public Result modifyPass(@Valid @RequestBody Password password, BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            if (bindingResult.hasErrors()) {
+                List<ObjectError> errorList = bindingResult.getAllErrors();
+                for (ObjectError error : errorList) {
+                    return ResultUtil.error(error.getDefaultMessage());
+                }
+            }
+        }
+        return personalService.updatePersonalPass(password, session);
+    }
 
     //个人重置密码（真实姓名、邮箱、电话）
     @PostMapping(value = "/personal/resetPass")

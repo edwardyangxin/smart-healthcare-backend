@@ -6,8 +6,8 @@ import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpFile;
 import com.springboot.dto.CheckMail;
 import com.springboot.dto.EnterpriseProject;
-import com.springboot.dto.EnterpriseResetPass;
 import com.springboot.dto.Password;
+import com.springboot.dto.ResetPass;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.EnterpriseMapper;
 import com.springboot.service.EnterpriseService;
@@ -212,12 +212,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         return tpEnterpriseProject;
     }
 
-    @Override
-    public Result<List<TpEnterpriseProject>> selectEnterpriseInfoLatestAmount(Integer amount){
-        List<TpEnterpriseProject> tpEnterpriseProjects = enterpriseMapper.selectEnterpriseInfoLatestAmount(amount);
-        log.info("查询了企业发布的最新"+amount+"条信息！");
-        return ResultUtil.success(tpEnterpriseProjects);
-    }
 
    @Override
     public void sendMail(CheckMail checkMail) throws Exception {

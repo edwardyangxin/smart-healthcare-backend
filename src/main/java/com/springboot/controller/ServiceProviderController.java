@@ -155,19 +155,6 @@ public class ServiceProviderController {
         return serviceProviderService.updateServiceProviderPass(password, session);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     //供应商重置密码（用户名、邮箱、电话）,需传入name,tel,email,newPassword
     @PostMapping(value = "/serviceProvider/resetPass")
     public Result resetPass(@Valid @RequestBody ResetPass resetPass, BindingResult bindingResult) {

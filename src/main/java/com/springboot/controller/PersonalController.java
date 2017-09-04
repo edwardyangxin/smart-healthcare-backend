@@ -6,7 +6,7 @@ import com.springboot.domain.TpPersonal;
 import com.springboot.dto.CheckMail;
 import com.springboot.dto.Password;
 import com.springboot.dto.PersonInfo;
-import com.springboot.dto.PersonalResetPass;
+import com.springboot.dto.ResetPass;
 import com.springboot.service.PersonalService;
 import com.springboot.tools.ResultUtil;
 import org.apache.ibatis.annotations.Param;
@@ -114,6 +114,17 @@ public class PersonalController {
 
 
 
+    //个人重置密码（真实姓名、邮箱、电话）
+    @PostMapping(value = "/personal/resetPass")
+    public Result resetPass(@Valid @RequestBody ResetPass resetPass, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return personalService.resetPersonalPass(resetPass);
+    }
 
 
 
@@ -137,18 +148,7 @@ public class PersonalController {
 
 
 
-    //个人重置密码（真实姓名、邮箱、电话）
-    @PostMapping(value = "/personal/resetPass")
-    public String resetPass(@Valid @RequestBody PersonalResetPass personalResetPass, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            for (ObjectError error : errorList) {
-                return error.getDefaultMessage();
-            }
-        }
-        String result = personalService.resetPersonalPass(personalResetPass);
-        return result;
-    }
+
 
     //发送激活账户邮件
     @PostMapping(value = "/personal/sendMail")

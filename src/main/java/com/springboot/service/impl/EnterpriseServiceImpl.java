@@ -137,46 +137,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
 
-    public String updateEnterprisePass(Password password, HttpSession session) {
-        try {
-            password.setName(session.getAttribute("name").toString());
-        }catch (NullPointerException e){
-            log.info(e.toString());
-            return "用户未登录";
-        }
-        String TPPassword = enterpriseMapper.selectByName(password.getName()).getPassword();
-        if (password.getPassword().equals(TPPassword)) {
-            if (password.getNewPassword().equals(password.getRetypePassword())) {
-                if (TPPassword.equals(password.getNewPassword())) {
-                    return "新密码与旧密码相同，请重新输入！";
-                } else {
-                    password.setPassword(password.getNewPassword());
-                    enterpriseMapper.updateEnterprisePass(password);
-                    session.removeAttribute("name");
-                    return "密码修改成功！";
-                }
-            } else {
-                return "两次输入的新密码不同，请重试！";
-            }
-        } else {
-            return "旧密码输入错误，请重试！";
-        }
-    }
-
-    @Override
-    public String resetEnterprisePass(EnterpriseResetPass enterpriseResetPass) {
-        TpEnterprise tpEnterprise = enterpriseMapper.selectAllByName(enterpriseResetPass.getName());
-        if (tpEnterprise != null) {
-            if (enterpriseResetPass.getTel().equals(tpEnterprise.getTel())) {
-                enterpriseMapper.resetPass(enterpriseResetPass);
-                return "重置密码成功";
-            } else {
-                return "电话号码错误，请重试！";
-            }
-        } else {
-            return "没有此用户！";
-        }
-    }
 
 
 

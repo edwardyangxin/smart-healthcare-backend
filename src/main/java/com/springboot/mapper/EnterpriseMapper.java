@@ -38,7 +38,6 @@ public interface EnterpriseMapper {
     })
     LoginReturn selectByName(@Param("name") String name);
 
-
     @Select("select * from tp_enterprise where name=#{name}")
     @Results({
             @Result(column = "active_code", property = "activeCode"),

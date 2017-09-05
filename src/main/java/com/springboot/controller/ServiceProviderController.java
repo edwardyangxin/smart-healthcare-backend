@@ -7,8 +7,6 @@ import com.springboot.domain.TpServiceProvider;
 import com.springboot.dto.CheckMail;
 import com.springboot.dto.Password;
 import com.springboot.dto.ResetPass;
-import com.springboot.mapper.EnterpriseMapper;
-import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.ServiceProviderService;
 import com.springboot.tools.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,14 +29,10 @@ import java.util.List;
 public class ServiceProviderController {
 
     private ServiceProviderService serviceProviderService;
-    private PersonalMapper personalMapper;
-    private EnterpriseMapper enterpriseMapper;
 
     @Autowired
     public ServiceProviderController(ServiceProviderService serviceProviderService) {
         this.serviceProviderService = serviceProviderService;
-        this.personalMapper = personalMapper;
-        this.enterpriseMapper = enterpriseMapper;
     }
 
     //根据amount的值 查询供应商最新发布的几条“个人信息”

@@ -5,10 +5,7 @@ import com.springboot.domain.Result;
 import com.springboot.domain.TpFile;
 import com.springboot.domain.TpPersonInfo;
 import com.springboot.domain.TpPersonal;
-import com.springboot.dto.CheckMail;
-import com.springboot.dto.Password;
-import com.springboot.dto.PersonInfo;
-import com.springboot.dto.ResetPass;
+import com.springboot.dto.*;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.PersonalMapper;
 import com.springboot.service.PersonalService;
@@ -187,6 +184,14 @@ public class PersonalServiceImpl implements PersonalService {
             log.info("个人用户：" +name+ "重置密码成功！");
             return ResultUtil.success(ResultEnum.PASSSFIND_SUCCESS);
     }
+
+    @Override
+    public Result<List<SelectReturn>> selectPersonAllPro(HttpSession session) {
+        String uuid = session.getAttribute("personUuid").toString();
+        List<SelectReturn> selectReturns = personalMapper.selectPersonAllPro(uuid);
+        return ResultUtil.success(selectReturns);
+    }
+
 
     @Override
     public Result<TpPersonInfo> selectInfos(PersonInfo personInfo) {

@@ -37,6 +37,9 @@ public interface EnterpriseService {
     //重置企业用户密码
     Result resetEnterprisePass(ResetPass resetPass);
 
+    //查询已发布的信息
+    Result<List<SelectReturn>> selectEnterAllPro(HttpSession session);
+
     TpEnterprise selectAllByName(String name);
 
 

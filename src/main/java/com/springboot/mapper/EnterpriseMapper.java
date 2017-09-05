@@ -38,6 +38,15 @@ public interface EnterpriseMapper {
     })
     LoginReturn selectByName(@Param("uuid") String uuid);
 
+    @Select("select project_title,language,register_time,salary_range  from tp_enterprise where uuid=#{uuid}")
+    @Results({
+            @Result(column = "project_title", property = "projectTitle"),
+            @Result(column = "register_time", property = "registerTime"),
+            @Result(column = "salary_range", property = "salaryRange"),
+    })
+    List<SelectReturn> selectEnterprisePro(@Param("uuid") String uuid);
+
+
     @Select("select * from tp_enterprise where uuid=#{uuid}")
     @Results({
             @Result(column = "active_code", property = "activeCode"),

@@ -4,10 +4,7 @@ import com.springboot.domain.Result;
 import com.springboot.domain.TpEnterprise;
 import com.springboot.domain.TpEnterpriseProject;
 import com.springboot.domain.TpFile;
-import com.springboot.dto.CheckMail;
-import com.springboot.dto.EnterpriseProject;
-import com.springboot.dto.Password;
-import com.springboot.dto.ResetPass;
+import com.springboot.dto.*;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.EnterpriseMapper;
 import com.springboot.service.EnterpriseService;
@@ -173,6 +170,12 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         return ResultUtil.success(ResultEnum.PASSSFIND_SUCCESS);
     }
 
+    @Override
+    public Result<List<SelectReturn>> selectEnterAllPro(HttpSession session) {
+        String uuid = session.getAttribute("enterpriseUuid").toString();
+        List<SelectReturn> selectReturns = enterpriseMapper.selectEnterprisePro(uuid);
+        return ResultUtil.success(selectReturns);
+    }
 
 
 

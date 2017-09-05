@@ -3,10 +3,7 @@ package com.springboot.controller;
 import com.springboot.domain.Result;
 import com.springboot.domain.TpEnterprise;
 import com.springboot.domain.TpEnterpriseProject;
-import com.springboot.dto.CheckMail;
-import com.springboot.dto.EnterpriseProject;
-import com.springboot.dto.ResetPass;
-import com.springboot.dto.Password;
+import com.springboot.dto.*;
 import com.springboot.service.EnterpriseService;
 import com.springboot.tools.ResultUtil;
 import org.apache.ibatis.annotations.Param;
@@ -50,7 +47,7 @@ public class EnterpriseController {
     //完善修改企业信息
     @ResponseBody
     @RequestMapping(value = "/enterprise/modifyEnterprise", method = RequestMethod.POST)
-    public Result  modifyEnterprise(@Valid @RequestBody TpEnterprise tpEnterprise, BindingResult bindingResult, HttpSession session) {
+    public Result modifyEnterprise(@Valid @RequestBody TpEnterprise tpEnterprise, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
@@ -88,8 +85,8 @@ public class EnterpriseController {
 
     //根据id和uuid删除企业已发布的项目信息
     @PostMapping(value = "/enterprise/delEnterpriseProject/{id}")
-    public Result deleteEnterpriseProject(@PathVariable Integer id,HttpSession session) {
-        return enterpriseService.deleteEnterpriseProject(id,session);
+    public Result deleteEnterpriseProject(@PathVariable Integer id, HttpSession session) {
+        return enterpriseService.deleteEnterpriseProject(id, session);
     }
 
 
@@ -127,7 +124,13 @@ public class EnterpriseController {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return  enterpriseService.resetEnterprisePass(resetPass);
+        return enterpriseService.resetEnterprisePass(resetPass);
+    }
+
+    //企业用户查询已发布的信息
+    @GetMapping(value = "/enterprise/EnterPro")
+    public Result<List<SelectReturn>> selectEnterAllPro(HttpSession session) {
+        return enterpriseService.selectEnterAllPro(session);
     }
 
     //发送激活账户邮件

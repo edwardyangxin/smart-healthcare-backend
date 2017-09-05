@@ -29,14 +29,14 @@ public interface EnterpriseMapper {
     TpEnterprise selectEnterpriseByName(String uuid);
 
 
-    @Select("select password,status,uuid  from tp_enterprise where uuid=#{uuid}")
+    @Select("select password,status,uuid  from tp_enterprise where name=#{name}")
     @Results({
             @Result(column = "active_code", property = "activeCode"),
             @Result(column = "business_license", property = "businessLicense"),
             @Result(column = "legal_representative", property = "legalRepresentative"),
             @Result(column = "icon_address", property = "iconAddress"),
     })
-    LoginReturn selectByName(@Param("uuid") String uuid);
+    LoginReturn selectByName(@Param("name") String name);
 
     @Select("select project_title,language,register_time,salary_range  from tp_enterprise where uuid=#{uuid}")
     @Results({

@@ -27,13 +27,13 @@ public interface PersonalMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     void newPerson(Register register);
 
-    @Select("select password,status,uuid from tp_personal where uuid=#{uuid}")
+    @Select("select password,status,uuid from tp_personal where name=#{name}")
     @Results({
             @Result(column = "real_name", property = "realName"),
             @Result(column = "icon_address", property = "iconAddress"),
             @Result(column = "active_code", property = "activeCode")
     })
-    LoginReturn selectByName(@Param("name") String uuid);
+    LoginReturn selectByName(@Param("name") String name);
 
     @Select({"select  name,tel,city  from tp_personal where uuid=#{uuid}"})
     TpPersonal selectPersonaByName(String uuid);

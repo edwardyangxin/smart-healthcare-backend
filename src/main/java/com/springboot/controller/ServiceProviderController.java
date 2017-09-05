@@ -7,6 +7,7 @@ import com.springboot.domain.TpServiceProvider;
 import com.springboot.dto.CheckMail;
 import com.springboot.dto.Password;
 import com.springboot.dto.ResetPass;
+import com.springboot.dto.SelectReturn;
 import com.springboot.service.ServiceProviderService;
 import com.springboot.tools.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -160,6 +161,19 @@ public class ServiceProviderController {
         }
         return serviceProviderService.resetServiceProviderPass(resetPass);
     }
+
+    //供应商用户查询已发布的个人信息
+    @GetMapping(value = "/serviceProvider/Pro")
+    public Result<List<SelectReturn>> selectServicePersonAllPro(HttpSession session) {
+        return serviceProviderService.selectServicePersonAllPro(session);
+    }
+
+    //供应商用户查询已发布的企业信息
+    @GetMapping(value = "/serviceProvider/EnterPro")
+    public Result<List<SelectReturn>> selectServiceEnterAllPro(HttpSession session) {
+        return serviceProviderService.selectServiceEnterAllPro(session);
+    }
+
 
     //发送激活账户邮件
     @RequestMapping(value = "/serviceProvider/sendMail")

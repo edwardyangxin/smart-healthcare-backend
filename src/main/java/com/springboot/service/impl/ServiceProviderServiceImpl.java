@@ -7,6 +7,7 @@ import com.springboot.domain.TpServiceProvider;
 import com.springboot.dto.CheckMail;
 import com.springboot.dto.Password;
 import com.springboot.dto.ResetPass;
+import com.springboot.dto.SelectReturn;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.EnterpriseMapper;
 import com.springboot.mapper.PersonalMapper;
@@ -227,6 +228,19 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         return ResultUtil.success(ResultEnum.PASSSFIND_SUCCESS);
     }
 
+    @Override
+    public Result<List<SelectReturn>> selectServiceEnterAllPro(HttpSession session) {
+        String uuid = session.getAttribute("serviceProviderName").toString();
+        List<SelectReturn> selectReturns = enterpriseMapper.selectEnterprisePro(uuid);
+        return ResultUtil.success(selectReturns);
+    }
+
+    @Override
+    public Result<List<SelectReturn>> selectServicePersonAllPro(HttpSession session) {
+        String uuid = session.getAttribute("serviceProviderName").toString();
+        List<SelectReturn> selectReturns = personalMapper.selectPersonAllPro(uuid);
+        return ResultUtil.success(selectReturns);
+    }
 
     @Override
     public void sendMail(CheckMail checkMail) throws Exception {

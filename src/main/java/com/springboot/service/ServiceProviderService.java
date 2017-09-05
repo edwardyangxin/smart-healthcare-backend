@@ -52,6 +52,12 @@ public interface ServiceProviderService {
     //找回供应商密码
     Result resetServiceProviderPass(ResetPass resetPass);
 
+    //供应商用户查询已发布的个人信息
+    Result selectServicePersonAllPro(HttpSession session);
+
+    //供应商用户查询已发布的企业信息
+    Result selectServiceEnterAllPro(HttpSession session);
+
     TpServiceProvider selectAllByName(String name);
 
     void sendMail(CheckMail checkMail) throws Exception;

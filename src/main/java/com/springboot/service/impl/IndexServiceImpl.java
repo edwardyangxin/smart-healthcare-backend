@@ -97,7 +97,6 @@ public class IndexServiceImpl implements IndexService {
         }
         String name = login.getName();
         HttpSession session = request.getSession();
-
         switch (category) {
             case "personal":
                 try {
@@ -159,7 +158,7 @@ public class IndexServiceImpl implements IndexService {
                 log.info("用户" + login.getName() + "不存在！");
                 return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.info("用户" + login.getName() + "不存在！");
             return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
         }

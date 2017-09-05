@@ -56,12 +56,7 @@ public class FileSystemStorageServiceImpl implements StorageService {
 
     @Override
     public ControllerResponse store(MultipartFile file, HttpSession session) {
-        try {
-            String a = session.getAttribute("uuid").toString();
-        } catch (NullPointerException e) {
-            log.info("请先登录!" + e.toString());
-            return ControllerResponse.create("请先登录!", false);
-        }
+        String a = session.getAttribute("personName").toString();
         ControllerResponse checkFormatResponse = checkFormat(file);
         if (!checkFormatResponse.getABoolean()) {
             return checkFormatResponse;
@@ -90,12 +85,7 @@ public class FileSystemStorageServiceImpl implements StorageService {
 
     @Override
     public ControllerResponse storeFile(MultipartFile file, HttpSession session) {
-        try {
-            String a = session.getAttribute("uuid").toString();
-        } catch (NullPointerException e) {
-            log.info("请先登录!" + e.toString());
-            return ControllerResponse.create("请先登录!", false);
-        }
+        String a = session.getAttribute("uuid").toString();
         ControllerResponse checkFormatResponse = checkFormat(file);
         if (!checkFormatResponse.getABoolean()) {
             return checkFormatResponse;

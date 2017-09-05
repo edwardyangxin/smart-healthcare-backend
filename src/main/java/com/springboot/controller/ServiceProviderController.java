@@ -123,7 +123,6 @@ public class ServiceProviderController {
 
     }
 
-
     //根据id删除一条供应商已发布的个人信息
     @ResponseBody
     @RequestMapping(value = "/serviceProvider/delPersonPro/{id}")

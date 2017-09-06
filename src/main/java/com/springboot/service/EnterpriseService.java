@@ -42,10 +42,6 @@ public interface EnterpriseService {
 
     TpEnterprise selectAllByName(String name);
 
-
-
-
-
     List<TpEnterpriseProject> selectProjects(EnterpriseProject enterpriseProject);
 
     TpEnterpriseProject selectProjectById(EnterpriseProject enterpriseProject);

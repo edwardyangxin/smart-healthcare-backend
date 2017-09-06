@@ -123,7 +123,7 @@ public interface PersonalMapper {
     })
     List<TpPersonInfo> selectInfos(PersonInfo personInfo);
 
-    @Select("select name,language,register_time,salary_range from tp_person_info where uuid=#{uuid}")
+    @Select("select id,name,language,register_time,salary_range from tp_person_info where uuid=#{uuid}")
     @Results({
             @Result(column = "salary_range", property = "salaryRange"),
             @Result(column = "register_time", property = "registerTime"),

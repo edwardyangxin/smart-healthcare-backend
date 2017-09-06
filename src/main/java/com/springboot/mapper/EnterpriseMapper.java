@@ -38,7 +38,7 @@ public interface EnterpriseMapper {
     })
     LoginReturn selectByName(@Param("name") String name);
 
-    @Select("select project_title,language,register_time,salary_range  from tp_enterprise where uuid=#{uuid}")
+    @Select("select id,project_title,language,register_time,salary_range  from tp_enterprise where uuid=#{uuid}")
     @Results({
             @Result(column = "project_title", property = "projectTitle"),
             @Result(column = "register_time", property = "registerTime"),
@@ -57,11 +57,12 @@ public interface EnterpriseMapper {
     TpEnterprise selectAllByName(@Param("uuid") String uuid);
 
     @Update("update tp_enterprise set city = #{city},tel= #{tel},business_license = #{businessLicense},contact = #{contact},industry = #{industry},legal_representative = #{legalRepresentative}," +
-            "email = #{email} where uuid =#{uuid}")
+            "email = #{email},company_name = #{companyName} where uuid =#{uuid}")
     @Results({
             @Result(column = "business_license", property = "businessLicense"),
             @Result(column = "legal_representative", property = "legalRepresentative"),
             @Result(column = "icon_address", property = "iconAddress"),
+            @Result(column = "company_name", property = "companyName"),
     })
     void updateEnterpriseByName(TpEnterprise tpEnterprise);
 

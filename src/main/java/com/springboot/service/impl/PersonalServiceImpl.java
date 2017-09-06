@@ -44,14 +44,9 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public Result<TpPersonal> selectPersonaByName(HttpSession session) {
-        try {
-            String uuid = session.getAttribute("personUuid").toString();
-            TpPersonal tpPersonal = personalMapper.selectPersonaByName(uuid);
-            return ResultUtil.success(tpPersonal);
-        } catch (Exception e) {
-            log.info("未登录" + e.toString());
-            return ResultUtil.error(ResultEnum.NOT_LOGIN);
-        }
+        String uuid = session.getAttribute("personUuid").toString();
+        TpPersonal tpPersonal = personalMapper.selectPersonaByName(uuid);
+        return ResultUtil.success(tpPersonal);
     }
 
     @Override
@@ -79,7 +74,7 @@ public class PersonalServiceImpl implements PersonalService {
             tpPersonInfo.setServiceProvider(false);
             personalMapper.newInfo(tpPersonInfo);
             personalMapper.addIconAddress(tpPersonInfo);
-            log.info("个人用户:"+name+"发布个人信息成功！");
+            log.info("个人用户:" + name + "发布个人信息成功！");
             return ResultUtil.success();
         } catch (NullPointerException e) {
             log.info("发布个人消息时，用户未登录 " + e.toString());
@@ -90,7 +85,7 @@ public class PersonalServiceImpl implements PersonalService {
 
 
     @Override
-    public Result updatPersonInfo(TpPersonInfo tpPersonInfo,HttpSession session) {
+    public Result updatPersonInfo(TpPersonInfo tpPersonInfo, HttpSession session) {
         try {
             String name = session.getAttribute("personName").toString();
             String uuid = session.getAttribute("personUuid").toString();
@@ -99,7 +94,7 @@ public class PersonalServiceImpl implements PersonalService {
             tpPersonInfo.setRegisterTime(new Date());
             tpPersonInfo.setServiceProvider(false);
             personalMapper.updateInfoById(tpPersonInfo);
-            log.info("个人用户:"+name+"修改发布信息成功！");
+            log.info("个人用户:" + name + "修改发布信息成功！");
             return ResultUtil.success(ResultEnum.UPDATE_SUCCESS);
         } catch (NullPointerException e) {
             log.info("修改个人发布信息时，用户未登录 " + e.toString());
@@ -107,16 +102,16 @@ public class PersonalServiceImpl implements PersonalService {
         }
     }
 
-  @Override
-    public Result deletePersonInfo(Integer id,HttpSession session) {
+    @Override
+    public Result deletePersonInfo(Integer id, HttpSession session) {
         TpPersonInfo tpPersonInfo = personalMapper.selectInfoById(id);
         if (tpPersonInfo == null) {
             return ResultUtil.error(ResultEnum.DEL_ERROR);
         }
         String uuid = session.getAttribute("personUuid").toString();
         String name = session.getAttribute("personName").toString();
-        personalMapper.deletePersonInfo(id,uuid);
-        log.info("个人用户"+name+",删除了一条id为："+id+"的发布信息");
+        personalMapper.deletePersonInfo(id, uuid);
+        log.info("个人用户" + name + ",删除了一条id为：" + id + "的发布信息");
         return ResultUtil.success();
     }
 
@@ -144,8 +139,8 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public Result updatePersonalPass(Password password, HttpSession session) {
-        String uuid = session.getAttribute("enterpriseUuid").toString();
-        String passwordReturn = personalMapper.selectByName(uuid).getPassword();
+        String name = session.getAttribute("personName").toString();
+        String passwordReturn = personalMapper.selectByName(name).getPassword();
         if (!password.getPassword().equals(passwordReturn)) {
             log.info("旧密码不正确！");
             return ResultUtil.error(ResultEnum.OLDPASSWORD_ERROR);
@@ -165,24 +160,24 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public Result resetPersonalPass(ResetPass resetPass) {
-            TpPersonal tpPersonal = personalMapper.selectAllByName(resetPass.getName());
-            String name = resetPass.getName();
-            if (tpPersonal == null) {
-                log.info("重置个人密码时，无此用户！"+resetPass.getName());
-                return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
-            }
-            if (!resetPass.getEmail().equals(tpPersonal.getEmail())) {
-                log.info(name+"重置个人密码时，邮箱输入不正确！错误邮箱："+resetPass.getEmail());
-                return ResultUtil.error(ResultEnum.Repeat_eamil_Error);
-            }
-            if (!resetPass.getTel().equals(tpPersonal.getTel())) {
-                log.info(name+"重置个人密码时,手机号输入不正确！错误手机号："+resetPass.getTel());
-                return ResultUtil.error(ResultEnum.Repeat_tel_Error);
-            }
-            resetPass.setUuid(tpPersonal.getUuid());
-            personalMapper.resetPass(resetPass);
-            log.info("个人用户：" +name+ "重置密码成功！");
-            return ResultUtil.success(ResultEnum.PASSSFIND_SUCCESS);
+        TpPersonal tpPersonal = personalMapper.selectAllByName(resetPass.getName());
+        String name = resetPass.getName();
+        if (tpPersonal == null) {
+            log.info("重置个人密码时，无此用户！" + resetPass.getName());
+            return ResultUtil.error(ResultEnum.NOT_EXIST_ERROR);
+        }
+        if (!resetPass.getEmail().equals(tpPersonal.getEmail())) {
+            log.info(name + "重置个人密码时，邮箱输入不正确！错误邮箱：" + resetPass.getEmail());
+            return ResultUtil.error(ResultEnum.Repeat_eamil_Error);
+        }
+        if (!resetPass.getTel().equals(tpPersonal.getTel())) {
+            log.info(name + "重置个人密码时,手机号输入不正确！错误手机号：" + resetPass.getTel());
+            return ResultUtil.error(ResultEnum.Repeat_tel_Error);
+        }
+        resetPass.setUuid(tpPersonal.getUuid());
+        personalMapper.resetPass(resetPass);
+        log.info("个人用户：" + name + "重置密码成功！");
+        return ResultUtil.success(ResultEnum.PASSSFIND_SUCCESS);
     }
 
     @Override

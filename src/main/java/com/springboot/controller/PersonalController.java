@@ -141,9 +141,6 @@ public class PersonalController {
     }
 
 
-
-
-
     //发送激活账户邮件
     @PostMapping(value = "/personal/sendMail")
     public void sendMail(@RequestBody CheckMail checkMail) throws Exception {

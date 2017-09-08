@@ -1,1 +1,1 @@
-#translate_project
+# smart-healthcare-backend

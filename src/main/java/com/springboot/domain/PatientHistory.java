@@ -26,6 +26,6 @@ public class PatientHistory {
     private String medicalHistory;
     private Integer dustAge;
     private String dustProperty;
-    private String createdBy;
+    private Integer createdBy;
     private Date createdOn;
 }

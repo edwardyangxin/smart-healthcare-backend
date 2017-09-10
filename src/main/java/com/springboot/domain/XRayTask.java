@@ -15,7 +15,7 @@ public class XRayTask{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String createdBy;
+    private Integer createdBy;
     private Integer patientHistoryId;
     private Integer expertId;
     private Integer reviewResult;

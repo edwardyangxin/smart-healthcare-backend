@@ -16,7 +16,7 @@ public enum ResultEnum {
     VERIFICATION_CODE_ERROE(7,"请输入正确的验证码"),
     MATCHING_USER_TYPE_ERRPR(8,"匹配用户类型出现错误！"),
     NullPointerException(9,"空指针异常！"),
-    Repeat_login_Error(10,"请勿重复登录！"),
+    Repeat_login_Error(10,"您已登录，请勿重复登录！"),
     Repeat_tel_Error(10,"手机号不正确！"),
     Repeat_eamil_Error(10,"邮箱不正确！"),
 
@@ -26,7 +26,8 @@ public enum ResultEnum {
     LOGIN_SUCCESS(4,"登录成功! "),
     PASSRESET_SUCCESS(4,"密码修改成功！"),
     PASSSFIND_SUCCESS(4,"密码找回成功！"),
-    UPDATE_SUCCESS(4,"更新信息成功！");
+    UPDATE_SUCCESS(4,"更新信息成功！"),
+    SAVE_SUCCESS(4,"保存成功！");
 
 
     private Integer code;

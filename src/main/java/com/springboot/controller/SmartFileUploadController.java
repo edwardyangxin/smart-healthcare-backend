@@ -1,7 +1,7 @@
 package com.springboot.controller;
 
-import com.springboot.dto.updto.ControllerResponse;
-import com.springboot.service.StorageService;
+import com.springboot.domain.Result;
+import com.springboot.service.SmartFileUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -17,42 +17,28 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class SmartFileUploadController {
 
-    private final StorageService storageService;
+    private final SmartFileUploadService smartFileUploadService;
 
     @Autowired
-    public SmartFileUploadController(StorageService storageService) {
-        this.storageService = storageService;
+    public SmartFileUploadController(SmartFileUploadService smartFileUploadService) {
+        this.smartFileUploadService = smartFileUploadService;
     }
 
-    @GetMapping("/pictures/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<Resource> servePicture(@PathVariable String filename) {
-        Resource file = storageService.loadAsResource(filename);
-        return ResponseEntity
-                .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-                .body(file);
-    }
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-        Resource file = storageService.loadAsResourceFile(filename);
+        Resource file = smartFileUploadService.loadAsResourceFile(filename);
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
-    }
-    @PostMapping("/uploadPicture")
-    @ResponseBody
-    public ControllerResponse handlePictureUpload(@RequestParam("file") MultipartFile file,
-                                                  Model model,HttpSession session) {
-        return storageService.store(file,session);
     }
 
     @PostMapping("/uploadFile")
     @ResponseBody
-    public ControllerResponse handleFileUpload(@RequestParam("file") MultipartFile file,
-                                               Model model,HttpSession session) {
-        return storageService.storeFile(file,session);
+    public Result handleFileUpload(@RequestParam("file") MultipartFile file,
+                                   Model model, HttpSession session) {
+        return smartFileUploadService.storeFile(file,session);
     }
+
 }

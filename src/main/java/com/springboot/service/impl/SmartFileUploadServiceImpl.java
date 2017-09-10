@@ -1,12 +1,14 @@
 package com.springboot.service.impl;
 
 import com.springboot.controller.FileUploadController;
-import com.springboot.domain.TpFile;
-import com.springboot.dto.updto.ControllerResponse;
+import com.springboot.domain.Result;
+import com.springboot.domain.UploadFile;
+import com.springboot.enums.ResultEnum;
 import com.springboot.exception.storage.StorageException;
 import com.springboot.exception.storage.StorageFileNotFoundException;
-import com.springboot.mapper.UploadMapper;
+import com.springboot.mapper.SmartFileUploadMapper;
 import com.springboot.service.SmartFileUploadService;
+import com.springboot.tools.ResultUtil;
 import com.springboot.tools.UUIDTool;
 import com.springboot.uploadDir.StorageProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -32,115 +34,48 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
-public class SmartFileUploadServiceImpl implements SmartFileUploadService{
+public class SmartFileUploadServiceImpl implements SmartFileUploadService {
 
-    private final Path rootLocation;
+
     private final Path rootFileLocation;
-    private UploadMapper uploadMapper;
+    private SmartFileUploadMapper smartFileUploadMapper;
 
 
     @Autowired
-    public SmartFileUploadServiceImpl(StorageProperties properties) {
-        this.rootLocation = Paths.get(properties.getLocation());
+    public SmartFileUploadServiceImpl(StorageProperties properties, SmartFileUploadMapper smartFileUploadMapper) {
         this.rootFileLocation = Paths.get(properties.getFilelocation());
-    }
-
-    @Autowired
-    public void setUserMapper(UploadMapper uploadMapper) {
-        this.uploadMapper = uploadMapper;
+        this.smartFileUploadMapper = smartFileUploadMapper;
     }
 
     @Override
-    public ControllerResponse store(MultipartFile file, HttpSession session) {
-        String a = session.getAttribute("personName").toString();
-        ControllerResponse checkFormatResponse = checkFormat(file);
-        if (!checkFormatResponse.getABoolean()) {
-            return checkFormatResponse;
+    public Result storeFile(MultipartFile file, HttpSession session) {
+        Result checkFormatResult = checkFormat(file);
+        if (!checkFormatResult.getABoolean()) {
+            return checkFormatResult;
         }
-        if (getFormatName(file)) {
-        } else {
-            log.info("Maybe not a picture file!");
-            return ControllerResponse.create("Maybe not a picture file!", false);
+        if (!ImageFormat(file)) {
+            log.info("上传的文件不是图片格式！");
+            return ResultUtil.error(ResultEnum.file_picture_error);
         }
-        ControllerResponse copyResponse = copyPicture(file);
-        if (copyResponse.getABoolean()) {
-            return copyResponse;
+        Result copyFileResult = copyFile(file);
+        if (!copyFileResult.getABoolean()) {
+            return copyFileResult;
         }
-
-        ControllerResponse renamePictureResponse = renamePicture(file);
-        if (renamePictureResponse.getABoolean()) {
-            return renamePictureResponse;
-        }
-        String name = uploadMapper.findFile(session.getAttribute("uuid").toString()).getPictureName();
-        if (name != null) {
-            deleteFile(loadPicture(name));
-        }
-        ControllerResponse updatePictureResponse = updatePicture(renamePictureResponse.getMessage());
-        return updatePictureResponse;
+        return insertFile(file.getOriginalFilename());
     }
 
-    @Override
-    public ControllerResponse storeFile(MultipartFile file, HttpSession session) {
-        String a = session.getAttribute("uuid").toString();
-        ControllerResponse checkFormatResponse = checkFormat(file);
-        if (!checkFormatResponse.getABoolean()) {
-            return checkFormatResponse;
-        }
-        ControllerResponse copyResponse = copyFile(file);
-        if (copyResponse.getABoolean()) {
-            return copyResponse;
-        }
-        ControllerResponse renameFileResponse = renameFile(file);
-        if (renameFileResponse.getABoolean()) {
-            return renameFileResponse;
-        }
-        String name = uploadMapper.findFile(session.getAttribute("uuid").toString()).getFileName();
-        if (name != null) {
-            deleteFile(loadFile(name));
-        }
-        ControllerResponse updateFileResponse = updateFile(renameFileResponse.getMessage());
-        return updateFileResponse;
+
+    public Result insertFile(String fileName) {
+        UploadFile uploadFile = new UploadFile();
+        uploadFile.setFileName(fileName);
+        smartFileUploadMapper.insertUploadFile(uploadFile);
+        return ResultUtil.success(ResultEnum.file_upload_success);
     }
 
-    public ControllerResponse updatePicture(String fileName) {
-        TpFile picture = new TpFile();
-        picture.setPicturePath(uploadedPictureUrl(loadFile(fileName)).toString());
-        picture.setPictureName(fileName);
-        uploadMapper.updatePicture(picture);
-        return ControllerResponse.create(picture.getPicturePath(), true);
-    }
-
-    public ControllerResponse updateFile(String fileName) {
-        TpFile file = new TpFile();
-        file.setFilePath(uploadedFileUrl(loadFile(fileName)).toString());
-        file.setFileName(fileName);
-        uploadMapper.updateFile(file);
-        return ControllerResponse.create(file.getFilePath(), true);
-    }
-
-    public ControllerResponse renamePicture(MultipartFile file) {
-        String temName = UUIDTool.getUuid() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-        File oldPicture = new File("upload-dir" + File.separator + "picture" + File.separator + file.getOriginalFilename());
-        File newPicture = new File("upload-dir" + File.separator + "picture" + File.separator + temName);
-        try {
-            boolean flag = oldPicture.renameTo(newPicture);
-            if (flag) {
-            } else {
-                log.info("RenameToPicture faild！");
-                return ControllerResponse.create("RenameToPicture faild！", true);
-            }
-        } catch (SecurityException e) {
-            log.info("RenameToPicture faild！");
-            return ControllerResponse.create("RenameToPicture faild！", true);
-        }
-        return ControllerResponse.create(temName, false);
-    }
-
-    public ControllerResponse renameFile(MultipartFile file) {
+    public Result renameFile(MultipartFile file) {
         String temName = UUIDTool.getUuid() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         File oldFile = new File("upload-dir" + File.separator + "file" + File.separator + file.getOriginalFilename());
         File newFile = new File("upload-dir" + File.separator + "file" + File.separator + temName);
@@ -149,63 +84,44 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService{
             if (flag) {
             } else {
                 log.info("RenameToFile faild！");
-                return ControllerResponse.create("RenameToFile faild！", true);
+                return ResultUtil.error(ResultEnum.file_storage_error);
             }
         } catch (SecurityException e) {
             log.info("RenameToFile faild！");
-            return ControllerResponse.create("RenameToFile faild！", true);
+            return ResultUtil.error(ResultEnum.file_storage_error);
         }
-        return ControllerResponse.create(temName, false);
+        return ResultUtil.success();
     }
 
-    public ControllerResponse copyPicture(MultipartFile file) {
-        try {
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
-        } catch (FileAlreadyExistsException e) {
-            log.info("Picture already exist！");
-            return ControllerResponse.create("Picture already exist！", true);
-        } catch (IOException e) {
-            log.info("Storage file failed！");
-            return ControllerResponse.create("Storage file failed！ ", true);
-        }
-        log.info("success");
-        return ControllerResponse.create("success", false);
-    }
 
-    public ControllerResponse copyFile(MultipartFile file) {
+    public Result copyFile(MultipartFile file) {
         try {
             Files.copy(file.getInputStream(), this.rootFileLocation.resolve(file.getOriginalFilename()));
         } catch (FileAlreadyExistsException e) {
             log.info("File already exist！");
-            return ControllerResponse.create("File already exist！", true);
+            return ResultUtil.error(ResultEnum.file_exist_error);
         } catch (IOException e) {
             log.info("Storage file failed！");
-            return ControllerResponse.create("Storage file failed！", true);
+            return ResultUtil.error(ResultEnum.file_storage_error);
         }
-        log.info("success");
-        return ControllerResponse.create("success", false);
+        log.info("文件保存成功！");
+        return ResultUtil.success();
     }
 
-    public ControllerResponse checkFormat(MultipartFile file) {
+    public Result checkFormat(MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 log.info("文件(内容)为空！");
-                return ControllerResponse.create("文件(内容)为空！", false);
+                return ResultUtil.error(ResultEnum.file_empty_error);
             }
             String suffixName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
             log.info("文件格式有误！");
-            return ControllerResponse.create("文件格式有误！", false);
+            return ResultUtil.error(ResultEnum.file_format_error);
         }
-        log.info("success");
-        return ControllerResponse.create("success", true);
+        return ResultUtil.success();
     }
 
-    public URI uploadedPictureUrl(Path path) {
-        UriComponents uriComponents = MvcUriComponentsBuilder
-                .fromMethodName(FileUploadController.class, "servePicture", path.getFileName().toString()).build();
-        return uriComponents.encode().toUri();
-    }
 
     public URI uploadedFileUrl(Path path) {
         UriComponents uriComponents = MvcUriComponentsBuilder
@@ -214,32 +130,10 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService{
     }
 
     @Override
-    public Path loadPicture(String pictureName) {
-        return rootLocation.resolve(pictureName);
-    }
-
-    @Override
     public Path loadFile(String fileName) {
         return rootFileLocation.resolve(fileName);
     }
 
-    @Override
-    public Resource loadAsResource(String filename) {
-        try {
-            Path file = loadPicture(filename);
-            Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                log.info("Could not read picture: " + filename);
-                throw new StorageFileNotFoundException("Could not read picture: " + filename);
-            }
-        } catch (MalformedURLException e) {
-            log.info("Could not read picture:" + filename);
-            throw new StorageFileNotFoundException("Could not read picture: " + filename, e);
-        }
-
-    }
 
     @Override
     public Resource loadAsResourceFile(String filename) {
@@ -256,12 +150,10 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService{
             log.info("Could not read file: " + filename);
             throw new StorageFileNotFoundException("Could not read file: " + filename, e);
         }
-
     }
 
     @Override
     public void deleteAll() {
-        FileSystemUtils.deleteRecursively(rootLocation.toFile());
         FileSystemUtils.deleteRecursively(rootFileLocation.toFile());
     }
 
@@ -276,7 +168,6 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService{
     @Override
     public void init() {
         try {
-            Files.createDirectory(rootLocation);
             Files.createDirectory(rootFileLocation);
         } catch (IOException e) {
             log.info("初始化存储失败！");
@@ -284,11 +175,7 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService{
         }
     }
 
-    public TpFile findFile(String name) {
-        return uploadMapper.findFile(name);
-    }
-
-    public boolean getFormatName(MultipartFile file) {
+    public boolean ImageFormat(MultipartFile file) {
         try {
             ImageInputStream iis = ImageIO.createImageInputStream(file.getInputStream());
             Iterator<ImageReader> iterator = ImageIO.getImageReaders(iis);
@@ -304,16 +191,22 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService{
             return false;
         }
     }
-
-    @Override
-    public Stream<Path> loadAll() {
-        try {
-            return Files.walk(this.rootLocation, 1)
-                    .filter(path -> !path.equals(this.rootLocation))
-                    .map(path -> this.rootLocation.relativize(path));
-        } catch (IOException e) {
-            log.info("Failed to read the stored file！");
-            throw new StorageException("Failed to read the stored file！", e);
-        }
-    }
 }
+ /*
+    public TpFile findFile(String name) {
+        return smartFileUploadMapper.findFile(name);
+    }
+
+    Result renameFileResult = renameFile(file);
+        if(!renameFileResult.getABoolean())
+
+    {
+        return renameFileResult;
+    }
+
+    String name = smartFileUploadMapper.findFile(session.getAttribute("uuid").toString()).getFileName();
+       if(name !=null)
+
+    {
+        deleteFile(loadFile(name));
+    }*/

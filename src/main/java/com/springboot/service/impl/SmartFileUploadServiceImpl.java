@@ -13,6 +13,7 @@ import com.springboot.tools.UUIDTool;
 import com.springboot.uploadDir.StorageProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,8 @@ import java.util.Iterator;
 @Service
 public class SmartFileUploadServiceImpl implements SmartFileUploadService {
 
-
+    @Value("${smart.upload.filePath}")
+    private String filePath;
     private final Path rootFileLocation;
     private SmartFileUploadMapper smartFileUploadMapper;
 
@@ -71,6 +73,7 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService {
     public Result insertFile(String fileName) {
         UploadFile uploadFile = new UploadFile();
         uploadFile.setFileName(fileName);
+        uploadFile.setFilePath(filePath);
         smartFileUploadMapper.insertUploadFile(uploadFile);
         return ResultUtil.success(ResultEnum.file_upload_success);
     }

@@ -105,7 +105,7 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
         Integer createdBy = (Integer)session.getAttribute("id");
         patientHistory.setCreatedBy(createdBy);
         smartHealthcareMapper.updatePatientHistoryById(patientHistory);
-        log.info(name+":修改了id为"+patientHistory.getId()+"病历表");
+        log.info(name+":修改了id为"+patientHistory.getId()+"的病历表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 

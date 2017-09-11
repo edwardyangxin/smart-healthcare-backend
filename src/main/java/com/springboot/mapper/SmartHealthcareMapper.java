@@ -18,17 +18,16 @@ public interface SmartHealthcareMapper {
     User selectUserByName(@Param("name") String name);
 
     /*通过id查询一张病历*/
-    @Select("select * from patient_history where id = #{id} and {created_by}=#{createdBy}")
+    @Select("select * from patient_history where id = #{id} and created_by = #{createdBy}")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "job_history", property = "jobHistory"),
             @Result(column = "medical_history", property = "medicalHistory"),
             @Result(column = "dust_age", property = "dustAge"),
             @Result(column = "dust_property", property = "dustProperty"),
-            @Result(column = "created_by", property = "createdBy"),
             @Result(column = "created_on", property = "createdOn")
     })
-    PatientHistory selectPatientHistoryById(@Param("createdBy")Integer id,Integer createdBy);
+    PatientHistory selectPatientHistoryById(@Param("id") Integer id,@Param("createdBy") Integer createdBy);
 
     /*根据前台显示查询病历表（id/姓名/性别/联系电话/接尘工龄/粉尘性质/就医时间/）*/
     @Select("select id,patient_name,sex,tel,dust_age,dust_property,created_on  from patient_history where created_by=#{createdBy}")
@@ -56,7 +55,7 @@ public interface SmartHealthcareMapper {
 
     /*修改病历*/
     @Update("update patient_history set patient_name= #{patientName},sex= #{sex},age = #{age},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
-            "medical_history = #{medicalHistory},dust_age = #{dustAge},dust_property = #{dustProperty},where id =#{id} and {created_by}=#{createdBy}")
+            "medical_history = #{medicalHistory},dust_age = #{dustAge},dust_property = #{dustProperty} where id =#{id} and created_by =#{createdBy}")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "job_history", property = "jobHistory"),

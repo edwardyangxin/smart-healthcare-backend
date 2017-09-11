@@ -13,7 +13,7 @@ public class CommonInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         System.out.println("CommonInterceptor >> 在请求处理之前进行调用（Controller方法调用之前）,判断个人用户是否登陆");
         String user = (String)httpServletRequest.getSession().getAttribute("user");
-        String  id = (String)httpServletRequest.getSession().getAttribute("id");
+        Integer  id = (Integer)httpServletRequest.getSession().getAttribute("id");
         if (user==null ||id==null){
             httpServletResponse.setHeader("Content-type", "text/html;charset=UTF-8");
             httpServletResponse.setCharacterEncoding("UTF-8");

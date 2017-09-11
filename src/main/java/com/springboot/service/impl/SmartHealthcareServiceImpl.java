@@ -80,7 +80,8 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
     public Result<PatientHistory> selectOnePatientHistoryById(Integer id,HttpServletRequest request){
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
-        PatientHistory patientHistory = smartHealthcareMapper.selectPatientHistoryById(id);
+        Integer createdBy = (Integer)session.getAttribute("id");
+        PatientHistory patientHistory = smartHealthcareMapper.selectPatientHistoryById(id,createdBy);
         log.info(name+":查询了一条id为"+id+"病历表");
         return ResultUtil.success(patientHistory);
     }
@@ -101,8 +102,8 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
     public Result updatePatientHistoryById(PatientHistory patientHistory,HttpServletRequest request){
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
-        Integer id = (Integer)session.getAttribute("id");
-        patientHistory.setCreatedBy(id);
+        Integer createdBy = (Integer)session.getAttribute("id");
+        patientHistory.setCreatedBy(createdBy);
         smartHealthcareMapper.updatePatientHistoryById(patientHistory);
         log.info(name+":修改了id为"+patientHistory.getId()+"病历表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);

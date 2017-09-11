@@ -56,7 +56,16 @@ public interface SmartHealthcareMapper {
 
     /*修改病历*/
     @Update("update patient_history set patient_name= #{patientName},sex= #{sex},age = #{age},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
-            "medical_history = #{medicalHistory},dust_age = #{dustAge},dust_property = #{dustProperty},where id =#{id}")
+            "medical_history = #{medicalHistory},dust_age = #{dustAge},dust_property = #{dustProperty},where id =#{id} and {created_by}=#{createdBy}")
+    @Results({
+            @Result(column = "patient_name", property = "patientName"),
+            @Result(column = "job_history", property = "jobHistory"),
+            @Result(column = "medical_history", property = "medicalHistory"),
+            @Result(column = "dust_age", property = "dustAge"),
+            @Result(column = "dust_property", property = "dustProperty"),
+            @Result(column = "created_by", property = "createdBy"),
+            @Result(column = "created_on", property = "createdOn")
+    })
     void updatePatientHistoryById(PatientHistory patientHistory);
 
     /*增加胸片审查任务*/

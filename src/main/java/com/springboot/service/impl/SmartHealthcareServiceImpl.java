@@ -101,6 +101,8 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
     public Result updatePatientHistoryById(PatientHistory patientHistory,HttpServletRequest request){
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
+        Integer id = (Integer)session.getAttribute("id");
+        patientHistory.setCreatedBy(id);
         smartHealthcareMapper.updatePatientHistoryById(patientHistory);
         log.info(name+":修改了id为"+patientHistory.getId()+"病历表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);

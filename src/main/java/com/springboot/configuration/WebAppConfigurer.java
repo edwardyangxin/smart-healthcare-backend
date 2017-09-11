@@ -15,11 +15,13 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter {
         // excludePathPatterns 用户排除拦截
         // registry.addInterceptor(new CommonInterceptor()).excludePathPatterns("/translate/login").excludePathPatterns("/translate/register").excludePathPatterns("/translate/getKaptchaImage");
         registry.addInterceptor(new CommonInterceptor())
-                .addPathPatterns("/translate/personal/delPersonInfo/{id}")
-                .addPathPatterns("/translate/personal/modifyPass")
-                .addPathPatterns("/translate/personal/personPro")
-                .addPathPatterns("/translate/personal/selectInfoById")
-                .addPathPatterns("/translate/personal/selectPersonal");
+                .addPathPatterns("/smart/selectAllPatients")
+                .addPathPatterns("/smart/selectOnePatient/{id}")
+                .addPathPatterns("/smart/newPatient")
+                .addPathPatterns("/smart/updatePatient")
+                .addPathPatterns("/smart/newXTask")
+                .addPathPatterns("/smart/files/{filename:.+}")
+                .addPathPatterns("/smart/uploadFile");
                // .addPathPatterns("/translate");
         super.addInterceptors(registry);
     }

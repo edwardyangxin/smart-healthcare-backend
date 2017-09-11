@@ -44,9 +44,9 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
             session.setAttribute("user", userReturn.getName());
             session.setAttribute("id", userReturn.getId());
             log.info("用户" + userReturn.getName() + "登陆成功！");
-            return ResultUtil.success(ResultEnum.LOGIN_SUCCESS);
+            return ResultUtil.success(userReturn.getUserType());
         }
-        return ResultUtil.success(userReturn.getUserType());
+        return userResult;
     }
 
     public Result validateUser(User user, User userReturn) {

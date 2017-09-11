@@ -56,10 +56,10 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService {
         if (!checkFormatResult.getABoolean()) {
             return checkFormatResult;
         }
-        if (!ImageFormat(file)) {
+   /*     if (!ImageFormat(file)) {
             log.info("上传的文件不是图片格式！");
             return ResultUtil.error(ResultEnum.file_picture_error);
-        }
+        }*/
         Result copyFileResult = copyFile(file);
         if (!copyFileResult.getABoolean()) {
             return copyFileResult;

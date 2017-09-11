@@ -173,7 +173,6 @@ public class ServiceProviderController {
         return serviceProviderService.selectServiceEnterAllPro(session);
     }
 
-
     //发送激活账户邮件
     @RequestMapping(value = "/serviceProvider/sendMail")
     public void sendMail(@RequestBody CheckMail checkMail) throws Exception {

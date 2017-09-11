@@ -10,4 +10,5 @@ import java.io.File;
 public class StorageProperties {
     private String location = "upload-dir" + File.separator + "picture";
     private String Filelocation = "upload-dir" + File.separator + "file";
+
 }

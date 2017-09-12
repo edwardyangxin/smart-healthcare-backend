@@ -1,8 +1,8 @@
-/*
 package com.springboot.exception.storage;
 
 
-import com.springboot.dto.updto.ExceptionResponse;
+import com.springboot.domain.Result;
+import com.springboot.tools.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,41 +12,40 @@ import org.springframework.web.multipart.MultipartException;
 
 import javax.servlet.http.HttpServletRequest;
 
-*/
+
 /**
  * Created by liuyongg on 27/7/2017.
- *//*
+ */
 
 
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
- */
-/*   @ResponseBody
+   @ResponseBody
     @ExceptionHandler(Exception.class)
-    public ExceptionResponse handleException(HttpServletRequest request, Exception exc){
+    public Result handleException(HttpServletRequest request, Exception exc){
         HttpStatus status = getStatus(request);
         String message = exc.getMessage();
         log.error("Exception:"+exc);
-        return ExceptionResponse.create(status.value(), message);
-    }*//*
+        return ResultUtil.error(status.value(),message);
+    }
 
 
     @ResponseBody
     @ExceptionHandler(StorageFileNotFoundException.class)
-    public ExceptionResponse handleStorageFileNotFound(HttpServletRequest request, StorageFileNotFoundException exc) {
+    public Result handleStorageFileNotFound(HttpServletRequest request, StorageFileNotFoundException exc) {
         HttpStatus status = getStatus(request);
         String message = exc.getMessage();
-        return ExceptionResponse.create(status.value(), message);
+        return ResultUtil.error(status.value(),message);
     }
 
     @ResponseBody
     @ExceptionHandler(StorageException.class)
-    public ExceptionResponse handleStorageException(HttpServletRequest request, StorageException exc) {
+    public Result handleStorageException(HttpServletRequest request, StorageException exc) {
         HttpStatus status = getStatus(request);
         String message = exc.getMessage();
-        return ExceptionResponse.create(status.value(), message);
+        return ResultUtil.error(status.value(),message);
     }
 
 
@@ -60,24 +59,22 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(FileFormatException.class)
-    public ExceptionResponse handleFileFormatException(HttpServletRequest request, FileFormatException exc) {
+    public Result handleFileFormatException(HttpServletRequest request, FileFormatException exc) {
         HttpStatus status = getStatus(request);
         String message = exc.getMessage();
-        return ExceptionResponse.create(status.value(), message);
+        return ResultUtil.error(status.value(),message);
     }
 
     @ResponseBody
     @ExceptionHandler(MultipartException.class)
-    public ExceptionResponse handleMultipartException(HttpServletRequest request, MultipartException exc) {
+    public Result handleMultipartException(HttpServletRequest request, MultipartException exc) {
         HttpStatus status = getStatus(request);
         try {
-            return ExceptionResponse.create(status.value(), exc.getCause().getCause().getMessage());
+            return ResultUtil.error(status.value(),exc.getCause().getCause().getMessage());
         } catch (NullPointerException e) {
-            return ExceptionResponse.create(status.value(), exc.getMessage());
+            return ResultUtil.error(status.value(),exc.getMessage());
         }
     }
 
 }
 
-
-*/

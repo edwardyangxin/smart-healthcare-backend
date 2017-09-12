@@ -49,6 +49,12 @@ public class ResultUtil {
         result.setMsg(object);
         return result;
     }
-
+    public static Result error(Integer code,Object object) {
+        Result result = new Result();
+        result.setCode(code);
+        result.setABoolean(false);
+        result.setMsg(object);
+        return result;
+    }
 
 }

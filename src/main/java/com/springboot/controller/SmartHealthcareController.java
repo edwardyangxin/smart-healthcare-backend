@@ -115,4 +115,10 @@ public class SmartHealthcareController {
         return smartHealthcareService.selectOneXRayTaskById(id, request);
     }
 
+    //查询所有胸片审查任务
+    @ResponseBody
+    @GetMapping(value = "/selectAllXRayTask")
+    public Result<List<XRayTask>> findXRayTasks() {
+        return smartHealthcareService.selectXRayTasks();
+    }
 }

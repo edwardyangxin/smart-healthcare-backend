@@ -138,4 +138,10 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
         return ResultUtil.success(xRayTask);
     }
 
+    @Override
+    public Result<List<XRayTask>> selectXRayTasks() {
+        List<XRayTask> xRayTasks= smartHealthcareMapper.selectXRayTasks();
+        log.info("查询了所有已建立的胸片审查任务表");
+        return ResultUtil.success(xRayTasks);
+    }
 }

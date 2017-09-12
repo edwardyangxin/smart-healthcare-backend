@@ -1,6 +1,6 @@
 package com.springboot.service.impl;
 
-import com.springboot.controller.FileUploadController;
+import com.springboot.controller.SmartFileUploadController;
 import com.springboot.domain.Result;
 import com.springboot.domain.UploadFile;
 import com.springboot.enums.ResultEnum;
@@ -58,7 +58,7 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService {
         if (!checkFormatResult.getABoolean()) {
             return checkFormatResult;
         }
-   /*     if (!ImageFormat(file)) {
+   /*   if (!ImageFormat(file)) {
             log.info("上传的文件不是图片格式！");
             return ResultUtil.error(ResultEnum.file_picture_error);
         }*/
@@ -66,14 +66,19 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService {
         if (!copyFileResult.getABoolean()) {
             return copyFileResult;
         }
-        return insertFile(file.getOriginalFilename());
+        Result renameFileResult = renameFile(file);
+        if (!renameFileResult.getABoolean()) {
+            return renameFileResult;
+        }
+        return insertFile(file.getOriginalFilename(), renameFileResult.getData().toString());
     }
 
 
-    public Result insertFile(String fileName) {
+    public Result insertFile(String fileName, String uuid) {
         UploadFile uploadFile = new UploadFile();
         uploadFile.setFileName(fileName);
-        uploadFile.setFilePath(filePath);
+        uploadFile.setFilePath(filePath + fileName);
+        uploadFile.setFileUuid(uuid);
         smartFileUploadMapper.insertUploadFile(uploadFile);
         return ResultUtil.success(ResultEnum.file_upload_success);
     }
@@ -84,8 +89,7 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService {
         File newFile = new File("upload-dir" + File.separator + "file" + File.separator + temName);
         try {
             boolean flag = oldFile.renameTo(newFile);
-            if (flag) {
-            } else {
+            if (!flag) {
                 log.info("RenameToFile faild！");
                 return ResultUtil.error(ResultEnum.file_storage_error);
             }
@@ -93,7 +97,7 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService {
             log.info("RenameToFile faild！");
             return ResultUtil.error(ResultEnum.file_storage_error);
         }
-        return ResultUtil.success();
+        return ResultUtil.success(temName);
     }
 
 
@@ -125,10 +129,9 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService {
         return ResultUtil.success();
     }
 
-
     public URI uploadedFileUrl(Path path) {
         UriComponents uriComponents = MvcUriComponentsBuilder
-                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString()).build();
+                .fromMethodName(SmartFileUploadController.class, "serveFile", path.getFileName().toString()).build();
         return uriComponents.encode().toUri();
     }
 
@@ -139,19 +142,19 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService {
 
 
     @Override
-    public Resource loadAsResourceFile(String filename) {
+    public Resource loadAsResourceFile(String fileUuid) {
         try {
-            Path file = loadFile(filename);
+            Path file = loadFile(fileUuid);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
-                log.info("Could not read file: " + filename);
-                throw new StorageFileNotFoundException("Could not read file: " + filename);
+                log.info("Could not read file: " + fileUuid);
+                throw new StorageFileNotFoundException("Could not read file: " + fileUuid);
             }
         } catch (MalformedURLException e) {
-            log.info("Could not read file: " + filename);
-            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+            log.info("Could not read file: " + fileUuid);
+            throw new StorageFileNotFoundException("Could not read file: " + fileUuid, e);
         }
     }
 
@@ -193,6 +196,11 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    @Override
+    public String selectNameByUuid(String uuid) {
+        return smartFileUploadMapper.selectFileNameByUuid(uuid);
     }
 }
  /*

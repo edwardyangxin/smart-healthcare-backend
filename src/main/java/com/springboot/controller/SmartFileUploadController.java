@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 
 @RequestMapping(value = "/smart")
 @Controller
@@ -24,13 +25,15 @@ public class SmartFileUploadController {
         this.smartFileUploadService = smartFileUploadService;
     }
 
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping("/files/{fileUuid:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-        Resource file = smartFileUploadService.loadAsResourceFile(filename);
+    public ResponseEntity<Resource> serveFile(@PathVariable String fileUuid)  throws UnsupportedEncodingException{
+        Resource file = smartFileUploadService.loadAsResourceFile(fileUuid);
+        String realName = smartFileUploadService.selectNameByUuid(fileUuid);
+
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + new String(realName.getBytes(),"iso-8859-1") + "\"")
                 .body(file);
     }
 

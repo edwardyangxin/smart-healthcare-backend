@@ -20,6 +20,8 @@ public class UploadFile{
     private String filePath;
 
     private String fileName;
+
+    private String fileUuid;
 }
 
 

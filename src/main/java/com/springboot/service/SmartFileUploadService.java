@@ -13,10 +13,12 @@ public interface SmartFileUploadService {
 
     Path loadFile(String filename);
 
-    Resource loadAsResourceFile(String filename);
+    Resource loadAsResourceFile(String fileUuid);
 
     void deleteAll();
 
     Result storeFile(MultipartFile file, HttpSession session);
+
+    String selectNameByUuid(String uuid);
 
 }

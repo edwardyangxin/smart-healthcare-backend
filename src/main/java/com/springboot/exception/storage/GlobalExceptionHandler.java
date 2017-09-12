@@ -1,3 +1,4 @@
+/*
 package com.springboot.exception.storage;
 
 
@@ -11,22 +12,26 @@ import org.springframework.web.multipart.MultipartException;
 
 import javax.servlet.http.HttpServletRequest;
 
+*/
 /**
  * Created by liuyongg on 27/7/2017.
- */
+ *//*
+
 
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
- /*   @ResponseBody
+ */
+/*   @ResponseBody
     @ExceptionHandler(Exception.class)
     public ExceptionResponse handleException(HttpServletRequest request, Exception exc){
         HttpStatus status = getStatus(request);
         String message = exc.getMessage();
         log.error("Exception:"+exc);
         return ExceptionResponse.create(status.value(), message);
-    }*/
+    }*//*
+
 
     @ResponseBody
     @ExceptionHandler(StorageFileNotFoundException.class)
@@ -75,3 +80,4 @@ public class GlobalExceptionHandler {
 }
 
 
+*/

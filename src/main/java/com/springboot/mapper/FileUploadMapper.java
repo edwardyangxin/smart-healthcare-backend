@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.*;
 
 
 @Mapper
-public interface SmartFileUploadMapper {
+public interface FileUploadMapper {
 
     /*上传文件*/
     @Insert("insert into upload_file(file_path, file_name, file_uuid)" +

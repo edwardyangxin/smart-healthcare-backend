@@ -1,7 +1,7 @@
 package com.springboot.exception.storage;
 
 
-import com.springboot.domain.Result;
+import com.springboot.dto.Result;
 import com.springboot.tools.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

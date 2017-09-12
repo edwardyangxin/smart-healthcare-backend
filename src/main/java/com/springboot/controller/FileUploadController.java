@@ -1,7 +1,7 @@
 package com.springboot.controller;
 
-import com.springboot.domain.Result;
-import com.springboot.service.SmartFileUploadService;
+import com.springboot.dto.Result;
+import com.springboot.service.FileUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -16,12 +16,12 @@ import java.io.UnsupportedEncodingException;
 
 @RequestMapping(value = "/smart")
 @Controller
-public class SmartFileUploadController {
+public class FileUploadController {
 
-    private final SmartFileUploadService smartFileUploadService;
+    private final FileUploadService smartFileUploadService;
 
     @Autowired
-    public SmartFileUploadController(SmartFileUploadService smartFileUploadService) {
+    public FileUploadController(FileUploadService smartFileUploadService) {
         this.smartFileUploadService = smartFileUploadService;
     }
 

@@ -24,4 +24,10 @@ public class XRayTask{
     private Integer status;
     private Integer xRayId;
     private Date createdOn;
+
+
+    public String getcreatedOn() {
+        return xRayId.toString();
+    }
+
 }

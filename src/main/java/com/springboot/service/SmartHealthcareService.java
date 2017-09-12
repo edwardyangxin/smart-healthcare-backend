@@ -1,7 +1,7 @@
 package com.springboot.service;
 
 import com.springboot.domain.PatientHistory;
-import com.springboot.domain.Result;
+import com.springboot.dto.Result;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
 

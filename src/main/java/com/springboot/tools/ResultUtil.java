@@ -1,6 +1,6 @@
 package com.springboot.tools;
 
-import com.springboot.domain.Result;
+import com.springboot.dto.Result;
 import com.springboot.enums.ResultEnum;
 
 public class ResultUtil {
@@ -30,6 +30,15 @@ public class ResultUtil {
         Result result = new Result();
         result.setCode(200);
         result.setMsg("success");
+        result.setABoolean(true);
+        return result;
+    }
+
+    public static Result success(Object msg,Object object) {
+        Result result = new Result();
+        result.setCode(200);
+        result.setMsg(msg);
+        result.setData(object);
         result.setABoolean(true);
         return result;
     }

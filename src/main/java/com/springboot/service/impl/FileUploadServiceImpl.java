@@ -1,13 +1,13 @@
 package com.springboot.service.impl;
 
-import com.springboot.controller.SmartFileUploadController;
-import com.springboot.domain.Result;
+import com.springboot.controller.FileUploadController;
+import com.springboot.dto.Result;
 import com.springboot.domain.UploadFile;
 import com.springboot.enums.ResultEnum;
 import com.springboot.exception.storage.StorageException;
 import com.springboot.exception.storage.StorageFileNotFoundException;
-import com.springboot.mapper.SmartFileUploadMapper;
-import com.springboot.service.SmartFileUploadService;
+import com.springboot.mapper.FileUploadMapper;
+import com.springboot.service.FileUploadService;
 import com.springboot.tools.ResultUtil;
 import com.springboot.tools.UUIDTool;
 import com.springboot.uploadDir.StorageProperties;
@@ -38,16 +38,16 @@ import java.util.Iterator;
 
 @Slf4j
 @Service
-public class SmartFileUploadServiceImpl implements SmartFileUploadService {
+public class FileUploadServiceImpl implements FileUploadService {
 
     @Value("${smart.upload.filePath}")
     private String filePath;
     private final Path rootFileLocation;
-    private SmartFileUploadMapper smartFileUploadMapper;
+    private FileUploadMapper smartFileUploadMapper;
 
 
     @Autowired
-    public SmartFileUploadServiceImpl(StorageProperties properties, SmartFileUploadMapper smartFileUploadMapper) {
+    public FileUploadServiceImpl(StorageProperties properties, FileUploadMapper smartFileUploadMapper) {
         this.rootFileLocation = Paths.get(properties.getFilelocation());
         this.smartFileUploadMapper = smartFileUploadMapper;
     }
@@ -80,7 +80,7 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService {
         uploadFile.setFilePath(filePath + fileName);
         uploadFile.setFileUuid(uuid);
         smartFileUploadMapper.insertUploadFile(uploadFile);
-        return ResultUtil.success(ResultEnum.file_upload_success);
+        return ResultUtil.success("文件上传成功！",uploadFile.getId());
     }
 
     public Result renameFile(MultipartFile file) {
@@ -131,7 +131,7 @@ public class SmartFileUploadServiceImpl implements SmartFileUploadService {
 
     public URI uploadedFileUrl(Path path) {
         UriComponents uriComponents = MvcUriComponentsBuilder
-                .fromMethodName(SmartFileUploadController.class, "serveFile", path.getFileName().toString()).build();
+                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString()).build();
         return uriComponents.encode().toUri();
     }
 

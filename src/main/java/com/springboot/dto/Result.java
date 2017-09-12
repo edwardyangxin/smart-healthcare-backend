@@ -1,4 +1,4 @@
-package com.springboot.domain;
+package com.springboot.dto;
 
 import lombok.Data;
 

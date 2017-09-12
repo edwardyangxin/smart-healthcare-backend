@@ -120,4 +120,22 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
         log.info(name+":为id="+xRayTask.getPatientHistoryId()+"的病历表，添加了一个胸片审查任务");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
+
+    @Override
+    public Result updateXRayTaskById(XRayTask xRayTask,HttpServletRequest request){
+        Integer id = xRayTask.getId();
+        xRayTask.setId(id);
+        smartHealthcareMapper.updateXRayTaskById(xRayTask);
+        log.info("修改了id为"+xRayTask.getId()+"的胸片审查任务表");
+        return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
+    }
+
+    @Override
+    public Result<XRayTask> selectOneXRayTaskById(Integer id,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        XRayTask xRayTask = smartHealthcareMapper.selectXRayTaskById(id);
+        log.info("查询了一条id为"+id+"的胸片审查任务表");
+        return ResultUtil.success(xRayTask);
+    }
+
 }

@@ -95,4 +95,23 @@ public class SmartHealthcareController {
         return smartHealthcareService.insertXrayTask(xRayTask,request);
     }
 
+    //修改胸片审查任务表（根据id）
+    @ResponseBody
+    @PostMapping(value = "/updateXRayTask")
+    public Result updateXRayTask(@Valid @RequestBody XRayTask xRayTask, BindingResult bindingResult,HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return smartHealthcareService.updateXRayTaskById(xRayTask,request);
+    }
+
+    //查询一个胸片审查任务表的详细信息(根据id)
+    @GetMapping(value = "/selectOneXRayTask/{id}")
+    public Result findOneXRayTask(@PathVariable Integer id, HttpServletRequest request) {
+        return smartHealthcareService.selectOneXRayTaskById(id, request);
+    }
+
 }

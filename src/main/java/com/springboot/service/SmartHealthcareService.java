@@ -16,4 +16,6 @@ public interface SmartHealthcareService {
     Result insertPatientHistory(PatientHistory patientHistory,HttpServletRequest request);
     Result updatePatientHistoryById(PatientHistory patientHistory,HttpServletRequest request);
     Result insertXrayTask(XRayTask xRayTask,HttpServletRequest request);
+    Result updateXRayTaskById(XRayTask xRayTask,HttpServletRequest request);
+    Result<XRayTask>  selectOneXRayTaskById(Integer id,HttpServletRequest request);
 }

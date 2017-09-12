@@ -82,4 +82,32 @@ public interface SmartHealthcareMapper {
             @Result(column = "x_ray_id", property = "xRayId")
     })
     void insertXrayTask(XRayTask xRayTask);
+
+    /*修改胸片审查任务表的review_result、review_comment、analysis_result字段*/
+    @Update("update xray_task set review_result= #{reviewResult},review_comment= #{reviewComment},analysis_result = #{analysisResult} where id =#{id}")
+    @Results({
+            @Result(column = "created_by", property = "createdBy"),
+            @Result(column = "created_on", property = "createdOn"),
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "expert_id", property = "expertId"),
+            @Result(column = "review_result", property = "reviewResult"),
+            @Result(column = "review_comment", property = "reviewComment"),
+            @Result(column = "analysis_result", property = "analysisResult"),
+            @Result(column = "x_ray_id", property = "xRayId")
+    })
+    void updateXRayTaskById(XRayTask xRayTask);
+
+    /*通过id查询一张胸片审查任务表*/
+    @Select("select * from xray_task where id = #{id}")
+    @Results({
+            @Result(column = "created_by", property = "createdBy"),
+            @Result(column = "created_on", property = "createdOn"),
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "expert_id", property = "expertId"),
+            @Result(column = "review_result", property = "reviewResult"),
+            @Result(column = "review_comment", property = "reviewComment"),
+            @Result(column = "analysis_result", property = "analysisResult"),
+            @Result(column = "x_ray_id", property = "xRayId")
+    })
+    XRayTask selectXRayTaskById(@Param("id") Integer id);
 }

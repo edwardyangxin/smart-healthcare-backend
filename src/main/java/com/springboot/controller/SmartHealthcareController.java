@@ -109,6 +109,7 @@ public class SmartHealthcareController {
     }
 
     //查询一个胸片审查任务表的详细信息(根据id)
+    @ResponseBody
     @GetMapping(value = "/selectOneXRayTask/{id}")
     public Result findOneXRayTask(@PathVariable Integer id, HttpServletRequest request) {
         return smartHealthcareService.selectOneXRayTaskById(id, request);

@@ -13,16 +13,16 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter {
         // 多个拦截器组成一个拦截器链
         // addPathPatterns 用于添加拦截规则
         // excludePathPatterns 用户排除拦截
-        // registry.addInterceptor(new CommonInterceptor()).excludePathPatterns("/translate/login").excludePathPatterns("/translate/register").excludePathPatterns("/translate/getKaptchaImage");
-        registry.addInterceptor(new CommonInterceptor())
-                .addPathPatterns("/smart/selectAllPatients")
-                .addPathPatterns("/smart/selectOnePatient/{id}")
-                .addPathPatterns("/smart/newPatient")
-                .addPathPatterns("/smart/updatePatient")
-                .addPathPatterns("/smart/newXTask")
-                .addPathPatterns("/smart/files/{filename:.+}")
-                .addPathPatterns("/smart/uploadFile");
-               // .addPathPatterns("/translate");
+         registry.addInterceptor(new CommonInterceptor()).excludePathPatterns("/TM/TJ/login");
+     /*   registry.addInterceptor(new CommonInterceptor())
+                .addPathPatterns("/TM/TJ/selectAllPatients")
+                .addPathPatterns("/TM/TJ/selectOnePatient/{id}")
+                .addPathPatterns("/TM/TJ/newPatient")
+                .addPathPatterns("/TM/TJ/updatePatient")
+                .addPathPatterns("/TM/TJ/newXTask")
+                .addPathPatterns("/TM/TJ/files/{filename:.+}")
+                .addPathPatterns("/TM/TJ/uploadFile");
+               // .addPathPatterns("/translate");*/
         super.addInterceptors(registry);
     }
 }

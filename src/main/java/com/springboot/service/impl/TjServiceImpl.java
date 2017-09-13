@@ -114,7 +114,8 @@ public class TjServiceImpl implements TjService {
 
         XRayTask xRayTask = new XRayTask();
         xRayTask.setCreatedOn(data);
-        xRayTask.setCreatedBy(patientXRayTask.getId());
+        xRayTask.setCreatedBy(patientHistory.getId());
+        xRayTask.setXRayId(patientXRayTask.getId());
         tjMapper.insertXrayTask(xRayTask);
         log.info(name+":新建了一个病历表,并为id="+patientHistory.getId()+"的病历表，添加了一个胸片审查任务");
 

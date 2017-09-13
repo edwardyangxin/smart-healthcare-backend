@@ -3,6 +3,7 @@ package com.springboot.controller;
 import com.springboot.domain.PatientHistory;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
+import com.springboot.dto.PatientXRayTask;
 import com.springboot.dto.Result;
 import com.springboot.service.TjService;
 import com.springboot.tools.ResultUtil;
@@ -63,6 +64,19 @@ public class TjController {
             }
         }
         return tjService.insertPatientHistory(patientHistory,request);
+    }
+
+    //新建病历和增加任务表一起
+    @ResponseBody
+    @PostMapping(value = "/newPatientAndXTask")
+    public Result newPatientHistoryAndXTask(@RequestBody PatientXRayTask patientHistory, BindingResult bindingResult, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return tjService.insertPatientHistoryAndXTask(patientHistory,request);
     }
 
     //修改病历表(根据id)

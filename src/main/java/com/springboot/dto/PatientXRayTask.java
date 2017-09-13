@@ -1,11 +1,10 @@
 package com.springboot.dto;
 
 import com.springboot.domain.PatientHistory;
-import com.springboot.domain.XRayTask;
 import lombok.Data;
 
 @Data
-public class PatientXRayTask {
+public class PatientXRayTask  {
+    private Integer id;
     private PatientHistory patientHistory;
-    private XRayTask xRayTask;
 }

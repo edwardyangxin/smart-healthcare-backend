@@ -98,6 +98,7 @@ public class MzServiceImpl implements MzService {
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 
+
     @Override
     public Result updatePatientHistoryById(PatientHistory patientHistory,HttpServletRequest request){
         HttpSession session = request.getSession();

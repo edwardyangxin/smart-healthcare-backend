@@ -3,6 +3,7 @@ package com.springboot.service.impl;
 import com.springboot.domain.PatientHistory;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
+import com.springboot.dto.PatientXRayTask;
 import com.springboot.dto.Result;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.TjMapper;
@@ -97,6 +98,28 @@ public class TjServiceImpl implements TjService {
         tjMapper.insertPatientHistory(patientHistory);
         log.info(name+":新建了一个病历表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
+    }
+
+    @Override
+    public  Result insertPatientHistoryAndXTask(PatientXRayTask patientXRayTask,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String name = session.getAttribute("user").toString();
+        Integer id=(Integer) session.getAttribute("id");
+
+        PatientHistory patientHistory = patientXRayTask.getPatientHistory();
+        Date data = new Date();
+        patientHistory.setCreatedOn(data);
+        patientHistory.setCreatedBy(id);
+        tjMapper.insertPatientHistory(patientHistory);
+
+        XRayTask xRayTask = new XRayTask();
+        xRayTask.setCreatedOn(data);
+        xRayTask.setCreatedBy(patientXRayTask.getId());
+        tjMapper.insertXrayTask(xRayTask);
+        log.info(name+":新建了一个病历表,并为id="+patientHistory.getId()+"的病历表，添加了一个胸片审查任务");
+
+        return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
+
     }
 
     @Override

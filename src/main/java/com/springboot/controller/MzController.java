@@ -27,7 +27,7 @@ public class MzController {
         this.mzService = mzService;
     }
 
-    //登录（医生和专家一个接口）
+    //登录（医生、院内专家，院外专家一个接口）
     @ResponseBody
     @PostMapping(value = "/login")
     public Result login(@Valid @RequestBody User user, BindingResult bindingResult, HttpServletRequest request) {

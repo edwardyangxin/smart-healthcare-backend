@@ -118,5 +118,4 @@ public class MzController {
     public Result<List<XRayTask>> findXRayTasks() {
         return mzService.selectXRayTasks();
     }
-
 }

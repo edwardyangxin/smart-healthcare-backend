@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
-public interface SmartHealthcareMapper {
+public interface MzMapper {
 
     /*通过name查询一个用户*/
     @Select("select * from user where name=#{name}")
@@ -110,4 +110,18 @@ public interface SmartHealthcareMapper {
             @Result(column = "x_ray_id", property = "xRayId")
     })
     XRayTask selectXRayTaskById(@Param("id") Integer id);
+
+    /*查询所有胸片审查任务（显示所有字段）*/
+    @Select("select * from xray_task ")
+    @Results({
+            @Result(column = "created_by", property = "createdBy"),
+            @Result(column = "created_on", property = "createdOn"),
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "expert_id", property = "expertId"),
+            @Result(column = "review_result", property = "reviewResult"),
+            @Result(column = "review_comment", property = "reviewComment"),
+            @Result(column = "analysis_result", property = "analysisResult"),
+            @Result(column = "x_ray_id", property = "xRayId")
+    })
+    List<XRayTask> selectXRayTasks();
 }

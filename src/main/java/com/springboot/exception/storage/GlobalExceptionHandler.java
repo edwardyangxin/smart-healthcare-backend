@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+/*
    @ResponseBody
     @ExceptionHandler(Exception.class)
     public Result handleException(HttpServletRequest request, Exception exc){
@@ -30,6 +31,7 @@ public class GlobalExceptionHandler {
         log.error("Exception:"+exc);
         return ResultUtil.error(status.value(),message);
     }
+*/
 
 
     @ResponseBody

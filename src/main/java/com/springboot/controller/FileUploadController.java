@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 
-@RequestMapping(value = "/smart")
+@RequestMapping(value = "/TM")
 @Controller
 public class FileUploadController {
 

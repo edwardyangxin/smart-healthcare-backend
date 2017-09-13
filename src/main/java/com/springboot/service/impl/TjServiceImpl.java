@@ -1,12 +1,12 @@
 package com.springboot.service.impl;
 
 import com.springboot.domain.PatientHistory;
-import com.springboot.dto.Result;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
+import com.springboot.dto.Result;
 import com.springboot.enums.ResultEnum;
-import com.springboot.mapper.SmartHealthcareMapper;
-import com.springboot.service.SmartHealthcareService;
+import com.springboot.mapper.TjMapper;
+import com.springboot.service.TjService;
 import com.springboot.tools.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +20,13 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class SmartHealthcareServiceImpl implements SmartHealthcareService {
+public class TjServiceImpl implements TjService {
 
-    private SmartHealthcareMapper smartHealthcareMapper;
+    private TjMapper tjMapper;
 
     @Autowired
-    public SmartHealthcareServiceImpl(SmartHealthcareMapper smartHealthcareMapper) {
-        this.smartHealthcareMapper = smartHealthcareMapper;
+    public TjServiceImpl(TjMapper tjMapper) {
+        this.tjMapper = tjMapper;
     }
 
     @Override
@@ -38,7 +38,8 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
             }
         } catch (NullPointerException e) {
         }
-        User userReturn = smartHealthcareMapper.selectUserByName(user.getName());
+        User userReturn = tjMapper.selectUserByName(user.getName());
+        System.out.println("123");
         Result userResult = validateUser(user, userReturn);
         if (userResult.getABoolean()) {
             session.setAttribute("user", userReturn.getName());
@@ -71,7 +72,7 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer id=(Integer) session.getAttribute("id");
-        List<PatientHistory> patientHistories = smartHealthcareMapper.selectPatientHistories(id);
+        List<PatientHistory> patientHistories = tjMapper.selectPatientHistories(id);
         log.info(name+":查询了所有已建立的病历表");
         return ResultUtil.success(patientHistories);
     }
@@ -81,7 +82,7 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer createdBy = (Integer)session.getAttribute("id");
-        PatientHistory patientHistory = smartHealthcareMapper.selectPatientHistoryById(id,createdBy);
+        PatientHistory patientHistory = tjMapper.selectPatientHistoryById(id,createdBy);
         log.info(name+":查询了一条id为"+id+"病历表");
         return ResultUtil.success(patientHistory);
     }
@@ -93,7 +94,7 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
         Integer id=(Integer) session.getAttribute("id");
         patientHistory.setCreatedOn(new Date());
         patientHistory.setCreatedBy(id);
-        smartHealthcareMapper.insertPatientHistory(patientHistory);
+        tjMapper.insertPatientHistory(patientHistory);
         log.info(name+":新建了一个病历表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
@@ -104,7 +105,7 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
         String name = session.getAttribute("user").toString();
         Integer createdBy = (Integer)session.getAttribute("id");
         patientHistory.setCreatedBy(createdBy);
-        smartHealthcareMapper.updatePatientHistoryById(patientHistory);
+        tjMapper.updatePatientHistoryById(patientHistory);
         log.info(name+":修改了id为"+patientHistory.getId()+"的病历表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
@@ -116,7 +117,7 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
         Integer id=(Integer) session.getAttribute("id");
         xRayTask.setCreatedOn(new Date());
         xRayTask.setCreatedBy(id);
-        smartHealthcareMapper.insertXrayTask(xRayTask);
+        tjMapper.insertXrayTask(xRayTask);
         log.info(name+":为id="+xRayTask.getPatientHistoryId()+"的病历表，添加了一个胸片审查任务");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
@@ -125,7 +126,7 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
     public Result updateXRayTaskById(XRayTask xRayTask,HttpServletRequest request){
         Integer id = xRayTask.getId();
         xRayTask.setId(id);
-        smartHealthcareMapper.updateXRayTaskById(xRayTask);
+        tjMapper.updateXRayTaskById(xRayTask);
         log.info("修改了id为"+xRayTask.getId()+"的胸片审查任务表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
@@ -133,9 +134,16 @@ public class SmartHealthcareServiceImpl implements SmartHealthcareService {
     @Override
     public Result<XRayTask> selectOneXRayTaskById(Integer id,HttpServletRequest request){
         HttpSession session = request.getSession();
-        XRayTask xRayTask = smartHealthcareMapper.selectXRayTaskById(id);
+        XRayTask xRayTask = tjMapper.selectXRayTaskById(id);
         log.info("查询了一条id为"+id+"的胸片审查任务表");
         return ResultUtil.success(xRayTask);
+    }
+
+    @Override
+    public Result<List<XRayTask>> selectXRayTasks() {
+        List<XRayTask> xRayTasks= tjMapper.selectXRayTasks();
+        log.info("查询了所有已建立的胸片审查任务表");
+        return ResultUtil.success(xRayTasks);
     }
 
 }

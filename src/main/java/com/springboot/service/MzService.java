@@ -8,7 +8,7 @@ import com.springboot.domain.XRayTask;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public interface SmartHealthcareService {
+public interface MzService {
 
     Result login(User user, HttpServletRequest request);
     Result<List<PatientHistory>>  selectPatientHistories(HttpServletRequest request);
@@ -18,4 +18,5 @@ public interface SmartHealthcareService {
     Result insertXrayTask(XRayTask xRayTask,HttpServletRequest request);
     Result updateXRayTaskById(XRayTask xRayTask,HttpServletRequest request);
     Result<XRayTask>  selectOneXRayTaskById(Integer id,HttpServletRequest request);
+    Result<List<XRayTask>>  selectXRayTasks();
 }

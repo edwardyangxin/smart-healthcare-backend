@@ -1,10 +1,10 @@
 package com.springboot.controller;
 
 import com.springboot.domain.PatientHistory;
-import com.springboot.dto.Result;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
-import com.springboot.service.SmartHealthcareService;
+import com.springboot.dto.Result;
+import com.springboot.service.TjService;
 import com.springboot.tools.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -15,19 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * Created by Administrator on 2017/7/11.
- */
-
-@RequestMapping(value = "/smart")
+@RequestMapping(value = "/TM/TJ")
 @RestController
-public class SmartHealthcareController {
+public class TjController {
 
-    private SmartHealthcareService smartHealthcareService;
+    private TjService tjService;
 
     @Autowired
-    public SmartHealthcareController(SmartHealthcareService smartHealthcareService) {
-        this.smartHealthcareService = smartHealthcareService;
+    public TjController(TjService tjService) {
+        this.tjService = tjService;
     }
 
     //登录（医生和专家一个接口）
@@ -40,20 +36,20 @@ public class SmartHealthcareController {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return smartHealthcareService.login(user, request);
+        return tjService.login(user, request);
     }
 
     //查询一个医生已经建立的的所有病历表
     @ResponseBody
     @GetMapping(value = "/selectAllPatients")
     public Result<List<PatientHistory>> findPatientHistories(HttpServletRequest request) {
-        return smartHealthcareService.selectPatientHistories(request);
+        return tjService.selectPatientHistories(request);
     }
 
     //查询一个病历表的详细信息(根据id)
     @GetMapping(value = "/selectOnePatient/{id}")
     public Result findOnePatientHistory(@PathVariable Integer id, HttpServletRequest request) {
-        return smartHealthcareService.selectOnePatientHistoryById(id, request);
+        return tjService.selectOnePatientHistoryById(id, request);
     }
 
     //新建病历
@@ -66,7 +62,7 @@ public class SmartHealthcareController {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return smartHealthcareService.insertPatientHistory(patientHistory,request);
+        return tjService.insertPatientHistory(patientHistory,request);
     }
 
     //修改病历表(根据id)
@@ -79,7 +75,7 @@ public class SmartHealthcareController {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return smartHealthcareService.updatePatientHistoryById(patientHistory,request);
+        return tjService.updatePatientHistoryById(patientHistory,request);
     }
 
     //增加任务表
@@ -92,7 +88,7 @@ public class SmartHealthcareController {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return smartHealthcareService.insertXrayTask(xRayTask,request);
+        return tjService.insertXrayTask(xRayTask,request);
     }
 
     //修改胸片审查任务表（根据id）
@@ -105,14 +101,21 @@ public class SmartHealthcareController {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return smartHealthcareService.updateXRayTaskById(xRayTask,request);
+        return tjService.updateXRayTaskById(xRayTask,request);
     }
 
     //查询一个胸片审查任务表的详细信息(根据id)
     @ResponseBody
     @GetMapping(value = "/selectOneXRayTask/{id}")
     public Result findOneXRayTask(@PathVariable Integer id, HttpServletRequest request) {
-        return smartHealthcareService.selectOneXRayTaskById(id, request);
+        return tjService.selectOneXRayTaskById(id, request);
+    }
+
+    //查询所有胸片审查任务
+    @ResponseBody
+    @GetMapping(value = "/selectAllXRayTask")
+    public Result<List<XRayTask>> findXRayTasks() {
+        return tjService.selectXRayTasks();
     }
 
 }

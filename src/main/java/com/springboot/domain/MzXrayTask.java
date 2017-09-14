@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Data
 @Entity
-public class OutXRayTask {
+public class MzXrayTask {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

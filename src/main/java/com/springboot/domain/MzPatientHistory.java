@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Data
 @Entity
-public class OutpatientHistory {
+public class MzPatientHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

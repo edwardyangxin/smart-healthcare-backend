@@ -1,9 +1,7 @@
 package com.springboot.service.impl;
 
-import com.springboot.domain.PatientHistory;
+import com.springboot.domain.*;
 import com.springboot.dto.Result;
-import com.springboot.domain.User;
-import com.springboot.domain.XRayTask;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.MzMapper;
 import com.springboot.service.MzService;
@@ -67,83 +65,83 @@ public class MzServiceImpl implements MzService {
     }
 
     @Override
-    public Result<List<PatientHistory>> selectPatientHistories(HttpServletRequest request) {
+    public Result<List<MzPatientHistory>> selectMzPatientHistories(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer id=(Integer) session.getAttribute("id");
-        List<PatientHistory> patientHistories = mzMapper.selectPatientHistories(id);
+        List<MzPatientHistory> mzPatientHistories = mzMapper.selectMzPatientHistories(id);
         log.info(name+":查询了所有已建立的病历表");
-        return ResultUtil.success(patientHistories);
+        return ResultUtil.success(mzPatientHistories);
     }
 
     @Override
-    public Result<PatientHistory> selectOnePatientHistoryById(Integer id,HttpServletRequest request){
+    public Result<MzPatientHistory> selectOneMzPatientHistoryById(Integer id,HttpServletRequest request){
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer createdBy = (Integer)session.getAttribute("id");
-        PatientHistory patientHistory = mzMapper.selectPatientHistoryById(id,createdBy);
+        MzPatientHistory mzPatientHistory = mzMapper.selectMzPatientHistoryById(id,createdBy);
         log.info(name+":查询了一条id为"+id+"病历表");
-        return ResultUtil.success(patientHistory);
+        return ResultUtil.success(mzPatientHistory);
     }
 
     @Override
-    public Result insertPatientHistory(PatientHistory patientHistory,HttpServletRequest request){
+    public Result insertMzPatientHistory(MzPatientHistory mzPatientHistory,HttpServletRequest request){
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer id=(Integer) session.getAttribute("id");
-        patientHistory.setCreatedOn(new Date());
-        patientHistory.setCreatedBy(id);
-        mzMapper.insertPatientHistory(patientHistory);
+        mzPatientHistory.setCreatedOn(new Date());
+        mzPatientHistory.setCreatedBy(id);
+        mzMapper.insertMzPatientHistory(mzPatientHistory);
         log.info(name+":新建了一个病历表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 
 
     @Override
-    public Result updatePatientHistoryById(PatientHistory patientHistory,HttpServletRequest request){
+    public Result updateMzPatientHistoryById(MzPatientHistory mzPatientHistory,HttpServletRequest request){
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer createdBy = (Integer)session.getAttribute("id");
-        patientHistory.setCreatedBy(createdBy);
-        mzMapper.updatePatientHistoryById(patientHistory);
-        log.info(name+":修改了id为"+patientHistory.getId()+"的病历表");
+        mzPatientHistory.setCreatedBy(createdBy);
+        mzMapper.updateMzPatientHistoryById(mzPatientHistory);
+        log.info(name+":修改了id为"+mzPatientHistory.getId()+"的病历表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 
     @Override
-    public Result insertXrayTask(XRayTask xRayTask,HttpServletRequest request){
+    public Result insertMzXrayTask(MzXrayTask mzXrayTask, HttpServletRequest request){
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer id=(Integer) session.getAttribute("id");
-        xRayTask.setCreatedOn(new Date());
-        xRayTask.setCreatedBy(id);
-        mzMapper.insertXrayTask(xRayTask);
-        log.info(name+":为id="+xRayTask.getPatientHistoryId()+"的病历表，添加了一个胸片审查任务");
+        mzXrayTask.setCreatedOn(new Date());
+        mzXrayTask.setCreatedBy(id);
+        mzMapper.insertMzXrayTask(mzXrayTask);
+        log.info(name+":为id="+mzXrayTask.getPatientHistoryId()+"的病历表，添加了一个胸片审查任务");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 
     @Override
-    public Result updateXRayTaskById(XRayTask xRayTask,HttpServletRequest request){
-        Integer id = xRayTask.getId();
-        xRayTask.setId(id);
-        mzMapper.updateXRayTaskById(xRayTask);
-        log.info("修改了id为"+xRayTask.getId()+"的胸片审查任务表");
+    public Result updateMzXrayTaskById(MzXrayTask mzXrayTask,HttpServletRequest request){
+        Integer id = mzXrayTask.getId();
+        mzXrayTask.setId(id);
+        mzMapper.updateMzXrayTaskById(mzXrayTask);
+        log.info("修改了id为"+mzXrayTask.getId()+"的胸片审查任务表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 
     @Override
-    public Result<XRayTask> selectOneXRayTaskById(Integer id,HttpServletRequest request){
+    public Result<MzXrayTask> selectOneMzXrayTaskById(Integer id,HttpServletRequest request){
         HttpSession session = request.getSession();
-        XRayTask xRayTask = mzMapper.selectXRayTaskById(id);
+        MzXrayTask mzXrayTask = mzMapper.selectMzXrayTaskById(id);
         log.info("查询了一条id为"+id+"的胸片审查任务表");
-        return ResultUtil.success(xRayTask);
+        return ResultUtil.success(mzXrayTask);
     }
 
     @Override
-    public Result<List<XRayTask>> selectXRayTasks() {
-        List<XRayTask> xRayTasks= mzMapper.selectXRayTasks();
+    public Result<List<MzXrayTask>> selectMzXrayTasks() {
+        List<MzXrayTask> mzXrayTasks= mzMapper.selectMzXrayTasks();
         log.info("查询了所有已建立的胸片审查任务表");
-        return ResultUtil.success(xRayTasks);
+        return ResultUtil.success(mzXrayTasks);
     }
 
 }

@@ -1,8 +1,8 @@
 package com.springboot.mapper;
 
-import com.springboot.domain.PatientHistory;
+import com.springboot.domain.MzPatientHistory;
+import com.springboot.domain.MzXrayTask;
 import com.springboot.domain.User;
-import com.springboot.domain.XRayTask;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public interface MzMapper {
             @Result(column = "dust_property", property = "dustProperty"),
             @Result(column = "created_on", property = "createdOn")
     })
-    PatientHistory selectPatientHistoryById(@Param("id") Integer id,@Param("createdBy") Integer createdBy);
+    MzPatientHistory selectMzPatientHistoryById(@Param("id") Integer id, @Param("createdBy") Integer createdBy);
 
     /*根据前台显示查询病历表（id/姓名/性别/联系电话/接尘工龄/粉尘性质/就医时间/）*/
     @Select("select id,patient_name,sex,tel,dust_age,dust_property,created_on  from patient_history where created_by=#{createdBy}")
@@ -36,7 +36,7 @@ public interface MzMapper {
             @Result(column = "dust_age", property = "dustAge"),
             @Result(column = "created_on", property = "createdOn"),
     })
-    List<PatientHistory> selectPatientHistories(Integer createdBy);
+    List<MzPatientHistory> selectMzPatientHistories(Integer createdBy);
 
     /*新建病历*/
     @Insert("insert into patient_history(patient_name, sex,age, pid, tel, job, job_history, medical_history, dust_age, dust_property, created_by, created_on)" +
@@ -51,7 +51,7 @@ public interface MzMapper {
             @Result(column = "created_by", property = "createdBy"),
             @Result(column = "created_on", property = "createdOn")
     })
-    void insertPatientHistory(PatientHistory patientHistory);
+    void insertMzPatientHistory(MzPatientHistory mzPatientHistory);
 
     /*修改病历*/
     @Update("update patient_history set patient_name= #{patientName},sex= #{sex},age = #{age},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
@@ -65,7 +65,7 @@ public interface MzMapper {
             @Result(column = "created_by", property = "createdBy"),
             @Result(column = "created_on", property = "createdOn")
     })
-    void updatePatientHistoryById(PatientHistory patientHistory);
+    void updateMzPatientHistoryById(MzPatientHistory mzPatientHistory);
 
     /*增加胸片审查任务*/
     @Insert("insert into xray_task(created_by, created_on,patient_history_id, expert_id, review_result, review_comment, analysis_result, status, x_ray_id)" +
@@ -81,7 +81,7 @@ public interface MzMapper {
             @Result(column = "analysis_result", property = "analysisResult"),
             @Result(column = "x_ray_id", property = "xRayId")
     })
-    void insertXrayTask(XRayTask xRayTask);
+    void insertMzXrayTask(MzXrayTask mzXrayTask);
 
     /*修改胸片审查任务表的review_result、review_comment、analysis_result字段*/
     @Update("update xray_task set review_result= #{reviewResult},review_comment= #{reviewComment},analysis_result = #{analysisResult} where id =#{id}")
@@ -95,7 +95,7 @@ public interface MzMapper {
             @Result(column = "analysis_result", property = "analysisResult"),
             @Result(column = "x_ray_id", property = "xRayId")
     })
-    void updateXRayTaskById(XRayTask xRayTask);
+    void updateMzXrayTaskById(MzXrayTask mzXrayTask);
 
     /*通过id查询一张胸片审查任务表*/
     @Select("select * from xray_task where id = #{id}")
@@ -109,7 +109,7 @@ public interface MzMapper {
             @Result(column = "analysis_result", property = "analysisResult"),
             @Result(column = "x_ray_id", property = "xRayId")
     })
-    XRayTask selectXRayTaskById(@Param("id") Integer id);
+    MzXrayTask selectMzXrayTaskById(@Param("id") Integer id);
 
     /*查询所有胸片审查任务（显示所有字段）*/
     @Select("select * from xray_task ")
@@ -123,5 +123,5 @@ public interface MzMapper {
             @Result(column = "analysis_result", property = "analysisResult"),
             @Result(column = "x_ray_id", property = "xRayId")
     })
-    List<XRayTask> selectXRayTasks();
+    List<MzXrayTask> selectMzXrayTasks();
 }

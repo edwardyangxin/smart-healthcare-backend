@@ -18,7 +18,7 @@ public interface MzMapper {
     User selectUserByName(@Param("name") String name);
 
     /*通过id查询一张病历*/
-    @Select("select * from patient_history where id = #{id} and created_by = #{createdBy}")
+    @Select("select * from mz_patient_history where id = #{id} and created_by = #{createdBy}")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "job_history", property = "jobHistory"),
@@ -30,7 +30,7 @@ public interface MzMapper {
     MzPatientHistory selectMzPatientHistoryById(@Param("id") Integer id, @Param("createdBy") Integer createdBy);
 
     /*根据前台显示查询病历表（id/姓名/性别/联系电话/接尘工龄/粉尘性质/就医时间/）*/
-    @Select("select id,patient_name,sex,tel,dust_age,dust_property,created_on  from patient_history where created_by=#{createdBy}")
+    @Select("select id,patient_name,sex,tel,dust_age,dust_property,created_on  from mz_patient_history where created_by=#{createdBy}")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "dust_age", property = "dustAge"),
@@ -39,7 +39,7 @@ public interface MzMapper {
     List<MzPatientHistory> selectMzPatientHistories(Integer createdBy);
 
     /*新建病历*/
-    @Insert("insert into patient_history(patient_name, sex,age, pid, tel, job, job_history, medical_history, dust_age, dust_property, created_by, created_on)" +
+    @Insert("insert into mz_patient_history(patient_name, sex,age, pid, tel, job, job_history, medical_history, dust_age, dust_property, created_by, created_on)" +
             "values(#{patientName},#{sex}, #{age}, #{pid}, #{tel}, #{job}, #{jobHistory},#{medicalHistory}, #{dustAge}, #{dustProperty}, #{createdBy}, #{createdOn})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     @Results({
@@ -54,7 +54,7 @@ public interface MzMapper {
     void insertMzPatientHistory(MzPatientHistory mzPatientHistory);
 
     /*修改病历*/
-    @Update("update patient_history set patient_name= #{patientName},sex= #{sex},age = #{age},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
+    @Update("update mz_patient_history set patient_name= #{patientName},sex= #{sex},age = #{age},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
             "medical_history = #{medicalHistory},dust_age = #{dustAge},dust_property = #{dustProperty} where id =#{id} and created_by =#{createdBy}")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
@@ -68,7 +68,7 @@ public interface MzMapper {
     void updateMzPatientHistoryById(MzPatientHistory mzPatientHistory);
 
     /*增加胸片审查任务*/
-    @Insert("insert into xray_task(created_by, created_on,patient_history_id, expert_id, review_result, review_comment, analysis_result, status, x_ray_id)" +
+    @Insert("insert into mz_xray_task(created_by, created_on,patient_history_id, expert_id, review_result, review_comment, analysis_result, status, x_ray_id)" +
             "values(#{createdBy},#{createdOn}, #{patientHistoryId}, #{expertId}, #{reviewResult}, #{reviewComment}, #{analysisResult},#{status}, #{xRayId}) ")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     @Results({
@@ -84,7 +84,7 @@ public interface MzMapper {
     void insertMzXrayTask(MzXrayTask mzXrayTask);
 
     /*修改胸片审查任务表的review_result、review_comment、analysis_result字段*/
-    @Update("update xray_task set review_result= #{reviewResult},review_comment= #{reviewComment},analysis_result = #{analysisResult} where id =#{id}")
+    @Update("update mz_xray_task set review_result= #{reviewResult},review_comment= #{reviewComment},analysis_result = #{analysisResult} where id =#{id}")
     @Results({
             @Result(column = "created_by", property = "createdBy"),
             @Result(column = "created_on", property = "createdOn"),
@@ -98,7 +98,7 @@ public interface MzMapper {
     void updateMzXrayTaskById(MzXrayTask mzXrayTask);
 
     /*通过id查询一张胸片审查任务表*/
-    @Select("select * from xray_task where id = #{id}")
+    @Select("select * from mz_xray_task where id = #{id}")
     @Results({
             @Result(column = "created_by", property = "createdBy"),
             @Result(column = "created_on", property = "createdOn"),
@@ -112,7 +112,7 @@ public interface MzMapper {
     MzXrayTask selectMzXrayTaskById(@Param("id") Integer id);
 
     /*查询所有胸片审查任务（显示所有字段）*/
-    @Select("select * from xray_task ")
+    @Select("select * from mz_xray_task ")
     @Results({
             @Result(column = "created_by", property = "createdBy"),
             @Result(column = "created_on", property = "createdOn"),

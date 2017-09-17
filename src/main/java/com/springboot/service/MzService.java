@@ -3,7 +3,8 @@ package com.springboot.service;
 import com.springboot.domain.MzPatientHistory;
 import com.springboot.domain.MzXrayTask;
 import com.springboot.domain.User;
-import com.springboot.domain.XRayTask;
+import com.springboot.dto.MzPatientXRayTask;
+import com.springboot.dto.MzTasksDTO;
 import com.springboot.dto.Result;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +16,13 @@ public interface MzService {
     Result<List<MzPatientHistory>>  selectMzPatientHistories(HttpServletRequest request);
     Result<MzPatientHistory>  selectOneMzPatientHistoryById(Integer id,HttpServletRequest request);
     Result insertMzPatientHistory(MzPatientHistory MzPatientHistory,HttpServletRequest request);
+    Result insertMzPatientHistoryAndXTask(MzPatientXRayTask mzPatientXRayTask, HttpServletRequest request);
     Result updateMzPatientHistoryById(MzPatientHistory MzPatientHistory,HttpServletRequest request);
     Result insertMzXrayTask(MzXrayTask mzXrayTask, HttpServletRequest request);
     Result updateMzXrayTaskById(MzXrayTask mzXrayTask,HttpServletRequest request);
-    Result<MzXrayTask>  selectOneMzXrayTaskById(Integer id,HttpServletRequest request);
-    Result<List<MzXrayTask>>  selectMzXrayTasks();
+    Result  selectOneMzXrayTaskById(Integer id,HttpServletRequest request);
+    Result<List<MzTasksDTO>>  selectMzXrayTasks();
+    Result isNeedExpert(Integer id,HttpServletRequest request);
+    Result<List<MzXrayTask>> selectAllMzOutExpertTasks(HttpServletRequest request);
+    Result updateOneMzOutExpertTask(MzXrayTask mzXrayTask,HttpServletRequest request);
 }

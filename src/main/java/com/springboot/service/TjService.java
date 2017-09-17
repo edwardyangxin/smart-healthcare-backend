@@ -5,6 +5,7 @@ import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
 import com.springboot.dto.PatientXRayTask;
 import com.springboot.dto.Result;
+import com.springboot.dto.TjTasksDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,6 +20,6 @@ public interface TjService {
     Result updatePatientHistoryById(PatientHistory patientHistory, HttpServletRequest request);
     Result insertXrayTask(XRayTask xRayTask, HttpServletRequest request);
     Result updateXRayTaskById(XRayTask xRayTask, HttpServletRequest request);
-    Result<XRayTask>  selectOneXRayTaskById(Integer id, HttpServletRequest request);
-    Result<List<XRayTask>>  selectXRayTasks();
+    Result  selectOneXRayTaskById(Integer id, HttpServletRequest request);
+    Result<List<TjTasksDTO>>  selectXRayTasks();
 }

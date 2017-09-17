@@ -3,6 +3,8 @@ package com.springboot.mapper;
 import com.springboot.domain.PatientHistory;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
+import com.springboot.dto.TjTaskDTO;
+import com.springboot.dto.TjTasksDTO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -98,30 +100,117 @@ public interface TjMapper {
     void updateXRayTaskById(XRayTask xRayTask);
 
     /*通过id查询一张胸片审查任务表*/
-    @Select("select * from xray_task where id = #{id}")
+    @Select("select xt.review_result,xt.analysis_result,xt.review_comment,xt.x_ray_id," +
+            " ph.patient_name,ph.dust_age " +
+            " from xray_task xt" +
+            " left join patient_history ph on xt.patient_history_id = ph.id  where xt.id = #{id}")
+    //@ResultMap("com.springboot.mapper.TjMapper.allResults")
     @Results({
-            @Result(column = "created_by", property = "createdBy"),
-            @Result(column = "created_on", property = "createdOn"),
-            @Result(column = "patient_history_id", property = "patientHistoryId"),
-            @Result(column = "expert_id", property = "expertId"),
-            @Result(column = "review_result", property = "reviewResult"),
-            @Result(column = "review_comment", property = "reviewComment"),
+            @Result(column = "patient_name", property = "patientName"),
+            @Result(column = "dust_age",property = "dustAge"),
             @Result(column = "analysis_result", property = "analysisResult"),
-            @Result(column = "x_ray_id", property = "xRayId")
+            @Result(column = "review_result", property = "reviewResult"),
+            @Result(column = "review_comment",property = "reviewComment"),
+            @Result(column = "x_ray_id",property = "xRayId")
     })
-    XRayTask selectXRayTaskById(@Param("id") Integer id);
+    TjTaskDTO selectXRayTaskById(@Param("id") Integer id);
 
-    /*查询所有胸片审查任务（显示所有字段）*/
-    @Select("select * from xray_task ")
+
+    @Select("select xt.id as task_id,ph.patient_name,u.name,xt.review_result,xt.analysis_result,ph.id as pid,xt.status"+
+            " from xray_task xt" +
+            " left join patient_history ph on xt.patient_history_id = ph.id" +
+            " left join user u on ph.created_by = u.id order by xt.created_on desc")
     @Results({
-            @Result(column = "created_by", property = "createdBy"),
-            @Result(column = "created_on", property = "createdOn"),
-            @Result(column = "patient_history_id", property = "patientHistoryId"),
-            @Result(column = "expert_id", property = "expertId"),
+            @Result(column = "task_id", property = "taskId"),
+            @Result(column = "patient_name", property = "patientName"),
             @Result(column = "review_result", property = "reviewResult"),
-            @Result(column = "review_comment", property = "reviewComment"),
-            @Result(column = "analysis_result", property = "analysisResult"),
-            @Result(column = "x_ray_id", property = "xRayId")
+            @Result(column = "analysis_result", property = "analysisResult")
     })
-    List<XRayTask> selectXRayTasks();
+    List<TjTasksDTO> selectXRayTasks();
+
+/*    *//*查询所有胸片审查任务（显示所有字段）*//*
+    @Select("select id,review_result,status,analysis_result from xray_task order by created_on desc")
+    @ResultMap({
+    })
+    @Results({
+            @Result(column = "review_result", property = "reviewResult"),
+            @Result(column = "analysis_result", property = "analysisResult"),
+    })
+    List<XRayTask> selectXRayTasks();*/
+
+  /*  @Select(" select user.name , " +
+            "patient_history.patient_name, patient_history.pid, " +
+            "xray_task.status, xray_task.analysis_result, xray_task.review_result" +
+            "from xray_task,patient_history,user " +
+            "where xray_task.id = patient_history.id and patient_history.id=user.id ")
+    @Results({
+            @Result(column = "patient_name", property = "patientName"),
+            @Result(column = "review_result", property = "reviewResult"),
+            @Result(column = "analysis_result", property = "analysisResult"),
+    })
+    List<TjXRayTask> selectXRayTasks();*/
+
+/*    @Select("SELECT * FROM inputParam WHERE inputParamId = #{id}")
+    @Results({
+            //查询关联对象
+            @Result(property = "api",
+                    column = "apiId",
+                    one = @One(select = "com.tuya.mapper.ApiMapper.selectById"))
+    })
+    InputParam selectById(@Param("id") int id);*/
+
+    /*@Select("SELECT * FROM xray_task")
+    @Results({
+            //查询关联对象
+            @Result(property = "xRayTask",
+                    column = "id",
+                    one = @One(select = "com.springboot.mapper.TjMapper.selectPatientHistory"))
+    })
+    List<MmmPatientHistory> selectXRayTasks();
+
+    @Select("SELECT * FROM patient_history where id =#{id}")
+    PatientHistory selectPatientHistory(@Param("id") Integer id);*/
+/*
+    @Select("select addr_id as addrId, street, city, state, zip,
+            country from addresses where addr_id =#{id}")
+            Address findAddressById(int id);
+
+    @Select("select * from courses where tutor_id=#{tutorId}")
+    @Results({
+            @Result(id = true, column = "course_id", property = "courseId"),
+            @Result(column = "name", property = "name"),
+            @Result(column = "description", property = "description"),
+            @Result(column = "start_date"property= "startDate"),
+            @Result(column = "end_date"property= "endDate")
+    })
+    List<Course> findCoursesByTutorId(int tutorId);
+
+    @Select("SELECT review_result as review_result, id, from xray_task")
+            @Results({
+                    @Result(id = true, column = "tutor_id", property = "tutorId"),
+                    @Result(column = "review_result", property = "reviewResult"),
+                    @Result(property = "id", column = "id",
+                            many = @One(select = "com.springboot.mapper.TjMapper.findAddressById")),
+                                    @Result(property = "courses", column = "tutor_id",
+                                    many = @One(select = "com.springboot.mapper.TutorMapper.findCoursesByTutorId"))})
+                                    Tutor findTutorById(int tutorId);*/
+
+/*    @Select("select * from student where classes_id=#{classId}")
+    @Results({
+            @Result(id=true,property="id",column="id"),
+            @Result(property="name",column="name"),
+            @Result(property="classes",column="classes_id",javaType=Classes.class,
+                    one=@One(select="com.lsj.test.mybatis.annotation.mapper.ClassesMapper.selectClasses"))
+    })
+    public List<Student> selectStudentByClass(int classId);
+
+    @Select("select * from classes where id=#{id}")
+    @Results({
+            @Result(id=true,property="id",column="id"),
+            @Result(property="name",column="name"),
+            @Result(property="studentList",column="id",javaType=List.class,
+                    many=@Many(select="com.lsj.test.mybatis.annotation.mapper.StudentMapper.selectStudentByClass"))
+    })
+    public Classes selectClasses(int id);*/
 }
+

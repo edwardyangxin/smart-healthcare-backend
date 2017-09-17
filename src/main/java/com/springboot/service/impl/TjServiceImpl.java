@@ -5,7 +5,10 @@ import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
 import com.springboot.dto.PatientXRayTask;
 import com.springboot.dto.Result;
+import com.springboot.dto.TjTaskDTO;
+import com.springboot.dto.TjTasksDTO;
 import com.springboot.enums.ResultEnum;
+import com.springboot.mapper.FileUploadMapper;
 import com.springboot.mapper.TjMapper;
 import com.springboot.service.TjService;
 import com.springboot.tools.ResultUtil;
@@ -24,10 +27,12 @@ import java.util.List;
 public class TjServiceImpl implements TjService {
 
     private TjMapper tjMapper;
+    private FileUploadMapper fileUploadMapper;
 
     @Autowired
-    public TjServiceImpl(TjMapper tjMapper) {
+    public TjServiceImpl(TjMapper tjMapper,FileUploadMapper fileUploadMapper) {
         this.tjMapper = tjMapper;
+        this.fileUploadMapper = fileUploadMapper;
     }
 
     @Override
@@ -115,7 +120,7 @@ public class TjServiceImpl implements TjService {
         XRayTask xRayTask = new XRayTask();
         xRayTask.setCreatedOn(data);
         xRayTask.setCreatedBy(patientHistory.getId());
-        xRayTask.setXRayId(patientXRayTask.getId());
+        xRayTask.setXRayId(patientXRayTask.getFile());
         tjMapper.insertXrayTask(xRayTask);
         log.info(name+":新建了一个病历表,并为id="+patientHistory.getId()+"的病历表，添加了一个胸片审查任务");
 
@@ -156,18 +161,20 @@ public class TjServiceImpl implements TjService {
     }
 
     @Override
-    public Result<XRayTask> selectOneXRayTaskById(Integer id,HttpServletRequest request){
+    public Result selectOneXRayTaskById(Integer id,HttpServletRequest request){
         HttpSession session = request.getSession();
-        XRayTask xRayTask = tjMapper.selectXRayTaskById(id);
+        TjTaskDTO tjTaskDTO = tjMapper.selectXRayTaskById(id);
+        String filename = fileUploadMapper.selectUploadFileById(tjTaskDTO.getXRayId()).getFileName();
+        tjTaskDTO.setFilename(filename);
         log.info("查询了一条id为"+id+"的胸片审查任务表");
-        return ResultUtil.success(xRayTask);
+        return ResultUtil.success(tjTaskDTO);
     }
 
     @Override
-    public Result<List<XRayTask>> selectXRayTasks() {
-        List<XRayTask> xRayTasks= tjMapper.selectXRayTasks();
+    public Result<List<TjTasksDTO>> selectXRayTasks() {
+        List<TjTasksDTO> tjXRayTasks = tjMapper.selectXRayTasks();
         log.info("查询了所有已建立的胸片审查任务表");
-        return ResultUtil.success(xRayTasks);
+        return ResultUtil.success(tjXRayTasks);
     }
 
 }

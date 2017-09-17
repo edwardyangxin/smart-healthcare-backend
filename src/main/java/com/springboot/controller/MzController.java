@@ -3,6 +3,8 @@ package com.springboot.controller;
 import com.springboot.domain.MzPatientHistory;
 import com.springboot.domain.MzXrayTask;
 import com.springboot.domain.User;
+import com.springboot.dto.MzPatientXRayTask;
+import com.springboot.dto.MzTasksDTO;
 import com.springboot.dto.Result;
 import com.springboot.service.MzService;
 import com.springboot.tools.ResultUtil;
@@ -56,27 +58,41 @@ public class MzController {
     //新建病历
     @ResponseBody
     @PostMapping(value = "/newMzPatient")
-    public Result newMzPatientHistory(@Valid @RequestBody MzPatientHistory mzPatientHistory, BindingResult bindingResult,HttpServletRequest request) {
+    public Result newMzPatientHistory(@Valid @RequestBody MzPatientHistory mzPatientHistory, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return mzService.insertMzPatientHistory(mzPatientHistory,request);
+        return mzService.insertMzPatientHistory(mzPatientHistory, request);
     }
+
+    //新建病历和增加任务表一起
+    @ResponseBody
+    @PostMapping(value = "/newMzPatientAndXTask")
+    public Result newMzPatientHistoryAndXTask(@RequestBody MzPatientXRayTask mzPatientXRayTask, BindingResult bindingResult, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return mzService.insertMzPatientHistoryAndXTask(mzPatientXRayTask,request);
+    }
+
 
     //修改病历表(根据id)
     @ResponseBody
     @PostMapping(value = "/updateMzPatient")
-    public Result updateMzPatientHistory(@Valid @RequestBody MzPatientHistory mzPatientHistory, BindingResult bindingResult,HttpServletRequest request) {
+    public Result updateMzPatientHistory(@Valid @RequestBody MzPatientHistory mzPatientHistory, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return mzService.updateMzPatientHistoryById(mzPatientHistory,request);
+        return mzService.updateMzPatientHistoryById(mzPatientHistory, request);
     }
 
     //增加任务表
@@ -89,20 +105,20 @@ public class MzController {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return mzService.insertMzXrayTask(mzXrayTask,request);
+        return mzService.insertMzXrayTask(mzXrayTask, request);
     }
 
     //修改胸片审查任务表（根据id）
     @ResponseBody
     @PostMapping(value = "/updateMzXrayTask")
-    public Result updateMzXrayTask(@Valid @RequestBody MzXrayTask mzXrayTask, BindingResult bindingResult,HttpServletRequest request) {
+    public Result updateMzXrayTask(@Valid @RequestBody MzXrayTask mzXrayTask, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return mzService.updateMzXrayTaskById(mzXrayTask,request);
+        return mzService.updateMzXrayTaskById(mzXrayTask, request);
     }
 
     //查询一个胸片审查任务表的详细信息(根据id)
@@ -115,7 +131,29 @@ public class MzController {
     //查询所有胸片审查任务
     @ResponseBody
     @GetMapping(value = "/selectAllMzXrayTask")
-    public Result<List<MzXrayTask>> findXRayTasks() {
+    public Result<List<MzTasksDTO>> findXRayTasks() {
         return mzService.selectMzXrayTasks();
     }
+
+    //是否需要院外专家
+    @ResponseBody
+    @GetMapping(value = "/needExpert/{id}")
+    public Result isNeedExpert(@PathVariable Integer id, HttpServletRequest request) {
+        return mzService.isNeedExpert(id,request);
+    }
+
+    //需要院外专家处理的所有任务表
+    @ResponseBody
+    @GetMapping(value = "/MzOutExpertTasks")
+    public Result<List<MzXrayTask>> selectAllMzExpertTasks(HttpServletRequest request) {
+        return mzService.selectAllMzOutExpertTasks(request);
+    }
+
+    //院外专家提交处理信息（更新任务表）
+    @ResponseBody
+    @GetMapping(value = "/updateMzOutExpertTask")
+    public Result updateOneMzOutExpertTask(MzXrayTask mzXrayTask,HttpServletRequest request) {
+        return mzService.updateOneMzOutExpertTask(mzXrayTask,request);
+    }
+
 }

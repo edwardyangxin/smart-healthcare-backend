@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class PatientXRayTask  {
-    private Integer id;
+    private Integer file;
     private PatientHistory patientHistory;
 }

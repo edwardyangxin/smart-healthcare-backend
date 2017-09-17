@@ -5,6 +5,7 @@ import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
 import com.springboot.dto.PatientXRayTask;
 import com.springboot.dto.Result;
+import com.springboot.dto.TjTasksDTO;
 import com.springboot.service.TjService;
 import com.springboot.tools.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,11 +126,12 @@ public class TjController {
         return tjService.selectOneXRayTaskById(id, request);
     }
 
-    //查询所有胸片审查任务
+    //查询所有胸片审查任务（包括登陆医生，病人姓名，身份证号等）
     @ResponseBody
     @GetMapping(value = "/selectAllXRayTask")
-    public Result<List<XRayTask>> findXRayTasks() {
+    public Result<List<TjTasksDTO>> findXRayTasks() {
         return tjService.selectXRayTasks();
     }
+
 
 }

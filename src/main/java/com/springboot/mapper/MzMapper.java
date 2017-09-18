@@ -5,6 +5,7 @@ import com.springboot.domain.MzXrayTask;
 import com.springboot.domain.User;
 import com.springboot.dto.MzTaskDTO;
 import com.springboot.dto.MzTasksDTO;
+import com.springboot.dto.Pid;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -170,5 +171,8 @@ public interface MzMapper {
         @Result(column = "outreview_result", property = "outreviewCesult")
     })
     void updateOneMzOutExpertTask(MzXrayTask mzXrayTask);
+
+    @Select("select pid from mz_patient_history where pid = #{pid}")
+    List<Pid> selectByPid(Pid pid);
 
 }

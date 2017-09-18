@@ -1,10 +1,7 @@
 package com.springboot.service.impl;
 
 import com.springboot.domain.*;
-import com.springboot.dto.MzPatientXRayTask;
-import com.springboot.dto.MzTaskDTO;
-import com.springboot.dto.MzTasksDTO;
-import com.springboot.dto.Result;
+import com.springboot.dto.*;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.FileUploadMapper;
 import com.springboot.mapper.MzMapper;
@@ -211,11 +208,19 @@ public class MzServiceImpl implements MzService {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer id = (Integer) session.getAttribute("id");
-
         mzMapper.updateOneMzOutExpertTask(mzXrayTask);
         log.info("院外医生：" + name + ":处理了id为"+mzXrayTask.getId()+"的任务表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
-
-
     }
+
+    @Override
+    public Result selectByPid(Pid pid){
+        List<Pid> pids= mzMapper.selectByPid(pid);
+        if(pids.size()==0){
+            return ResultUtil.success(ResultEnum.pid_repeat_success);
+        }
+        return ResultUtil.error(ResultEnum.pid_repeat_error);
+    }
+
+
 }

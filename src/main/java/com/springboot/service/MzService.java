@@ -5,6 +5,7 @@ import com.springboot.domain.MzXrayTask;
 import com.springboot.domain.User;
 import com.springboot.dto.MzPatientXRayTask;
 import com.springboot.dto.MzTasksDTO;
+import com.springboot.dto.Pid;
 import com.springboot.dto.Result;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,4 +26,5 @@ public interface MzService {
     Result isNeedExpert(Integer id,HttpServletRequest request);
     Result<List<MzXrayTask>> selectAllMzOutExpertTasks(HttpServletRequest request);
     Result updateOneMzOutExpertTask(MzXrayTask mzXrayTask,HttpServletRequest request);
+    Result selectByPid(Pid pid);
 }

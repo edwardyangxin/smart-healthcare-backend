@@ -5,6 +5,7 @@ import com.springboot.domain.MzXrayTask;
 import com.springboot.domain.User;
 import com.springboot.dto.MzPatientXRayTask;
 import com.springboot.dto.MzTasksDTO;
+import com.springboot.dto.Pid;
 import com.springboot.dto.Result;
 import com.springboot.service.MzService;
 import com.springboot.tools.ResultUtil;
@@ -154,6 +155,13 @@ public class MzController {
     @GetMapping(value = "/updateMzOutExpertTask")
     public Result updateOneMzOutExpertTask(MzXrayTask mzXrayTask,HttpServletRequest request) {
         return mzService.updateOneMzOutExpertTask(mzXrayTask,request);
+    }
+
+    //验证身份证号码是否重复
+    @ResponseBody
+    @PostMapping(value = "/checkPid")
+    public Result checkPidRepeat(@RequestBody Pid pid) {
+        return mzService.selectByPid(pid);
     }
 
 }

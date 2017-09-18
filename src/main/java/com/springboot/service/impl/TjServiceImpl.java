@@ -3,10 +3,7 @@ package com.springboot.service.impl;
 import com.springboot.domain.PatientHistory;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
-import com.springboot.dto.PatientXRayTask;
-import com.springboot.dto.Result;
-import com.springboot.dto.TjTaskDTO;
-import com.springboot.dto.TjTasksDTO;
+import com.springboot.dto.*;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.FileUploadMapper;
 import com.springboot.mapper.TjMapper;
@@ -175,6 +172,15 @@ public class TjServiceImpl implements TjService {
         List<TjTasksDTO> tjXRayTasks = tjMapper.selectXRayTasks();
         log.info("查询了所有已建立的胸片审查任务表");
         return ResultUtil.success(tjXRayTasks);
+    }
+
+    @Override
+    public Result selectByPid(Pid pid){
+        List<Pid> pids= tjMapper.selectByPid(pid);
+        if(pids.size()==0){
+            return ResultUtil.success(ResultEnum.pid_repeat_success);
+        }
+        return ResultUtil.error(ResultEnum.pid_repeat_error);
     }
 
 }

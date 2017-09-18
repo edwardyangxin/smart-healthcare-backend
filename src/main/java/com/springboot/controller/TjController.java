@@ -4,6 +4,7 @@ import com.springboot.domain.PatientHistory;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
 import com.springboot.dto.PatientXRayTask;
+import com.springboot.dto.Pid;
 import com.springboot.dto.Result;
 import com.springboot.dto.TjTasksDTO;
 import com.springboot.service.TjService;
@@ -133,5 +134,12 @@ public class TjController {
         return tjService.selectXRayTasks();
     }
 
+
+    //验证身份证号码是否重复
+    @ResponseBody
+    @PostMapping(value = "/checkPid")
+    public Result checkPidRepeat(@RequestBody Pid pid) {
+        return tjService.selectByPid(pid);
+    }
 
 }

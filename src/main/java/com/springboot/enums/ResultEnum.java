@@ -25,6 +25,7 @@ public enum ResultEnum {
     file_storage_error(11,"文件保存失败！IOException！"),
     file_rename_error(11,"文件改名失败！"),
     file_picture_error(12,"上传的文件不是图片格式！"),
+    pid_repeat_error(12,"此身份证号已经存在！"),
 
     SUCCESS(200,"success"),
     DEL_SUCCESS(4,"删除信息成功！"),
@@ -34,6 +35,7 @@ public enum ResultEnum {
     PASSSFIND_SUCCESS(4,"密码找回成功！"),
     UPDATE_SUCCESS(4,"更新信息成功！"),
     SAVE_SUCCESS(4,"保存成功！"),
+    pid_repeat_success(12,"此身份证号可以使用！"),
     file_upload_success(6,"文件上传成功！");
 
 

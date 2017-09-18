@@ -3,6 +3,7 @@ package com.springboot.mapper;
 import com.springboot.domain.PatientHistory;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
+import com.springboot.dto.Pid;
 import com.springboot.dto.TjTaskDTO;
 import com.springboot.dto.TjTasksDTO;
 import org.apache.ibatis.annotations.*;
@@ -127,6 +128,9 @@ public interface TjMapper {
             @Result(column = "analysis_result", property = "analysisResult")
     })
     List<TjTasksDTO> selectXRayTasks();
+
+    @Select("select pid from patient_history where pid = #{pid}")
+    List<Pid> selectByPid(Pid pid);
 
 /*    *//*查询所有胸片审查任务（显示所有字段）*//*
     @Select("select id,review_result,status,analysis_result from xray_task order by created_on desc")

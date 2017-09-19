@@ -18,7 +18,7 @@ public interface MzService {
     Result<MzPatientHistory>  selectOneMzPatientHistoryById(Integer id,HttpServletRequest request);
     Result insertMzPatientHistory(MzPatientHistory MzPatientHistory,HttpServletRequest request);
     Result insertMzPatientHistoryAndXTask(MzPatientXRayTask mzPatientXRayTask, HttpServletRequest request);
-    Result updateMzPatientHistoryById(MzPatientHistory MzPatientHistory,HttpServletRequest request);
+    Result updateMzPatientHistoryById(MzPatientXRayTask mzPatientXRayTask,HttpServletRequest request);
     Result insertMzXrayTask(MzXrayTask mzXrayTask, HttpServletRequest request);
     Result updateMzXrayTaskById(MzXrayTask mzXrayTask,HttpServletRequest request);
     Result  selectOneMzXrayTaskById(Integer id,HttpServletRequest request);

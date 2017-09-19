@@ -1,5 +1,6 @@
 package com.springboot.mapper;
 
+import com.springboot.domain.MzMedicalHistory;
 import com.springboot.domain.MzPatientHistory;
 import com.springboot.domain.MzXrayTask;
 import com.springboot.domain.User;
@@ -42,8 +43,8 @@ public interface MzMapper {
     List<MzPatientHistory> selectMzPatientHistories(Integer createdBy);
 
     /*新建病历*/
-    @Insert("insert into mz_patient_history(patient_name, sex,age, pid, tel, job, job_history, medical_history, dust_age, dust_property, created_by, created_on)" +
-            "values(#{patientName},#{sex}, #{age}, #{pid}, #{tel}, #{job}, #{jobHistory},#{medicalHistory}, #{dustAge}, #{dustProperty}, #{createdBy}, #{createdOn})")
+    @Insert("insert into mz_patient_history(patient_name, sex, pid, tel, job, job_history, medical_history, dust_age, dust_property, created_by, created_on)" +
+            "values(#{patientName},#{sex}, #{pid}, #{tel}, #{job}, #{jobHistory},#{medicalHistory}, #{dustAge}, #{dustProperty}, #{createdBy}, #{createdOn})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     @Results({
             @Result(column = "patient_name", property = "patientName"),
@@ -57,7 +58,7 @@ public interface MzMapper {
     void insertMzPatientHistory(MzPatientHistory mzPatientHistory);
 
     /*修改病历*/
-    @Update("update mz_patient_history set patient_name= #{patientName},sex= #{sex},age = #{age},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
+    @Update("update mz_patient_history set patient_name= #{patientName},sex= #{sex},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
             "medical_history = #{medicalHistory},dust_age = #{dustAge},dust_property = #{dustProperty} where id =#{id} and created_by =#{createdBy}")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
@@ -74,7 +75,6 @@ public interface MzMapper {
     @Insert("insert into mz_xray_task(created_by, created_on,patient_history_id, expert_id, review_result, review_comment, analysis_result, status, x_ray_id)" +
             "values(#{createdBy},#{createdOn}, #{patientHistoryId}, #{expertId}, #{reviewResult}, #{reviewComment}, #{analysisResult},#{status}, #{xRayId}) ")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
-
     @Results({
             @Result(column = "created_by", property = "createdBy"),
             @Result(column = "created_on", property = "createdOn"),
@@ -110,7 +110,6 @@ public interface MzMapper {
             " ph.patient_name,ph.dust_age " +
             " from mz_xray_task xt" +
             " left join mz_patient_history ph on xt.patient_history_id = ph.id  where xt.id = #{id}")
-    //@ResultMap("com.springboot.mapper.TjMapper.allResults")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "dust_age", property = "dustAge"),
@@ -121,6 +120,13 @@ public interface MzMapper {
     })
     MzTaskDTO selectMzXrayTaskByIds(@Param("id") Integer id);
 
+    @Select("select * from mz_medical_history where patient_history_id = #{patientHistoryId} order by start_time desc")
+    @Results({
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "end_time", property = "endTime")
+    })
+    List<MzMedicalHistory> selectMzMedicalHistoryByPatientId(@Param("patientHistoryId")Integer patientHistoryId);
 
     /*查询所有胸片审查任务（显示所有字段）*/
     @Select("select xt.id as task_id,ph.patient_name,u.name,xt.review_result,xt.analysis_result,ph.id as pid,xt.status" +
@@ -175,9 +181,30 @@ public interface MzMapper {
     @Select("select pid from mz_patient_history where pid = #{pid}")
     List<Pid> selectByPid(Pid pid);
 
-    @Insert("insert into medical_history(patient_name,  created_by, created_on)" +
-            "values(#{patientName}, #{createdBy}, #{createdOn})")
+    @Insert({
+            "<script>",
+            "insert into mz_medical_history (description, patient_history_id,start_time,end_time)"+
+                    "values "+
+                    "<foreach collection='mzMedicalHistories' item='dmo' separator=','>"+
+                    "(#{dmo.description,jdbcType=VARCHAR},#{patientHistoryId},#{dmo.startTime},#{dmo.endTime})"+
+                    "</foreach>"+
+                    "</script>"
+    })
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
-    void insertMedicalHistory();
+    @Results({
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "end_time", property = "endTime"),
+    })
+    int insertMzMedicalHistories(@Param("mzMedicalHistories") List<MzMedicalHistory> mzMedicalHistories, @Param("patientHistoryId")Integer patientHistoryId);
 
+
+
+    @Delete("delete from mz_medical_history where patient_history_id=#{patientHistoryId}")
+    @Results({
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "end_time", property = "endTime")
+    })
+    Integer deleteMzMedicalHistory(@Param("patientHistoryId")Integer patientHistoryId);
 }

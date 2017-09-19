@@ -162,11 +162,11 @@ public interface TjMapper {
     @Insert({
             "<script>",
             "insert into medical_history (description, patient_history_id,start_time,end_time)"+
-            "values "+
-            "<foreach collection='medicalHistories' item='dmo' separator=','>"+
-            "(#{dmo.description,jdbcType=VARCHAR},#{patientHistoryId},#{dmo.startTime},#{dmo.endTime})"+
-            "</foreach>"+
-            "</script>"
+                    "values "+
+                    "<foreach collection='medicalHistories' item='dmo' separator=','>"+
+                    "(#{dmo.description,jdbcType=VARCHAR},#{patientHistoryId},#{dmo.startTime},#{dmo.endTime})"+
+                    "</foreach>"+
+                    "</script>"
     })
     @Results({
             @Result(column = "patient_history_id", property = "patientHistoryId"),

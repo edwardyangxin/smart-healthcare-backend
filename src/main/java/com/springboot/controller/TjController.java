@@ -58,14 +58,14 @@ public class TjController {
     //新建病历
     @ResponseBody
     @PostMapping(value = "/newPatient")
-    public Result newPatientHistory(@Valid @RequestBody PatientHistory patientHistory, BindingResult bindingResult,HttpServletRequest request) {
+    public Result newPatientHistory(@Valid @RequestBody PatientHistory patientHistory, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return tjService.insertPatientHistory(patientHistory,request);
+        return tjService.insertPatientHistory(patientHistory, request);
     }
 
     //新建病历和增加任务表一起
@@ -78,20 +78,20 @@ public class TjController {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return tjService.insertPatientHistoryAndXTask(patientHistory,request);
+        return tjService.insertPatientHistoryAndXTask(patientHistory, request);
     }
 
     //修改病历表(根据id)
     @ResponseBody
     @PostMapping(value = "/updatePatient")
-    public Result updatePatientHistory(@Valid @RequestBody PatientXRayTask patientXRayTask, BindingResult bindingResult,HttpServletRequest request) {
+    public Result updatePatientHistory(@Valid @RequestBody PatientXRayTask patientXRayTask, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return tjService.updatePatientHistoryById(patientXRayTask,request);
+        return tjService.updatePatientHistoryById(patientXRayTask, request);
     }
 
     //增加任务表
@@ -104,20 +104,20 @@ public class TjController {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return tjService.insertXrayTask(xRayTask,request);
+        return tjService.insertXrayTask(xRayTask, request);
     }
 
     //修改胸片审查任务表（根据id）
     @ResponseBody
     @PostMapping(value = "/updateXRayTask")
-    public Result updateXRayTask(@Valid @RequestBody XRayTask xRayTask, BindingResult bindingResult,HttpServletRequest request) {
+    public Result updateXRayTask(@Valid @RequestBody XRayTask xRayTask, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return tjService.updateXRayTaskById(xRayTask,request);
+        return tjService.updateXRayTaskById(xRayTask, request);
     }
 
     //查询一个胸片审查任务表的详细信息(根据id)

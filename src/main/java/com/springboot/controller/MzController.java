@@ -72,21 +72,21 @@ public class MzController {
     //新建病历和增加任务表一起
     @ResponseBody
     @PostMapping(value = "/newMzPatientAndXTask")
-    public Result newMzPatientHistoryAndXTask(@RequestBody MzPatientXRayTask mzPatientXRayTask, BindingResult bindingResult, HttpServletRequest request) {
+    public Result newMzPatientHistoryAndXTask(@Valid @RequestBody MzPatientXRayTask mzPatientXRayTask, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return mzService.insertMzPatientHistoryAndXTask(mzPatientXRayTask,request);
+        return mzService.insertMzPatientHistoryAndXTask(mzPatientXRayTask, request);
     }
 
 
     //修改病历表(根据id)
     @ResponseBody
     @PostMapping(value = "/updateMzPatient")
-    public Result updateMzPatientHistory(@Valid @RequestBody MzPatientHistory mzPatientHistory, BindingResult bindingResult, HttpServletRequest request) {
+    public Result updateMzPatientHistory(@Valid @RequestBody MzPatientXRayTask mzPatientHistory, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
@@ -140,7 +140,7 @@ public class MzController {
     @ResponseBody
     @GetMapping(value = "/needExpert/{id}")
     public Result isNeedExpert(@PathVariable Integer id, HttpServletRequest request) {
-        return mzService.isNeedExpert(id,request);
+        return mzService.isNeedExpert(id, request);
     }
 
     //需要院外专家处理的所有任务表
@@ -153,8 +153,8 @@ public class MzController {
     //院外专家提交处理信息（更新任务表）
     @ResponseBody
     @GetMapping(value = "/updateMzOutExpertTask")
-    public Result updateOneMzOutExpertTask(MzXrayTask mzXrayTask,HttpServletRequest request) {
-        return mzService.updateOneMzOutExpertTask(mzXrayTask,request);
+    public Result updateOneMzOutExpertTask(MzXrayTask mzXrayTask, HttpServletRequest request) {
+        return mzService.updateOneMzOutExpertTask(mzXrayTask, request);
     }
 
     //验证身份证号码是否重复

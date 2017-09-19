@@ -1,9 +1,6 @@
 package com.springboot.service.impl;
 
-import com.springboot.domain.MedicalHistory;
-import com.springboot.domain.PatientHistory;
-import com.springboot.domain.User;
-import com.springboot.domain.XRayTask;
+import com.springboot.domain.*;
 import com.springboot.dto.*;
 import com.springboot.enums.ResultEnum;
 import com.springboot.mapper.FileUploadMapper;
@@ -138,13 +135,21 @@ public class TjServiceImpl implements TjService {
     }
 
     @Override
-    public Result updatePatientHistoryById(PatientHistory patientHistory,HttpServletRequest request){
+    public Result updatePatientHistoryById(PatientXRayTask patientXRayTask,HttpServletRequest request){
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer createdBy = (Integer)session.getAttribute("id");
+
+        PatientHistory patientHistory = patientXRayTask.getPatientHistory();
         patientHistory.setCreatedBy(createdBy);
         tjMapper.updatePatientHistoryById(patientHistory);
+
+        tjMapper.deleteMedicalHistory(patientHistory.getId());
+
+        List<MedicalHistory> medicalHistories = patientXRayTask.getMedicalHistories();
+        tjMapper.insertMedicalHistory(medicalHistories,patientHistory.getId());
         log.info(name+":修改了id为"+patientHistory.getId()+"的病历表");
+
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 
@@ -173,7 +178,9 @@ public class TjServiceImpl implements TjService {
     public Result selectOneXRayTaskById(Integer id,HttpServletRequest request){
         HttpSession session = request.getSession();
         TjTaskDTO tjTaskDTO = tjMapper.selectXRayTaskById(id);
-        String filename = fileUploadMapper.selectUploadFileById(tjTaskDTO.getXRayId()).getFileName();
+        Integer fileId = tjTaskDTO.getXRayId();
+        UploadFile uploadFile = fileUploadMapper.selectUploadFileById(fileId);
+        String filename = uploadFile.getFileUuid();
         tjTaskDTO.setFilename(filename);
         log.info("查询了一条id为"+id+"的胸片审查任务表");
         return ResultUtil.success(tjTaskDTO);

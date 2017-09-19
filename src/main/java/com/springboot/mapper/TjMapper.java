@@ -58,11 +58,10 @@ public interface TjMapper {
 
     /*修改病历*/
     @Update("update patient_history set patient_name= #{patientName},sex= #{sex},age = #{age},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
-            "medical_history = #{medicalHistory},dust_age = #{dustAge},dust_property = #{dustProperty} where id =#{id} and created_by =#{createdBy}")
+            "dust_age = #{dustAge},dust_property = #{dustProperty} where id =#{id} and created_by =#{createdBy}")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "job_history", property = "jobHistory"),
-            @Result(column = "medical_history", property = "medicalHistory"),
             @Result(column = "dust_age", property = "dustAge"),
             @Result(column = "dust_property", property = "dustProperty"),
             @Result(column = "created_by", property = "createdBy"),
@@ -139,6 +138,14 @@ public interface TjMapper {
             @Result(column = "end_time", property = "endTime")
     })
     List<MedicalHistory> selectMedicalHistoryByPatientId(@Param("patientHistoryId")Integer patientHistoryId);
+
+    @Delete("delete medical_history where patient_history_id=#{patientHistoryId}")
+    @Results({
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "end_time", property = "endTime")
+    })
+    Integer deleteMedicalHistory(@Param("patientHistoryId")Integer patientHistoryId);
 
   /*  @Insert("insert into medical_history(description, patient_history_id, start_time, end_time)" +
             "values " +

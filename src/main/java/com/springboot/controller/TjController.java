@@ -84,14 +84,14 @@ public class TjController {
     //修改病历表(根据id)
     @ResponseBody
     @PostMapping(value = "/updatePatient")
-    public Result updatePatientHistory(@Valid @RequestBody PatientHistory patientHistory, BindingResult bindingResult,HttpServletRequest request) {
+    public Result updatePatientHistory(@Valid @RequestBody PatientXRayTask patientXRayTask, BindingResult bindingResult,HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return tjService.updatePatientHistoryById(patientHistory,request);
+        return tjService.updatePatientHistoryById(patientXRayTask,request);
     }
 
     //增加任务表

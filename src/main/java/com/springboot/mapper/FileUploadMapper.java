@@ -23,8 +23,9 @@ public interface FileUploadMapper {
     @Results({
             @Result(column = "file_path", property = "filePath"),
             @Result(column = "file_name", property = "fileName"),
+            @Result(column = "file_uuid", property = "fileUuid")
     })
-    UploadFile selectUploadFileById(Integer id);
+    UploadFile selectUploadFileById(@Param("id") Integer id);
 
     /*通过uuid查询文件*/
     @Select("select file_name from upload_file where file_uuid = #{fileUuid}")

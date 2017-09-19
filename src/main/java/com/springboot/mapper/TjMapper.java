@@ -57,7 +57,7 @@ public interface TjMapper {
     void insertPatientHistory(PatientHistory patientHistory);
 
     /*修改病历*/
-    @Update("update patient_history set patient_name= #{patientName},sex= #{sex},age = #{age},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
+    @Update("update patient_history set patient_name= #{patientName},sex= #{sex},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
             "dust_age = #{dustAge},dust_property = #{dustProperty} where id =#{id} and created_by =#{createdBy}")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
@@ -139,7 +139,7 @@ public interface TjMapper {
     })
     List<MedicalHistory> selectMedicalHistoryByPatientId(@Param("patientHistoryId")Integer patientHistoryId);
 
-    @Delete("delete medical_history where patient_history_id=#{patientHistoryId}")
+    @Delete("delete  medical_history where patient_history_id=#{patientHistoryId}")
     @Results({
             @Result(column = "patient_history_id", property = "patientHistoryId"),
             @Result(column = "start_time", property = "startTime"),

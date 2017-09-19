@@ -25,9 +25,8 @@ public class XRayTask{
     private Integer xRayId;
     private Date createdOn;
 
-/*
-    public String getCreatedOn() {
 
+  /*  public String getCreatedOn() {
         return "2018-10";
 
     }*/

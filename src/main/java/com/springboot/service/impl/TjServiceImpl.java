@@ -1,5 +1,6 @@
 package com.springboot.service.impl;
 
+import com.springboot.domain.MedicalHistory;
 import com.springboot.domain.PatientHistory;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
@@ -81,13 +82,20 @@ public class TjServiceImpl implements TjService {
     }
 
     @Override
-    public Result<PatientHistory> selectOnePatientHistoryById(Integer id,HttpServletRequest request){
+    public Result selectOnePatientHistoryById(Integer id,HttpServletRequest request){
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer createdBy = (Integer)session.getAttribute("id");
+
+        PatientXRayTask patientXRayTask = new PatientXRayTask();
         PatientHistory patientHistory = tjMapper.selectPatientHistoryById(id,createdBy);
+        patientXRayTask.setPatientHistory(patientHistory);
+
+        List<MedicalHistory> medicalHistories =  tjMapper.selectMedicalHistoryByPatientId(id);
+        patientXRayTask.setMedicalHistories(medicalHistories);
+
         log.info(name+":查询了一条id为"+id+"病历表");
-        return ResultUtil.success(patientHistory);
+        return ResultUtil.success(patientXRayTask);
     }
 
     @Override
@@ -114,9 +122,13 @@ public class TjServiceImpl implements TjService {
         patientHistory.setCreatedBy(id);
         tjMapper.insertPatientHistory(patientHistory);
 
+        List<MedicalHistory> medicalHistories = patientXRayTask.getMedicalHistories();
+        tjMapper.insertMedicalHistory(medicalHistories,patientHistory.getId());
+
         XRayTask xRayTask = new XRayTask();
         xRayTask.setCreatedOn(data);
-        xRayTask.setCreatedBy(patientHistory.getId());
+        xRayTask.setCreatedBy(id);
+        xRayTask.setPatientHistoryId(patientHistory.getId());
         xRayTask.setXRayId(patientXRayTask.getFile());
         tjMapper.insertXrayTask(xRayTask);
         log.info(name+":新建了一个病历表,并为id="+patientHistory.getId()+"的病历表，添加了一个胸片审查任务");

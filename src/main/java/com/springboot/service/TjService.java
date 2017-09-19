@@ -15,7 +15,7 @@ public interface TjService {
 
     Result login(User user, HttpServletRequest request);
     Result<List<PatientHistory>>  selectPatientHistories(HttpServletRequest request);
-    Result<PatientHistory>  selectOnePatientHistoryById(Integer id, HttpServletRequest request);
+    Result  selectOnePatientHistoryById(Integer id, HttpServletRequest request);
     Result insertPatientHistory(PatientHistory patientHistory, HttpServletRequest request);
     Result insertPatientHistoryAndXTask(PatientXRayTask patientXRayTask,HttpServletRequest request);
     Result updatePatientHistoryById(PatientHistory patientHistory, HttpServletRequest request);

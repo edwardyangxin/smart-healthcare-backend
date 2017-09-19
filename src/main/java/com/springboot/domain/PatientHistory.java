@@ -1,5 +1,6 @@
 package com.springboot.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -16,14 +17,18 @@ public class PatientHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String patientName;
+
     private String sex;
-    private Integer age;
+
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date birthday;
     private String pid;
     private String tel;
     private String job;
     private String jobHistory;
-    private String medicalHistory;
+
     private Integer dustAge;
     private String dustProperty;
     private Integer createdBy;

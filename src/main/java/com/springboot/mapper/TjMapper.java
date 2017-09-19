@@ -1,5 +1,6 @@
 package com.springboot.mapper;
 
+import com.springboot.domain.MedicalHistory;
 import com.springboot.domain.PatientHistory;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
@@ -37,18 +38,17 @@ public interface TjMapper {
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "dust_age", property = "dustAge"),
-            @Result(column = "created_on", property = "createdOn"),
+            @Result(column = "created_on", property = "createdOn")
     })
     List<PatientHistory> selectPatientHistories(Integer createdBy);
 
     /*新建病历*/
-    @Insert("insert into patient_history(patient_name, sex,age, pid, tel, job, job_history, medical_history, dust_age, dust_property, created_by, created_on)" +
-            "values(#{patientName},#{sex}, #{age}, #{pid}, #{tel}, #{job}, #{jobHistory},#{medicalHistory}, #{dustAge}, #{dustProperty}, #{createdBy}, #{createdOn})")
+    @Insert("insert into patient_history(patient_name, sex,birthday, pid, tel, job, job_history, dust_age, dust_property, created_by, created_on)" +
+            "values(#{patientName},#{sex}, #{birthday}, #{pid}, #{tel}, #{job}, #{jobHistory}, #{dustAge}, #{dustProperty}, #{createdBy}, #{createdOn})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "job_history", property = "jobHistory"),
-            @Result(column = "medical_history", property = "medicalHistory"),
             @Result(column = "dust_age", property = "dustAge"),
             @Result(column = "dust_property", property = "dustProperty"),
             @Result(column = "created_by", property = "createdBy"),
@@ -108,16 +108,16 @@ public interface TjMapper {
     //@ResultMap("com.springboot.mapper.TjMapper.allResults")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
-            @Result(column = "dust_age",property = "dustAge"),
+            @Result(column = "dust_age", property = "dustAge"),
             @Result(column = "analysis_result", property = "analysisResult"),
             @Result(column = "review_result", property = "reviewResult"),
-            @Result(column = "review_comment",property = "reviewComment"),
-            @Result(column = "x_ray_id",property = "xRayId")
+            @Result(column = "review_comment", property = "reviewComment"),
+            @Result(column = "x_ray_id", property = "xRayId")
     })
     TjTaskDTO selectXRayTaskById(@Param("id") Integer id);
 
 
-    @Select("select xt.id as task_id,ph.patient_name,u.name,xt.review_result,xt.analysis_result,ph.id as pid,xt.status"+
+    @Select("select xt.id as task_id,ph.patient_name,u.name,xt.review_result,xt.analysis_result,ph.id as pid,xt.status" +
             " from xray_task xt" +
             " left join patient_history ph on xt.patient_history_id = ph.id" +
             " left join user u on ph.created_by = u.id order by xt.created_on desc")
@@ -131,6 +131,42 @@ public interface TjMapper {
 
     @Select("select pid from patient_history where pid = #{pid}")
     List<Pid> selectByPid(Pid pid);
+
+    @Select("select * from medical_history where patient_history_id = #{patientHistoryId} order by start_time desc")
+    @Results({
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "end_time", property = "endTime")
+    })
+    List<MedicalHistory> selectMedicalHistoryByPatientId(@Param("patientHistoryId")Integer patientHistoryId);
+
+  /*  @Insert("insert into medical_history(description, patient_history_id, start_time, end_time)" +
+            "values " +
+            " foreach collection=\"list\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")" +
+            "(#{description}, #{patientHistoryId}, #{startTime}, #{endTime})")
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
+    @Results({
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "end_time", property = "endTime")
+    })
+    void insertMedicalHistory(List<MedicalHistory> medicalHistories);*/
+
+    @Insert({
+            "<script>",
+            "insert into medical_history (description, patient_history_id,start_time,end_time)"+
+            "values "+
+            "<foreach collection='medicalHistories' item='dmo' separator=','>"+
+            "(#{dmo.description,jdbcType=VARCHAR},#{patientHistoryId},#{dmo.startTime},#{dmo.endTime})"+
+            "</foreach>"+
+            "</script>"
+    })
+    @Results({
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "start_time", property = "startTime"),
+            @Result(column = "end_time", property = "endTime"),
+    })
+    int insertMedicalHistory(@Param("medicalHistories") List<MedicalHistory> medicalHistories,@Param("patientHistoryId")Integer patientHistoryId);
 
 /*    *//*查询所有胸片审查任务（显示所有字段）*//*
     @Select("select id,review_result,status,analysis_result from xray_task order by created_on desc")

@@ -111,6 +111,12 @@ public class MzServiceImpl implements MzService {
         mzPatientHistory.setCreatedBy(id);
         mzMapper.insertMzPatientHistory(mzPatientHistory);
 
+
+        List<MedicalHistory>  medicalHistory = mzPatientXRayTask.getMedicalHistories();
+     //   medicalHistory.se
+        mzMapper. insertMedicalHistory();
+
+
         MzXrayTask mzXrayTask = new MzXrayTask();
         mzXrayTask.setCreatedOn(data);
         mzXrayTask.setCreatedBy(mzPatientHistory.getId());

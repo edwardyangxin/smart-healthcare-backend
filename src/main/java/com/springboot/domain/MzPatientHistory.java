@@ -18,7 +18,7 @@ public class MzPatientHistory {
     private Integer id;
     private String patientName;
     private String sex;
-    private Integer age;
+    private Date birthday;
     private String pid;
     private String tel;
     private String job;

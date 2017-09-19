@@ -74,6 +74,7 @@ public interface MzMapper {
     @Insert("insert into mz_xray_task(created_by, created_on,patient_history_id, expert_id, review_result, review_comment, analysis_result, status, x_ray_id)" +
             "values(#{createdBy},#{createdOn}, #{patientHistoryId}, #{expertId}, #{reviewResult}, #{reviewComment}, #{analysisResult},#{status}, #{xRayId}) ")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
+
     @Results({
             @Result(column = "created_by", property = "createdBy"),
             @Result(column = "created_on", property = "createdOn"),
@@ -112,18 +113,17 @@ public interface MzMapper {
     //@ResultMap("com.springboot.mapper.TjMapper.allResults")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
-            @Result(column = "dust_age",property = "dustAge"),
+            @Result(column = "dust_age", property = "dustAge"),
             @Result(column = "analysis_result", property = "analysisResult"),
             @Result(column = "review_result", property = "reviewResult"),
-            @Result(column = "review_comment",property = "reviewComment"),
-            @Result(column = "x_ray_id",property = "xRayId")
+            @Result(column = "review_comment", property = "reviewComment"),
+            @Result(column = "x_ray_id", property = "xRayId")
     })
     MzTaskDTO selectMzXrayTaskByIds(@Param("id") Integer id);
 
 
-
     /*查询所有胸片审查任务（显示所有字段）*/
-    @Select("select xt.id as task_id,ph.patient_name,u.name,xt.review_result,xt.analysis_result,ph.id as pid,xt.status"+
+    @Select("select xt.id as task_id,ph.patient_name,u.name,xt.review_result,xt.analysis_result,ph.id as pid,xt.status" +
             " from mz_xray_task xt" +
             " left join mz_patient_history ph on xt.patient_history_id = ph.id" +
             " left join user u on ph.created_by = u.id order by xt.created_on desc")
@@ -167,12 +167,17 @@ public interface MzMapper {
     /*院外专家修改（提交插入）任务表*/
     @Update("update mz_xray_task set outreview_comment= #{outreviewComment},outreview_result=#{outreviewCesult} where id =#{id}")
     @Results({
-        @Result(column = "outreview_comment", property = "outreviewComment"),
-        @Result(column = "outreview_result", property = "outreviewCesult")
+            @Result(column = "outreview_comment", property = "outreviewComment"),
+            @Result(column = "outreview_result", property = "outreviewCesult")
     })
     void updateOneMzOutExpertTask(MzXrayTask mzXrayTask);
 
     @Select("select pid from mz_patient_history where pid = #{pid}")
     List<Pid> selectByPid(Pid pid);
+
+    @Insert("insert into medical_history(patient_name,  created_by, created_on)" +
+            "values(#{patientName}, #{createdBy}, #{createdOn})")
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
+    void insertMedicalHistory();
 
 }

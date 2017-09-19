@@ -139,7 +139,7 @@ public interface TjMapper {
     })
     List<MedicalHistory> selectMedicalHistoryByPatientId(@Param("patientHistoryId")Integer patientHistoryId);
 
-    @Delete("delete  medical_history where patient_history_id=#{patientHistoryId}")
+    @Delete("delete from medical_history where patient_history_id=#{patientHistoryId}")
     @Results({
             @Result(column = "patient_history_id", property = "patientHistoryId"),
             @Result(column = "start_time", property = "startTime"),

@@ -167,8 +167,6 @@ public class TjServiceImpl implements TjService {
 
     @Override
     public Result updateXRayTaskById(XRayTask xRayTask,HttpServletRequest request){
-        Integer id = xRayTask.getId();
-        xRayTask.setId(id);
         tjMapper.updateXRayTaskById(xRayTask);
         log.info("修改了id为"+xRayTask.getId()+"的胸片审查任务表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);

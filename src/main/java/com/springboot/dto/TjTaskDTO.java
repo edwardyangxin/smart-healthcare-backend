@@ -12,7 +12,7 @@ public class TjTaskDTO {
     private Integer analysisResult;
     private Integer xRayId;
     private Integer reviewResult;
-    private Integer reviewComment;
+    private String reviewComment;
     private String filename;
 
 }

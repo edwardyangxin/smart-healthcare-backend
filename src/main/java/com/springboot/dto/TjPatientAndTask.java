@@ -7,9 +7,10 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PatientXRayTask  {
+public class TjPatientAndTask {
 
-    private Integer file;
     private List<MedicalHistory> medicalHistories;
     private PatientHistory patientHistory;
+    private List<XRayTaskDTO> XRayTaskDTOList;
+
 }

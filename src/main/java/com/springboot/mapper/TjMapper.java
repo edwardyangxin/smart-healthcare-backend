@@ -7,6 +7,7 @@ import com.springboot.domain.XRayTask;
 import com.springboot.dto.Pid;
 import com.springboot.dto.TjTaskDTO;
 import com.springboot.dto.TjTasksDTO;
+import com.springboot.dto.XRayTaskDTO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -116,6 +117,28 @@ public interface TjMapper {
     TjTaskDTO selectXRayTaskById(@Param("id") Integer id);
 
 
+    @Select("select xt.analysis_result,xt.created_on,xt.review_result,xt.review_comment,uf.file_name,u.name as created_by,u1.name as expert_id " +
+            "from xray_task xt " +
+            "left join upload_file uf on xt.x_ray_id = uf.id " +
+            "left join user u on xt.created_by = u.id " +
+            "left join user u1 on xt.expert_id = u1.id " +
+            "where patient_history_id=#{patientHistoryId} and created_by=#{createdBy} " +
+            "order by created_on desc")
+    @Results({
+            @Result(column = "analysis_result", property = "analysisResult"),
+            @Result(column = "created_by", property = "createdBy"),
+            @Result(column = "created_on", property = "createdOn"),
+            @Result(column = "expert_id", property = "expertId"),
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "review_result", property = "reviewResult"),
+            @Result(column = "review_comment", property = "reviewComment"),
+            @Result(column = "x_ray_id", property = "xRayId"),
+            @Result(column = "file_name", property = "fileName")
+
+    })
+    List<XRayTaskDTO> selectXRayTasksByPationId(@Param("patientHistoryId") Integer patientHistoryId, @Param("createdBy") Integer createdBy);
+
+
     @Select("select xt.id as task_id,ph.patient_name,u.name,xt.review_result,xt.analysis_result,ph.id as pid,xt.status" +
             " from xray_task xt" +
             " left join patient_history ph on xt.patient_history_id = ph.id" +
@@ -128,6 +151,7 @@ public interface TjMapper {
     })
     List<TjTasksDTO> selectXRayTasks();
 
+
     @Select("select pid from patient_history where pid = #{pid}")
     List<Pid> selectByPid(Pid pid);
 
@@ -137,7 +161,8 @@ public interface TjMapper {
             @Result(column = "start_time", property = "startTime"),
             @Result(column = "end_time", property = "endTime")
     })
-    List<MedicalHistory> selectMedicalHistoryByPatientId(@Param("patientHistoryId")Integer patientHistoryId);
+    List<MedicalHistory> selectMedicalHistoryByPatientId(@Param("patientHistoryId") Integer patientHistoryId);
+
 
     @Delete("delete from medical_history where patient_history_id=#{patientHistoryId}")
     @Results({
@@ -145,7 +170,7 @@ public interface TjMapper {
             @Result(column = "start_time", property = "startTime"),
             @Result(column = "end_time", property = "endTime")
     })
-    Integer deleteMedicalHistory(@Param("patientHistoryId")Integer patientHistoryId);
+    Integer deleteMedicalHistory(@Param("patientHistoryId") Integer patientHistoryId);
 
   /*  @Insert("insert into medical_history(description, patient_history_id, start_time, end_time)" +
             "values " +
@@ -161,11 +186,11 @@ public interface TjMapper {
 
     @Insert({
             "<script>",
-            "insert into medical_history (description, patient_history_id,start_time,end_time)"+
-                    "values "+
-                    "<foreach collection='medicalHistories' item='dmo' separator=','>"+
-                    "(#{dmo.description,jdbcType=VARCHAR},#{patientHistoryId},#{dmo.startTime},#{dmo.endTime})"+
-                    "</foreach>"+
+            "insert into medical_history (description, patient_history_id,start_time,end_time)" +
+                    "values " +
+                    "<foreach collection='medicalHistories' item='dmo' separator=','>" +
+                    "(#{dmo.description,jdbcType=VARCHAR},#{patientHistoryId},#{dmo.startTime},#{dmo.endTime})" +
+                    "</foreach>" +
                     "</script>"
     })
     @Results({
@@ -173,7 +198,7 @@ public interface TjMapper {
             @Result(column = "start_time", property = "startTime"),
             @Result(column = "end_time", property = "endTime"),
     })
-    int insertMedicalHistory(@Param("medicalHistories") List<MedicalHistory> medicalHistories,@Param("patientHistoryId")Integer patientHistoryId);
+    int insertMedicalHistory(@Param("medicalHistories") List<MedicalHistory> medicalHistories, @Param("patientHistoryId") Integer patientHistoryId);
 
 /*    *//*查询所有胸片审查任务（显示所有字段）*//*
     @Select("select id,review_result,status,analysis_result from xray_task order by created_on desc")

@@ -24,4 +24,5 @@ public interface TjService {
     Result  selectOneXRayTaskById(Integer id, HttpServletRequest request);
     Result<List<TjTasksDTO>>  selectXRayTasks();
     Result selectByPid(Pid pid);
+    Result selectPatientAndXTask(Integer id, HttpServletRequest request);
 }

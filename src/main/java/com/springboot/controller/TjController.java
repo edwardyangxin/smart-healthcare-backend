@@ -142,4 +142,12 @@ public class TjController {
         return tjService.selectByPid(pid);
     }
 
+    //病历表详细信息 + 对应任务表详情
+    @ResponseBody
+    @GetMapping(value = "/selectPatientAndXTask/{id}")
+    public Result findSelectPatientAndXTask(@PathVariable Integer id, HttpServletRequest request) {
+        return tjService.selectPatientAndXTask(id, request);
+    }
+
+
 }

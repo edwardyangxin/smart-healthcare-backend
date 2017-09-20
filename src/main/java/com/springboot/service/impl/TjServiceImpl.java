@@ -25,7 +25,7 @@ public class TjServiceImpl implements TjService {
     private FileUploadMapper fileUploadMapper;
 
     @Autowired
-    public TjServiceImpl(TjMapper tjMapper,FileUploadMapper fileUploadMapper) {
+    public TjServiceImpl(TjMapper tjMapper, FileUploadMapper fileUploadMapper) {
         this.tjMapper = tjMapper;
         this.fileUploadMapper = fileUploadMapper;
     }
@@ -72,46 +72,49 @@ public class TjServiceImpl implements TjService {
     public Result<List<PatientHistory>> selectPatientHistories(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
-        Integer id=(Integer) session.getAttribute("id");
+        Integer id = (Integer) session.getAttribute("id");
         List<PatientHistory> patientHistories = tjMapper.selectPatientHistories(id);
-        log.info(name+":查询了所有已建立的病历表");
+        log.info(name + ":查询了所有已建立的病历表");
         return ResultUtil.success(patientHistories);
     }
 
     @Override
-    public Result selectOnePatientHistoryById(Integer id,HttpServletRequest request){
+    public Result<PatientXRayTask> selectOnePatientHistoryById(Integer id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
-        Integer createdBy = (Integer)session.getAttribute("id");
+        Integer createdBy = (Integer) session.getAttribute("id");
 
         PatientXRayTask patientXRayTask = new PatientXRayTask();
-        PatientHistory patientHistory = tjMapper.selectPatientHistoryById(id,createdBy);
+        PatientHistory patientHistory = tjMapper.selectPatientHistoryById(id, createdBy);
+        if(patientHistory==null){
+            return ResultUtil.error("没有此病历表信息！");
+        }
         patientXRayTask.setPatientHistory(patientHistory);
 
-        List<MedicalHistory> medicalHistories =  tjMapper.selectMedicalHistoryByPatientId(id);
+        List<MedicalHistory> medicalHistories = tjMapper.selectMedicalHistoryByPatientId(id);
         patientXRayTask.setMedicalHistories(medicalHistories);
 
-        log.info(name+":查询了一条id为"+id+"病历表");
+        log.info(name + ":查询了一条id为" + id + "病历表");
         return ResultUtil.success(patientXRayTask);
     }
 
     @Override
-    public Result insertPatientHistory(PatientHistory patientHistory,HttpServletRequest request){
+    public Result insertPatientHistory(PatientHistory patientHistory, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
-        Integer id=(Integer) session.getAttribute("id");
+        Integer id = (Integer) session.getAttribute("id");
         patientHistory.setCreatedOn(new Date());
         patientHistory.setCreatedBy(id);
         tjMapper.insertPatientHistory(patientHistory);
-        log.info(name+":新建了一个病历表");
+        log.info(name + ":新建了一个病历表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 
     @Override
-    public  Result insertPatientHistoryAndXTask(PatientXRayTask patientXRayTask,HttpServletRequest request){
+    public Result insertPatientHistoryAndXTask(PatientXRayTask patientXRayTask, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
-        Integer id=(Integer) session.getAttribute("id");
+        Integer id = (Integer) session.getAttribute("id");
 
         PatientHistory patientHistory = patientXRayTask.getPatientHistory();
         Date data = new Date();
@@ -120,7 +123,7 @@ public class TjServiceImpl implements TjService {
         tjMapper.insertPatientHistory(patientHistory);
 
         List<MedicalHistory> medicalHistories = patientXRayTask.getMedicalHistories();
-        tjMapper.insertMedicalHistory(medicalHistories,patientHistory.getId());
+        tjMapper.insertMedicalHistory(medicalHistories, patientHistory.getId());
 
         XRayTask xRayTask = new XRayTask();
         xRayTask.setCreatedOn(data);
@@ -128,17 +131,17 @@ public class TjServiceImpl implements TjService {
         xRayTask.setPatientHistoryId(patientHistory.getId());
         xRayTask.setXRayId(patientXRayTask.getFile());
         tjMapper.insertXrayTask(xRayTask);
-        log.info(name+":新建了一个病历表,并为id="+patientHistory.getId()+"的病历表，添加了一个胸片审查任务");
+        log.info(name + ":新建了一个病历表,并为id=" + patientHistory.getId() + "的病历表，添加了一个胸片审查任务");
 
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
 
     }
 
     @Override
-    public Result updatePatientHistoryById(PatientXRayTask patientXRayTask,HttpServletRequest request){
+    public Result updatePatientHistoryById(PatientXRayTask patientXRayTask, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
-        Integer createdBy = (Integer)session.getAttribute("id");
+        Integer createdBy = (Integer) session.getAttribute("id");
 
         PatientHistory patientHistory = patientXRayTask.getPatientHistory();
         patientHistory.setCreatedBy(createdBy);
@@ -147,40 +150,40 @@ public class TjServiceImpl implements TjService {
         tjMapper.deleteMedicalHistory(patientHistory.getId());
 
         List<MedicalHistory> medicalHistories = patientXRayTask.getMedicalHistories();
-        tjMapper.insertMedicalHistory(medicalHistories,patientHistory.getId());
-        log.info(name+":修改了id为"+patientHistory.getId()+"的病历表");
+        tjMapper.insertMedicalHistory(medicalHistories, patientHistory.getId());
+        log.info(name + ":修改了id为" + patientHistory.getId() + "的病历表");
 
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 
     @Override
-    public Result insertXrayTask(XRayTask xRayTask,HttpServletRequest request){
+    public Result insertXrayTask(XRayTask xRayTask, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
-        Integer id=(Integer) session.getAttribute("id");
+        Integer id = (Integer) session.getAttribute("id");
         xRayTask.setCreatedOn(new Date());
         xRayTask.setCreatedBy(id);
         tjMapper.insertXrayTask(xRayTask);
-        log.info(name+":为id="+xRayTask.getPatientHistoryId()+"的病历表，添加了一个胸片审查任务");
+        log.info(name + ":为id=" + xRayTask.getPatientHistoryId() + "的病历表，添加了一个胸片审查任务");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 
     @Override
-    public Result updateXRayTaskById(XRayTask xRayTask,HttpServletRequest request){
+    public Result updateXRayTaskById(XRayTask xRayTask, HttpServletRequest request) {
         tjMapper.updateXRayTaskById(xRayTask);
-        log.info("修改了id为"+xRayTask.getId()+"的胸片审查任务表");
+        log.info("修改了id为" + xRayTask.getId() + "的胸片审查任务表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 
     @Override
-    public Result selectOneXRayTaskById(Integer id,HttpServletRequest request){
+    public Result selectOneXRayTaskById(Integer id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         TjTaskDTO tjTaskDTO = tjMapper.selectXRayTaskById(id);
         Integer fileId = tjTaskDTO.getXRayId();
         UploadFile uploadFile = fileUploadMapper.selectUploadFileById(fileId);
         String filename = uploadFile.getFileUuid();
         tjTaskDTO.setFilename(filename);
-        log.info("查询了一条id为"+id+"的胸片审查任务表");
+        log.info("查询了一条id为" + id + "的胸片审查任务表");
         return ResultUtil.success(tjTaskDTO);
     }
 
@@ -192,12 +195,41 @@ public class TjServiceImpl implements TjService {
     }
 
     @Override
-    public Result selectByPid(Pid pid){
-        List<Pid> pids= tjMapper.selectByPid(pid);
-        if(pids.size()==0){
+    public Result selectByPid(Pid pid) {
+        List<Pid> pids = tjMapper.selectByPid(pid);
+        if (pids.size() == 0) {
             return ResultUtil.success(ResultEnum.pid_repeat_success);
         }
         return ResultUtil.error(ResultEnum.pid_repeat_error);
+    }
+
+    public Result<List<XRayTaskDTO>> selectXRayTasksByPationId(Integer id,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String name = session.getAttribute("user").toString();
+        Integer createdBy = (Integer) session.getAttribute("id");
+        List<XRayTaskDTO> xRayTasks = tjMapper.selectXRayTasksByPationId(id,createdBy);
+        log.info(name+"：查询了自己已建立的胸片审查任务表");
+        return ResultUtil.success(xRayTasks);
+
+
+    }
+    @Override
+    public Result selectPatientAndXTask(Integer id, HttpServletRequest request) {
+        TjPatientAndTask tjPatientAndTask = new TjPatientAndTask();
+        Result<PatientXRayTask> result = selectOnePatientHistoryById(id, request);
+        if (!result.getABoolean()) {
+            return result;
+        }
+        tjPatientAndTask.setPatientHistory(result.getData().getPatientHistory());
+        tjPatientAndTask.setMedicalHistories(result.getData().getMedicalHistories());
+        Result<List<XRayTaskDTO>> results = selectXRayTasksByPationId(id, request);
+        if(!result.getABoolean()){
+            return results;
+        }
+        tjPatientAndTask.setXRayTaskDTOList(results.getData());
+        log.info("查询了id为："+id+"的任务表和其中的所有任务表");
+        return ResultUtil.success(tjPatientAndTask);
+
     }
 
 }

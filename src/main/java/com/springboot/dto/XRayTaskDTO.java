@@ -22,7 +22,7 @@ public class XRayTaskDTO {
     private Integer status;
     private Integer xRayId;
     private Date createdOn;
-    private String fileUuid;
+    private String fileName;
 
 
   /*  public String getCreatedOn() {

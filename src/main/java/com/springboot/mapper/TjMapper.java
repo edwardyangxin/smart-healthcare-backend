@@ -39,7 +39,8 @@ public interface TjMapper {
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "dust_age", property = "dustAge"),
-            @Result(column = "created_on", property = "createdOn")
+            @Result(column = "created_on", property = "createdOn"),
+            @Result(column = "dust_property", property = "dustProperty")
     })
     List<PatientHistory> selectPatientHistories(Integer createdBy);
 
@@ -102,13 +103,14 @@ public interface TjMapper {
 
     /*通过id查询一张胸片审查任务表*/
     @Select("select xt.review_result,xt.analysis_result,xt.review_comment,xt.x_ray_id," +
-            " ph.patient_name,ph.dust_age,ph.sex,ph.birthday " +
+            " ph.patient_name,ph.dust_age,ph.sex,ph.birthday,ph.dust_property " +
             " from xray_task xt" +
             " left join patient_history ph on xt.patient_history_id = ph.id  where xt.id = #{id}")
     //@ResultMap("com.springboot.mapper.TjMapper.allResults")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "dust_age", property = "dustAge"),
+            @Result(column = "dust_property", property = "dustProperty"),
             @Result(column = "analysis_result", property = "analysisResult"),
             @Result(column = "review_result", property = "reviewResult"),
             @Result(column = "review_comment", property = "reviewComment"),
@@ -117,7 +119,7 @@ public interface TjMapper {
     TjTaskDTO selectXRayTaskById(@Param("id") Integer id);
 
 
-    @Select("select xt.status,xt.review_comment,xt.analysis_result,xt.created_on,xt.review_result,xt.review_comment,uf.file_uuid,u.name as created_by,u1.name as expert_id " +
+    @Select("select xt.status,xt.review_comment,xt.analysis_result,xt.created_on,xt.review_result,xt.review_comment,uf.file_uuid as fileName,u.name as created_by,u1.name as expert_id " +
             "from xray_task xt " +
             "left join upload_file uf on xt.x_ray_id = uf.id " +
             "left join user u on xt.created_by = u.id " +

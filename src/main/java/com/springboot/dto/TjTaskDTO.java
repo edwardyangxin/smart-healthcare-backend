@@ -18,6 +18,7 @@ public class TjTaskDTO {
     private Integer xRayId;
     private Integer reviewResult;
     private String reviewComment;
+    private String dustProperty;
     private String filename;
 
 }

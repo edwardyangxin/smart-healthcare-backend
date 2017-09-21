@@ -145,7 +145,7 @@ public class TjController {
     //病历表详细信息 + 对应任务表详情
     @ResponseBody
     @GetMapping(value = "/selectPatientAndXTask/{id}")
-    public Result findSelectPatientAndXTask(@PathVariable Integer id, HttpServletRequest request) {
+    public Result findPatientAndXTask(@PathVariable Integer id, HttpServletRequest request) {
         return tjService.selectPatientAndXTask(id, request);
     }
 

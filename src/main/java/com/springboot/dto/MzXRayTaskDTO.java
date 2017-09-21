@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Data
-public class XRayTaskDTO {
+public class MzXRayTaskDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +24,11 @@ public class XRayTaskDTO {
     private Date createdOn;
     private String fileName;
 
+    private String outexpertId;
+    private String outreviewResult;
+    private String outreviewComment;
+    private Boolean need;
 
-  /*  public String getCreatedOn() {
-        return "2018-10";
 
-    }*/
 
 }

@@ -210,9 +210,8 @@ public class TjServiceImpl implements TjService {
         List<XRayTaskDTO> xRayTasks = tjMapper.selectXRayTasksByPationId(id,createdBy);
         log.info(name+"：查询了自己已建立的胸片审查任务表");
         return ResultUtil.success(xRayTasks);
-
-
     }
+
     @Override
     public Result selectPatientAndXTask(Integer id, HttpServletRequest request) {
         TjPatientAndTask tjPatientAndTask = new TjPatientAndTask();
@@ -223,7 +222,7 @@ public class TjServiceImpl implements TjService {
         tjPatientAndTask.setPatientHistory(result.getData().getPatientHistory());
         tjPatientAndTask.setMedicalHistories(result.getData().getMedicalHistories());
         Result<List<XRayTaskDTO>> results = selectXRayTasksByPationId(id, request);
-        if(!result.getABoolean()){
+        if(!results.getABoolean()){
             return results;
         }
         tjPatientAndTask.setXRayTaskDTOList(results.getData());

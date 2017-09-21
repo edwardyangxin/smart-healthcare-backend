@@ -164,4 +164,13 @@ public class MzController {
         return mzService.selectByPid(pid);
     }
 
+    //病历表详细信息 + 对应任务表详情
+    @ResponseBody
+    @GetMapping(value = "/selectMzPatientAndXTask/{id}")
+    public Result findPatientAndXTask(@PathVariable Integer id, HttpServletRequest request) {
+        return mzService.selectMzPatientAndXTask(id, request);
+    }
+
+
+
 }

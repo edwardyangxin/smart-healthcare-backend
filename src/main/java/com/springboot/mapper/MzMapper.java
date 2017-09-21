@@ -6,6 +6,7 @@ import com.springboot.domain.MzXrayTask;
 import com.springboot.domain.User;
 import com.springboot.dto.MzTaskDTO;
 import com.springboot.dto.MzTasksDTO;
+import com.springboot.dto.MzXRayTaskDTO;
 import com.springboot.dto.Pid;
 import org.apache.ibatis.annotations.*;
 
@@ -207,4 +208,32 @@ public interface MzMapper {
             @Result(column = "end_time", property = "endTime")
     })
     Integer deleteMzMedicalHistory(@Param("patientHistoryId")Integer patientHistoryId);
+
+
+    @Select("select xt.outreview_result,xt.outreview_comment,xt.status,xt.review_comment,xt.analysis_result,xt.created_on,xt.review_result,xt.review_comment," +
+            "uf.file_name,u.name as created_by,u1.name as expert_id,u2.name as outexpert_id " +
+            "from mz_xray_task xt " +
+            "left join upload_file uf on xt.x_ray_id = uf.id " +
+            "left join user u on xt.created_by = u.id " +
+            "left join user u1 on xt.expert_id = u1.id " +
+            "left join user u2 on xt.outexpert_id = u2.id " +
+            "where patient_history_id=#{patientHistoryId} and created_by=#{createdBy} " +
+            "order by created_on desc")
+    @Results({
+            @Result(column = "analysis_result", property = "analysisResult"),
+            @Result(column = "created_by", property = "createdBy"),
+            @Result(column = "created_on", property = "createdOn"),
+            @Result(column = "expert_id", property = "expertId"),
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "review_result", property = "reviewResult"),
+            @Result(column = "review_comment", property = "reviewComment"),
+            @Result(column = "x_ray_id", property = "xRayId"),
+            @Result(column = "file_name", property = "fileName"),
+            @Result(column = "outexpert_id", property = "outexpertId"),
+            @Result(column = "outreview_result", property = "outreviewResult"),
+            @Result(column = "outreview_comment", property = "outreviewComment")
+
+    })
+    List<MzXRayTaskDTO> selectMzXRayTasksByPationId(@Param("patientHistoryId") Integer patientHistoryId, @Param("createdBy") Integer createdBy);
+
 }

@@ -78,15 +78,17 @@ public class MzServiceImpl implements MzService {
     }
 
     @Override
-    public Result<MzPatientHistory> selectOneMzPatientHistoryById(Integer id, HttpServletRequest request) {
+    public Result<MzPatientXRayTask> selectOneMzPatientHistoryById(Integer id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer createdBy = (Integer) session.getAttribute("id");
 
         MzPatientXRayTask mzPatientXRayTask = new MzPatientXRayTask();
         MzPatientHistory mzPatientHistory = mzMapper.selectMzPatientHistoryById(id, createdBy);
+        if(mzPatientHistory==null){
+            return ResultUtil.error("没有此病历表信息！");
+        }
         mzPatientXRayTask.setMzPatientHistory(mzPatientHistory);
-
         List<MzMedicalHistory> mzMedicalHistories = mzMapper.selectMzMedicalHistoryByPatientId(id);
         mzPatientXRayTask.setMzMedicalHistories(mzMedicalHistories);
 
@@ -118,11 +120,8 @@ public class MzServiceImpl implements MzService {
         mzPatientHistory.setCreatedBy(id);
         mzMapper.insertMzPatientHistory(mzPatientHistory);
 
-
         List<MzMedicalHistory>  mzMedicalHistories= mzPatientXRayTask.getMzMedicalHistories();
-     //   medicalHistory.se
         mzMapper.insertMzMedicalHistories(mzMedicalHistories,mzPatientHistory.getId());
-
 
         MzXrayTask mzXrayTask = new MzXrayTask();
         mzXrayTask.setCreatedOn(data);
@@ -245,5 +244,33 @@ public class MzServiceImpl implements MzService {
         return ResultUtil.error(ResultEnum.pid_repeat_error);
     }
 
+
+    public Result<List<MzXRayTaskDTO>> selectMzXRayTasksByPationId(Integer id,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String name = session.getAttribute("user").toString();
+        Integer createdBy = (Integer) session.getAttribute("id");
+        List<MzXRayTaskDTO> mzXRayTaskDTOS = mzMapper.selectMzXRayTasksByPationId(id,createdBy);
+        log.info(name+"：查询了自己已建立的胸片审查任务表");
+        return ResultUtil.success(mzXRayTaskDTOS);
+    }
+
+    @Override
+    public Result selectMzPatientAndXTask(Integer id, HttpServletRequest request) {
+        MzPatientAndTask mzPatientAndTask = new MzPatientAndTask();
+        Result<MzPatientXRayTask> result = selectOneMzPatientHistoryById(id, request);
+        if (!result.getABoolean()) {
+            return result;
+        }
+        mzPatientAndTask.setMzPatientHistory(result.getData().getMzPatientHistory());
+        mzPatientAndTask.setMzMedicalHistories(result.getData().getMzMedicalHistories());
+        Result<List<MzXRayTaskDTO>> results = selectMzXRayTasksByPationId(id, request);
+        if(!results.getABoolean()){
+            return results;
+        }
+        mzPatientAndTask.setMzXRayTaskDTOList(results.getData());
+        log.info("查询了id为："+id+"的任务表和其中的所有任务表");
+        return ResultUtil.success(mzPatientAndTask);
+
+    }
 
 }

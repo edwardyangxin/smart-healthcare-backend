@@ -117,7 +117,7 @@ public interface TjMapper {
     TjTaskDTO selectXRayTaskById(@Param("id") Integer id);
 
 
-    @Select("select xt.analysis_result,xt.created_on,xt.review_result,xt.review_comment,uf.file_name,u.name as created_by,u1.name as expert_id " +
+    @Select("select xt.status,xt.review_comment,xt.analysis_result,xt.created_on,xt.review_result,xt.review_comment,uf.file_name,u.name as created_by,u1.name as expert_id " +
             "from xray_task xt " +
             "left join upload_file uf on xt.x_ray_id = uf.id " +
             "left join user u on xt.created_by = u.id " +

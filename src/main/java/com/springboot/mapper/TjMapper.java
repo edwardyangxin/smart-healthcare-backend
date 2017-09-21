@@ -139,7 +139,7 @@ public interface TjMapper {
     List<XRayTaskDTO> selectXRayTasksByPationId(@Param("patientHistoryId") Integer patientHistoryId, @Param("createdBy") Integer createdBy);
 
 
-    @Select("select xt.id as task_id,ph.patient_name,u.name,xt.review_result,xt.analysis_result,ph.id as pid,xt.status" +
+    @Select("select xt.id as task_id,ph.patient_name,u.name,xt.review_result,xt.analysis_result,ph.pid as pid,xt.status" +
             " from xray_task xt" +
             " left join patient_history ph on xt.patient_history_id = ph.id" +
             " left join user u on ph.created_by = u.id order by xt.created_on desc")

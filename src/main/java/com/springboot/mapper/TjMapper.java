@@ -102,12 +102,13 @@ public interface TjMapper {
     void updateXRayTaskById(XRayTask xRayTask);
 
     /*通过id查询一张胸片审查任务表*/
-    @Select("select xt.review_result,xt.analysis_result,xt.review_comment,xt.x_ray_id," +
+    @Select("select xt.review_result,xt.analysis_result,xt.review_comment,xt.x_ray_id,xt.patient_history_id," +
             " ph.patient_name,ph.dust_age,ph.sex,ph.birthday,ph.dust_property " +
             " from xray_task xt" +
             " left join patient_history ph on xt.patient_history_id = ph.id  where xt.id = #{id}")
     //@ResultMap("com.springboot.mapper.TjMapper.allResults")
     @Results({
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "dust_age", property = "dustAge"),
             @Result(column = "dust_property", property = "dustProperty"),
@@ -164,7 +165,6 @@ public interface TjMapper {
             @Result(column = "end_time", property = "endTime")
     })
     List<MedicalHistory> selectMedicalHistoryByPatientId(@Param("patientHistoryId") Integer patientHistoryId);
-
 
     @Delete("delete from medical_history where patient_history_id=#{patientHistoryId}")
     @Results({

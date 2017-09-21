@@ -183,6 +183,9 @@ public class TjServiceImpl implements TjService {
         UploadFile uploadFile = fileUploadMapper.selectUploadFileById(fileId);
         String filename = uploadFile.getFileUuid();
         tjTaskDTO.setFilename(filename);
+
+        List<MedicalHistory> medicalHistories = tjMapper.selectMedicalHistoryByPatientId(tjTaskDTO.getPatientHistoryId());
+        tjTaskDTO.setMedicalHistories(medicalHistories);
         log.info("查询了一条id为" + id + "的胸片审查任务表");
         return ResultUtil.success(tjTaskDTO);
     }

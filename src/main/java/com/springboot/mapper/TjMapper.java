@@ -117,7 +117,7 @@ public interface TjMapper {
     TjTaskDTO selectXRayTaskById(@Param("id") Integer id);
 
 
-    @Select("select xt.status,xt.review_comment,xt.analysis_result,xt.created_on,xt.review_result,xt.review_comment,uf.file_name,u.name as created_by,u1.name as expert_id " +
+    @Select("select xt.status,xt.review_comment,xt.analysis_result,xt.created_on,xt.review_result,xt.review_comment,uf.file_uuid,u.name as created_by,u1.name as expert_id " +
             "from xray_task xt " +
             "left join upload_file uf on xt.x_ray_id = uf.id " +
             "left join user u on xt.created_by = u.id " +
@@ -133,7 +133,7 @@ public interface TjMapper {
             @Result(column = "review_result", property = "reviewResult"),
             @Result(column = "review_comment", property = "reviewComment"),
             @Result(column = "x_ray_id", property = "xRayId"),
-            @Result(column = "file_name", property = "fileName")
+            @Result(column = "file_uuid", property = "fileUuid")
 
     })
     List<XRayTaskDTO> selectXRayTasksByPationId(@Param("patientHistoryId") Integer patientHistoryId, @Param("createdBy") Integer createdBy);

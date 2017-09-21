@@ -3,10 +3,7 @@ package com.springboot.controller;
 import com.springboot.domain.PatientHistory;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
-import com.springboot.dto.PatientXRayTask;
-import com.springboot.dto.Pid;
-import com.springboot.dto.Result;
-import com.springboot.dto.TjTasksDTO;
+import com.springboot.dto.*;
 import com.springboot.service.TjService;
 import com.springboot.tools.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,14 +94,14 @@ public class TjController {
     //增加任务表
     @ResponseBody
     @PostMapping(value = "/newXTask")
-    public Result newXRayTask(@Valid @RequestBody XRayTask xRayTask, BindingResult bindingResult, HttpServletRequest request) {
+    public Result newXRayTask(@Valid @RequestBody XRayTaskBack xRayTaskBack, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for (ObjectError error : errorList) {
                 return ResultUtil.error(error.getDefaultMessage());
             }
         }
-        return tjService.insertXrayTask(xRayTask, request);
+        return tjService.insertXrayTask(xRayTaskBack, request);
     }
 
     //修改胸片审查任务表（根据id）

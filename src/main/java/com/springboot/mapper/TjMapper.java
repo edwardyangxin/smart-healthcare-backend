@@ -4,11 +4,9 @@ import com.springboot.domain.MedicalHistory;
 import com.springboot.domain.PatientHistory;
 import com.springboot.domain.User;
 import com.springboot.domain.XRayTask;
-import com.springboot.dto.Pid;
-import com.springboot.dto.TjTaskDTO;
-import com.springboot.dto.TjTasksDTO;
-import com.springboot.dto.XRayTaskDTO;
+import com.springboot.dto.*;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Result;
 
 import java.util.List;
 
@@ -86,6 +84,22 @@ public interface TjMapper {
             @Result(column = "x_ray_id", property = "xRayId")
     })
     void insertXrayTask(XRayTask xRayTask);
+
+    /*增加胸片审查任务*/
+    @Insert("insert into xray_task(created_by, created_on,patient_history_id, expert_id, review_result, review_comment, analysis_result, status, x_ray_id)" +
+            "values(#{createdBy},#{createdOn}, #{patientHistoryId}, #{expertId}, #{reviewResult}, #{reviewComment}, #{analysisResult},#{status}, #{fileId}) ")
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
+    @Results({
+            @Result(column = "created_by", property = "createdBy"),
+            @Result(column = "created_on", property = "createdOn"),
+            @Result(column = "patient_history_id", property = "patientHistoryId"),
+            @Result(column = "expert_id", property = "expertId"),
+            @Result(column = "review_result", property = "reviewResult"),
+            @Result(column = "review_comment", property = "reviewComment"),
+            @Result(column = "analysis_result", property = "analysisResult"),
+            @Result(column = "x_ray_id", property = "fileId")
+    })
+    void insertXrayTaskBack(XRayTaskBack xRayTaskBack);
 
     /*修改胸片审查任务表的review_result、review_comment、analysis_result字段*/
     @Update("update xray_task set review_result= #{reviewResult},review_comment= #{reviewComment},analysis_result = #{analysisResult} where id =#{id}")

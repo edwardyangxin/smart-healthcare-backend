@@ -33,14 +33,9 @@ public class TjServiceImpl implements TjService {
     @Override
     public Result login(User user, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        try {
-            if (session.getAttribute("user").toString().equals(user.getName())) {
-                return ResultUtil.error(ResultEnum.Repeat_login_Error);
-            }
-        } catch (NullPointerException e) {
-        }
+
         User userReturn = tjMapper.selectUserByName(user.getName());
-        System.out.println("123");
+
         Result userResult = validateUser(user, userReturn);
         if (userResult.getABoolean()) {
             session.setAttribute("user", userReturn.getName());
@@ -179,6 +174,9 @@ public class TjServiceImpl implements TjService {
     public Result selectOneXRayTaskById(Integer id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         TjTaskDTO tjTaskDTO = tjMapper.selectXRayTaskById(id);
+        if(tjTaskDTO == null){
+            return ResultUtil.error("没有此任务信息！");
+        }
         Integer fileId = tjTaskDTO.getXRayId();
         UploadFile uploadFile = fileUploadMapper.selectUploadFileById(fileId);
         String filename = uploadFile.getFileUuid();

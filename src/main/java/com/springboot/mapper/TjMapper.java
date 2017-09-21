@@ -102,7 +102,7 @@ public interface TjMapper {
 
     /*通过id查询一张胸片审查任务表*/
     @Select("select xt.review_result,xt.analysis_result,xt.review_comment,xt.x_ray_id," +
-            " ph.patient_name,ph.dust_age " +
+            " ph.patient_name,ph.dust_age,ph.sex,ph.birthday " +
             " from xray_task xt" +
             " left join patient_history ph on xt.patient_history_id = ph.id  where xt.id = #{id}")
     //@ResultMap("com.springboot.mapper.TjMapper.allResults")

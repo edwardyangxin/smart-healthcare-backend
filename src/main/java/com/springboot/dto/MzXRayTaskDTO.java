@@ -21,6 +21,7 @@ public class MzXRayTaskDTO {
     private Integer analysisResult;
     private Integer status;
     private Integer xRayId;
+
     private Date createdOn;
     private String fileName;
 

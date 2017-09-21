@@ -127,6 +127,7 @@ public class MzServiceImpl implements MzService {
         mzXrayTask.setCreatedOn(data);
         mzXrayTask.setCreatedBy(mzPatientHistory.getId());
         mzXrayTask.setXRayId(mzPatientXRayTask.getFile());
+        mzXrayTask.setNeed(false);
         mzMapper.insertMzXrayTask(mzXrayTask);
         log.info(name + ":新建了一个病历表,并为id=" + mzPatientHistory.getId() + "的病历表，添加了一个胸片审查任务");
 

@@ -73,8 +73,8 @@ public interface MzMapper {
     void updateMzPatientHistoryById(MzPatientHistory mzPatientHistory);
 
     /*增加胸片审查任务*/
-    @Insert("insert into mz_xray_task(created_by, created_on,patient_history_id, expert_id, review_result, review_comment, analysis_result, status, x_ray_id)" +
-            "values(#{createdBy},#{createdOn}, #{patientHistoryId}, #{expertId}, #{reviewResult}, #{reviewComment}, #{analysisResult},#{status}, #{xRayId}) ")
+    @Insert("insert into mz_xray_task(created_by, created_on,patient_history_id, expert_id, review_result, review_comment, analysis_result,need, status, x_ray_id)" +
+            "values(#{createdBy},#{createdOn}, #{patientHistoryId}, #{expertId}, #{reviewResult}, #{reviewComment}, #{analysisResult},#{need},#{status}, #{xRayId}) ")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     @Results({
             @Result(column = "created_by", property = "createdBy"),

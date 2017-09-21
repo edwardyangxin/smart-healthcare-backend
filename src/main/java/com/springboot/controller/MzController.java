@@ -122,6 +122,18 @@ public class MzController {
         return mzService.updateMzXrayTaskById(mzXrayTask, request);
     }
 
+    //院外专家修改胸片审查任务表（根据id）
+    @ResponseBody
+    @PostMapping(value = "/updateMzXrayTaskOut")
+    public Result updateMzXrayTaskOut(@Valid @RequestBody MzXrayTask mzXrayTask, BindingResult bindingResult, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            for (ObjectError error : errorList) {
+                return ResultUtil.error(error.getDefaultMessage());
+            }
+        }
+        return mzService.updateMzXrayTaskOutById(mzXrayTask, request);
+    }
     //查询一个胸片审查任务表的详细信息(根据id)
     @ResponseBody
     @GetMapping(value = "/selectOneMzXrayTask/{id}")

@@ -21,6 +21,7 @@ public interface MzService {
     Result updateMzPatientHistoryById(MzPatientXRayTask mzPatientXRayTask,HttpServletRequest request);
     Result insertMzXrayTask(MzXrayTask mzXrayTask, HttpServletRequest request);
     Result updateMzXrayTaskById(MzXrayTask mzXrayTask,HttpServletRequest request);
+    Result updateMzXrayTaskOutById(MzXrayTask mzXrayTask,HttpServletRequest request);
     Result  selectOneMzXrayTaskById(Integer id,HttpServletRequest request);
     Result<List<MzTasksDTO>>  selectMzXrayTasks();
     Result isNeedExpert(Integer id,HttpServletRequest request);

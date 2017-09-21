@@ -106,6 +106,16 @@ public interface MzMapper {
     })
     void updateMzXrayTaskById(MzXrayTask mzXrayTask);
 
+
+    /*修改胸片审查任务表的review_result、review_comment、analysis_result字段*/
+    @Update("update mz_xray_task set outreview_result= #{outreviewResult},outreview_comment= #{outreviewComment} where id =#{id}")
+    @Results({
+            @Result(column = "outexpert_id", property = "outexpertId"),
+            @Result(column = "outreview_result", property = "outreviewResult"),
+            @Result(column = "outreview_comment", property = "outreviewComment")
+    })
+    void updateMzXrayTaskOutById(MzXrayTask mzXrayTask);
+
     /*通过id查询一张胸片审查任务表*/
     @Select("select xt.review_result,xt.analysis_result,xt.review_comment,xt.x_ray_id," +
             " ph.patient_name,ph.dust_age " +

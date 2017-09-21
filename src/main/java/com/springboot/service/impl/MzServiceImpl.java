@@ -170,9 +170,14 @@ public class MzServiceImpl implements MzService {
 
     @Override
     public Result updateMzXrayTaskById(MzXrayTask mzXrayTask, HttpServletRequest request) {
-        Integer id = mzXrayTask.getId();
-        mzXrayTask.setId(id);
         mzMapper.updateMzXrayTaskById(mzXrayTask);
+        log.info("修改了id为" + mzXrayTask.getId() + "的胸片审查任务表");
+        return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
+    }
+
+    @Override
+    public Result updateMzXrayTaskOutById(MzXrayTask mzXrayTask, HttpServletRequest request) {
+        mzMapper.updateMzXrayTaskOutById(mzXrayTask);
         log.info("修改了id为" + mzXrayTask.getId() + "的胸片审查任务表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }

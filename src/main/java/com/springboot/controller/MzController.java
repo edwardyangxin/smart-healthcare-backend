@@ -49,7 +49,7 @@ public class MzController {
         return mzService.login(user, request);
     }
 
-    //查询一个医生已经建立的的所有病历表
+    //查询已经建立的的所有病历表
     @ResponseBody
     @GetMapping(value = "/selectAllMzPatients")
     public Result<List<MzPatientHistory>> findMzPatientHistories(HttpServletRequest request) {

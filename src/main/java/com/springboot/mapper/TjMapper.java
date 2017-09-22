@@ -33,7 +33,7 @@ public interface TjMapper {
     PatientHistory selectPatientHistoryById(@Param("id") Integer id, @Param("createdBy") Integer createdBy);
 
     /*根据前台显示查询病历表（id/姓名/性别/联系电话/接尘工龄/粉尘性质/就医时间/）*/
-    @Select("select id,patient_name,sex,tel,dust_age,dust_property,created_on  from patient_history where created_by=#{createdBy}")
+    @Select("select id,patient_name,sex,tel,dust_age,dust_property,created_on  from patient_history ")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "dust_age", property = "dustAge"),

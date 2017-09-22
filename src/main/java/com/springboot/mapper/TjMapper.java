@@ -139,7 +139,7 @@ public interface TjMapper {
             "left join upload_file uf on xt.x_ray_id = uf.id " +
             "left join user u on xt.created_by = u.id " +
             "left join user u1 on xt.expert_id = u1.id " +
-            "where patient_history_id=#{patientHistoryId}" +
+            "where patient_history_id=#{patientHistoryId} " +
             "order by created_on desc")
     @Results({
             @Result(column = "analysis_result", property = "analysisResult"),

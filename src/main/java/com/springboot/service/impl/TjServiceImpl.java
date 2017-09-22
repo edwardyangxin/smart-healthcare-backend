@@ -40,9 +40,13 @@ public class TjServiceImpl implements TjService {
     @Override
     public Result login(User user, HttpServletRequest request) {
         HttpSession session = request.getSession();
-
+        try {
+            if (session.getAttribute("user").toString().equals(user.getName())) {
+                return ResultUtil.error(ResultEnum.Repeat_login_Error);
+            }
+        } catch (NullPointerException e) {
+        }
         User userReturn = tjMapper.selectUserByName(user.getName());
-
         Result userResult = validateUser(user, userReturn);
         if (userResult.getABoolean()) {
             session.setAttribute("user", userReturn.getName());

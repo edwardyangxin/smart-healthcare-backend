@@ -58,7 +58,7 @@ public interface TjMapper {
 
     /*修改病历*/
     @Update("update patient_history set patient_name= #{patientName},sex= #{sex},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
-            "dust_age = #{dustAge},dust_property = #{dustProperty} where id =#{id} and created_by =#{createdBy}")
+            "dust_age = #{dustAge},dust_property = #{dustProperty} where id =#{id}")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "job_history", property = "jobHistory"),
@@ -139,7 +139,7 @@ public interface TjMapper {
             "left join upload_file uf on xt.x_ray_id = uf.id " +
             "left join user u on xt.created_by = u.id " +
             "left join user u1 on xt.expert_id = u1.id " +
-            "where patient_history_id=#{patientHistoryId} and created_by=#{createdBy} " +
+            "where patient_history_id=#{patientHistoryId}" +
             "order by created_on desc")
     @Results({
             @Result(column = "analysis_result", property = "analysisResult"),
@@ -153,7 +153,7 @@ public interface TjMapper {
             @Result(column = "file_uuid", property = "fileUuid")
 
     })
-    List<XRayTaskDTO> selectXRayTasksByPationId(@Param("patientHistoryId") Integer patientHistoryId, @Param("createdBy") Integer createdBy);
+    List<XRayTaskDTO> selectXRayTasksByPationId(@Param("patientHistoryId") Integer patientHistoryId);
 
 
     @Select("select xt.id as task_id,ph.patient_name,u.name,xt.review_result,xt.analysis_result,ph.pid as pid,xt.status" +

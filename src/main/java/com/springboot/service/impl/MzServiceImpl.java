@@ -128,20 +128,20 @@ public class MzServiceImpl implements MzService {
         mzMapper.insertMzPatientHistory(mzPatientHistory);
 
         List<MzMedicalHistory> mzMedicalHistories = mzPatientXRayTask.getMzMedicalHistories();
-        mzMapper.insertMzMedicalHistories(mzMedicalHistories, mzPatientHistory.getId());
-
+        if(mzMedicalHistories.size()!=0){
+            mzMapper.insertMzMedicalHistories(mzMedicalHistories, mzPatientHistory.getId());
+        }
         MzXrayTask mzXrayTask = new MzXrayTask();
         mzXrayTask.setCreatedOn(data);
-        mzXrayTask.setCreatedBy(mzPatientHistory.getId());
+        mzXrayTask.setCreatedBy(id);
+        mzXrayTask.setPatientHistoryId(mzPatientHistory.getId());
         mzXrayTask.setXRayId(mzPatientXRayTask.getFile());
         mzXrayTask.setNeed(false);
+        mzXrayTask.setStatus(0);
         mzMapper.insertMzXrayTask(mzXrayTask);
         log.info(name + ":新建了一个病历表,并为id=" + mzPatientHistory.getId() + "的病历表，添加了一个胸片审查任务");
-
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
-
     }
-
 
     @Override
     public Result updateMzPatientHistoryById(MzPatientXRayTask mzPatientXRayTask, HttpServletRequest request) {

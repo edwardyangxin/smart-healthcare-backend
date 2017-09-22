@@ -125,9 +125,9 @@ public class TjServiceImpl implements TjService {
         tjMapper.insertPatientHistory(patientHistory);
 
         List<MedicalHistory> medicalHistories = patientXRayTask.getMedicalHistories();
-        if(medicalHistories.size()!=0){tjMapper.insertMedicalHistory(medicalHistories, patientHistory.getId());}
-
-
+        if(medicalHistories.size()!=0){
+            tjMapper.insertMedicalHistory(medicalHistories, patientHistory.getId());
+        }
         XRayTask xRayTask = new XRayTask();
         xRayTask.setCreatedOn(data);
         xRayTask.setCreatedBy(id);
@@ -136,7 +136,6 @@ public class TjServiceImpl implements TjService {
         xRayTask.setStatus(0);
         tjMapper.insertXrayTask(xRayTask);
         log.info(name + ":新建了一个病历表,并为id=" + patientHistory.getId() + "的病历表，添加了一个胸片审查任务");
-
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
 
     }
@@ -217,8 +216,7 @@ public class TjServiceImpl implements TjService {
     public Result<List<XRayTaskDTO>> selectXRayTasksByPationId(Integer id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
-        Integer createdBy = (Integer) session.getAttribute("id");
-        List<XRayTaskDTO> xRayTasks = tjMapper.selectXRayTasksByPationId(id, createdBy);
+        List<XRayTaskDTO> xRayTasks = tjMapper.selectXRayTasksByPationId(id);
         log.info(name + "：查询了自己已建立的胸片审查任务表");
         return ResultUtil.success(xRayTasks);
     }

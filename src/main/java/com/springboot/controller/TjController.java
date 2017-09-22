@@ -26,6 +26,12 @@ public class TjController {
         this.tjService = tjService;
     }
 
+    //退出登录
+    @RequestMapping(value = "/loginOut")
+    public Result userLoginOut(HttpServletRequest request) {
+        return tjService.loginOut(request);
+    }
+
     //登录（医生和专家一个接口）
     @ResponseBody
     @PostMapping(value = "/login")

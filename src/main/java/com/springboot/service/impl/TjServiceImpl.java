@@ -31,6 +31,13 @@ public class TjServiceImpl implements TjService {
     }
 
     @Override
+    public Result loginOut(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+        session.removeAttribute("id");
+        return ResultUtil.success("已退出登录！");
+    }
+    @Override
     public Result login(User user, HttpServletRequest request) {
         HttpSession session = request.getSession();
 

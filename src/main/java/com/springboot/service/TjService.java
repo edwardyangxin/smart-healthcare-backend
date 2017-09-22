@@ -11,6 +11,7 @@ import java.util.List;
 public interface TjService {
 
     Result login(User user, HttpServletRequest request);
+    Result loginOut(HttpServletRequest request);
     Result<List<PatientHistory>>  selectPatientHistories(HttpServletRequest request);
     Result  selectOnePatientHistoryById(Integer id, HttpServletRequest request);
     Result insertPatientHistory(PatientHistory patientHistory, HttpServletRequest request);

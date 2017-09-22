@@ -45,7 +45,7 @@ public class TjController {
         return tjService.login(user, request);
     }
 
-    //查询一个医生已经建立的的所有病历表
+    //查询已经建立的的所有病历表
     @ResponseBody
     @GetMapping(value = "/selectAllPatients")
     public Result<List<PatientHistory>> findPatientHistories(HttpServletRequest request) {
@@ -151,6 +151,4 @@ public class TjController {
     public Result findPatientAndXTask(@PathVariable Integer id, HttpServletRequest request) {
         return tjService.selectPatientAndXTask(id, request);
     }
-
-
 }

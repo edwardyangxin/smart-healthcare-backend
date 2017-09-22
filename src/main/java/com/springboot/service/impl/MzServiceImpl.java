@@ -25,9 +25,17 @@ public class MzServiceImpl implements MzService {
     private FileUploadMapper fileUploadMapper;
 
     @Autowired
-    public MzServiceImpl(MzMapper mzMapper,FileUploadMapper fileUploadMapper) {
+    public MzServiceImpl(MzMapper mzMapper, FileUploadMapper fileUploadMapper) {
         this.mzMapper = mzMapper;
         this.fileUploadMapper = fileUploadMapper;
+    }
+
+    @Override
+    public Result loginOut(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+        session.removeAttribute("id");
+        return ResultUtil.success("已退出登录！");
     }
 
     @Override
@@ -85,14 +93,14 @@ public class MzServiceImpl implements MzService {
 
         MzPatientXRayTask mzPatientXRayTask = new MzPatientXRayTask();
         MzPatientHistory mzPatientHistory = mzMapper.selectMzPatientHistoryById(id, createdBy);
-        if(mzPatientHistory==null){
+        if (mzPatientHistory == null) {
             return ResultUtil.error("没有此病历表信息！");
         }
         mzPatientXRayTask.setMzPatientHistory(mzPatientHistory);
         List<MzMedicalHistory> mzMedicalHistories = mzMapper.selectMzMedicalHistoryByPatientId(id);
         mzPatientXRayTask.setMzMedicalHistories(mzMedicalHistories);
 
-        log.info(name+":查询了一条id为"+id+"病历表");
+        log.info(name + ":查询了一条id为" + id + "病历表");
         return ResultUtil.success(mzPatientXRayTask);
     }
 
@@ -120,8 +128,8 @@ public class MzServiceImpl implements MzService {
         mzPatientHistory.setCreatedBy(id);
         mzMapper.insertMzPatientHistory(mzPatientHistory);
 
-        List<MzMedicalHistory>  mzMedicalHistories= mzPatientXRayTask.getMzMedicalHistories();
-        mzMapper.insertMzMedicalHistories(mzMedicalHistories,mzPatientHistory.getId());
+        List<MzMedicalHistory> mzMedicalHistories = mzPatientXRayTask.getMzMedicalHistories();
+        mzMapper.insertMzMedicalHistories(mzMedicalHistories, mzPatientHistory.getId());
 
         MzXrayTask mzXrayTask = new MzXrayTask();
         mzXrayTask.setCreatedOn(data);
@@ -149,7 +157,7 @@ public class MzServiceImpl implements MzService {
         mzMapper.deleteMzMedicalHistory(mzPatientHistory.getId());
 
         List<MzMedicalHistory> mzMedicalHistories = mzPatientXRayTask.getMzMedicalHistories();
-        mzMapper.insertMzMedicalHistories(mzMedicalHistories,mzPatientHistory.getId());
+        mzMapper.insertMzMedicalHistories(mzMedicalHistories, mzPatientHistory.getId());
 
         log.info(name + ":修改了id为" + mzPatientHistory.getId() + "的病历表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
@@ -232,31 +240,31 @@ public class MzServiceImpl implements MzService {
     }
 
     @Override
-    public Result updateOneMzOutExpertTask(MzXrayTask mzXrayTask,HttpServletRequest request){
+    public Result updateOneMzOutExpertTask(MzXrayTask mzXrayTask, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer id = (Integer) session.getAttribute("id");
         mzMapper.updateOneMzOutExpertTask(mzXrayTask);
-        log.info("院外医生：" + name + ":处理了id为"+mzXrayTask.getId()+"的任务表");
+        log.info("院外医生：" + name + ":处理了id为" + mzXrayTask.getId() + "的任务表");
         return ResultUtil.success(ResultEnum.SAVE_SUCCESS);
     }
 
     @Override
-    public Result selectByPid(Pid pid){
-        List<Pid> pids= mzMapper.selectByPid(pid);
-        if(pids.size()==0){
+    public Result selectByPid(Pid pid) {
+        List<Pid> pids = mzMapper.selectByPid(pid);
+        if (pids.size() == 0) {
             return ResultUtil.success(ResultEnum.pid_repeat_success);
         }
         return ResultUtil.error(ResultEnum.pid_repeat_error);
     }
 
 
-    public Result<List<MzXRayTaskDTO>> selectMzXRayTasksByPationId(Integer id,HttpServletRequest request){
+    public Result<List<MzXRayTaskDTO>> selectMzXRayTasksByPationId(Integer id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
         Integer createdBy = (Integer) session.getAttribute("id");
-        List<MzXRayTaskDTO> mzXRayTaskDTOS = mzMapper.selectMzXRayTasksByPationId(id,createdBy);
-        log.info(name+"：查询了自己已建立的胸片审查任务表");
+        List<MzXRayTaskDTO> mzXRayTaskDTOS = mzMapper.selectMzXRayTasksByPationId(id, createdBy);
+        log.info(name + "：查询了自己已建立的胸片审查任务表");
         return ResultUtil.success(mzXRayTaskDTOS);
     }
 
@@ -270,11 +278,11 @@ public class MzServiceImpl implements MzService {
         mzPatientAndTask.setMzPatientHistory(result.getData().getMzPatientHistory());
         mzPatientAndTask.setMzMedicalHistories(result.getData().getMzMedicalHistories());
         Result<List<MzXRayTaskDTO>> results = selectMzXRayTasksByPationId(id, request);
-        if(!results.getABoolean()){
+        if (!results.getABoolean()) {
             return results;
         }
         mzPatientAndTask.setMzXRayTaskDTOList(results.getData());
-        log.info("查询了id为："+id+"的任务表和其中的所有任务表");
+        log.info("查询了id为：" + id + "的任务表和其中的所有任务表");
         return ResultUtil.success(mzPatientAndTask);
 
     }

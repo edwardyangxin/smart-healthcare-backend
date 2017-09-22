@@ -14,6 +14,7 @@ import java.util.List;
 public interface MzService {
 
     Result login(User user, HttpServletRequest request);
+    Result loginOut(HttpServletRequest request);
     Result<List<MzPatientHistory>>  selectMzPatientHistories(HttpServletRequest request);
     Result<MzPatientXRayTask>  selectOneMzPatientHistoryById(Integer id,HttpServletRequest request);
     Result insertMzPatientHistory(MzPatientHistory MzPatientHistory,HttpServletRequest request);

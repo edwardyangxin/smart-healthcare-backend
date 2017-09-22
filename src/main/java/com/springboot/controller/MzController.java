@@ -30,6 +30,12 @@ public class MzController {
         this.mzService = mzService;
     }
 
+    //退出登录
+    @RequestMapping(value = "/loginOut")
+    public Result userLoginOut(HttpServletRequest request) {
+        return mzService.loginOut(request);
+    }
+
     //登录（医生、院内专家，院外专家一个接口）
     @ResponseBody
     @PostMapping(value = "/login")
@@ -182,7 +188,5 @@ public class MzController {
     public Result findPatientAndXTask(@PathVariable Integer id, HttpServletRequest request) {
         return mzService.selectMzPatientAndXTask(id, request);
     }
-
-
 
 }

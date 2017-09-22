@@ -88,18 +88,14 @@ public class TjServiceImpl implements TjService {
     public Result<PatientXRayTask> selectOnePatientHistoryById(Integer id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
-        Integer createdBy = (Integer) session.getAttribute("id");
-
         PatientXRayTask patientXRayTask = new PatientXRayTask();
-        PatientHistory patientHistory = tjMapper.selectPatientHistoryById(id, createdBy);
+        PatientHistory patientHistory = tjMapper.selectPatientHistoryById(id);
         if (patientHistory == null) {
             return ResultUtil.error("没有此病历表信息！");
         }
         patientXRayTask.setPatientHistory(patientHistory);
-
         List<MedicalHistory> medicalHistories = tjMapper.selectMedicalHistoryByPatientId(id);
         patientXRayTask.setMedicalHistories(medicalHistories);
-
         log.info(name + ":查询了一条id为" + id + "病历表");
         return ResultUtil.success(patientXRayTask);
     }

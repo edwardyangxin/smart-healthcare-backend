@@ -89,10 +89,9 @@ public class MzServiceImpl implements MzService {
     public Result<MzPatientXRayTask> selectOneMzPatientHistoryById(Integer id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String name = session.getAttribute("user").toString();
-        Integer createdBy = (Integer) session.getAttribute("id");
 
         MzPatientXRayTask mzPatientXRayTask = new MzPatientXRayTask();
-        MzPatientHistory mzPatientHistory = mzMapper.selectMzPatientHistoryById(id, createdBy);
+        MzPatientHistory mzPatientHistory = mzMapper.selectMzPatientHistoryById(id);
         if (mzPatientHistory == null) {
             return ResultUtil.error("没有此病历表信息！");
         }

@@ -21,7 +21,7 @@ public interface TjMapper {
     User selectUserByName(@Param("name") String name);
 
     /*通过id查询一张病历*/
-    @Select("select * from patient_history where id = #{id} and created_by = #{createdBy}")
+    @Select("select * from patient_history where id = #{id}")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "job_history", property = "jobHistory"),
@@ -30,7 +30,7 @@ public interface TjMapper {
             @Result(column = "dust_property", property = "dustProperty"),
             @Result(column = "created_on", property = "createdOn")
     })
-    PatientHistory selectPatientHistoryById(@Param("id") Integer id, @Param("createdBy") Integer createdBy);
+    PatientHistory selectPatientHistoryById(@Param("id") Integer id);
 
     /*根据前台显示查询病历表（id/姓名/性别/联系电话/接尘工龄/粉尘性质/就医时间/）*/
     @Select("select id,patient_name,sex,tel,dust_age,dust_property,created_on  from patient_history ")

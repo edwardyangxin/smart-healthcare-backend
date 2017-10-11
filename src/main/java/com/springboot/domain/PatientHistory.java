@@ -33,4 +33,9 @@ public class PatientHistory {
     private String dustProperty;
     private Integer createdBy;
     private Date createdOn;
+
+    private String stature;//身高
+    private String weight;//体重
+    private Integer age;  //年龄
+    private Boolean smoke;//是否吸烟
 }

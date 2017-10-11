@@ -43,8 +43,9 @@ public interface TjMapper {
     List<PatientHistory> selectPatientHistories(Integer createdBy);
 
     /*新建病历*/
-    @Insert("insert into patient_history(patient_name, sex,birthday, pid, tel, job, job_history, dust_age, dust_property, created_by, created_on)" +
-            "values(#{patientName},#{sex}, #{birthday}, #{pid}, #{tel}, #{job}, #{jobHistory}, #{dustAge}, #{dustProperty}, #{createdBy}, #{createdOn})")
+    @Insert("insert into patient_history(patient_name, sex,birthday, pid, tel, job, job_history, dust_age, dust_property, created_by, created_on, stature, weight, age, smoke)" +
+            "values(#{patientName},#{sex}, #{birthday}, #{pid}, #{tel}, #{job}, #{jobHistory}, #{dustAge}, #{dustProperty}, #{createdBy}, #{createdOn}," +
+            "#{stature}, #{weight}, #{age}, #{smoke})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     @Results({
             @Result(column = "patient_name", property = "patientName"),
@@ -58,7 +59,7 @@ public interface TjMapper {
 
     /*修改病历*/
     @Update("update patient_history set patient_name= #{patientName},sex= #{sex},pid = #{pid},tel = #{tel}, job = #{job},job_history = #{jobHistory}," +
-            "dust_age = #{dustAge},dust_property = #{dustProperty} where id =#{id}")
+            "dust_age = #{dustAge},dust_property = #{dustProperty},stature=#{stature},weight=#{weight},age=#{age},smoke=#{smoke} where id =#{id}")
     @Results({
             @Result(column = "patient_name", property = "patientName"),
             @Result(column = "job_history", property = "jobHistory"),
